@@ -1,12 +1,12 @@
 'use client';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { X } from 'lucide-react';
 import React, { useEffect } from 'react';
 
 /** Free 3D emoji asset (Microsoft Fluent Emoji, MIT) served from /public/assets. */
-export function Asset({ name, size = 32, alt = '', className = '', style }: { name: string; size?: number; alt?: string; className?: string; style?: React.CSSProperties }) {
+export function Asset({ name, size = 32, alt = '', className = '', style, eager }: { name: string; size?: number; alt?: string; className?: string; style?: React.CSSProperties; eager?: boolean }) {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={`/assets/${name}`} width={size} height={size} alt={alt} className={className} style={style} draggable={false} />;
+  return <img src={`/assets/${name}`} width={size} height={size} alt={alt} className={className} style={style} draggable={false} loading={eager ? 'eager' : 'lazy'} decoding="async" />;
 }
 
 /** Renders ^{sup} and _{sub} markup used in formulas. */
@@ -54,8 +54,8 @@ export function Modal({ open, onClose, children, title, wide }: { open: boolean;
   return (
     <AnimatePresence>
       {open && (
-        <motion.div className="modal-back" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-          <motion.div
+        <m.div className="modal-back" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+          <m.div
             className={`modal ${wide ? 'wide' : ''}`}
             role="dialog"
             aria-modal="true"
@@ -73,8 +73,8 @@ export function Modal({ open, onClose, children, title, wide }: { open: boolean;
               </button>
             </div>
             {children}
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   );
@@ -83,9 +83,9 @@ export function Modal({ open, onClose, children, title, wide }: { open: boolean;
 export function Bar({ value, color = 'var(--yellow)', height = 16 }: { value: number; color?: string; height?: number }) {
   return (
     <div className="bar" style={{ height }}>
-      <motion.div className="bar-fill" style={{ background: color }} initial={false} animate={{ width: `${Math.max(0, Math.min(1, value)) * 100}%` }} transition={{ type: 'spring', stiffness: 120, damping: 20 }}>
+      <m.div className="bar-fill" style={{ background: color }} initial={false} animate={{ width: `${Math.max(0, Math.min(1, value)) * 100}%` }} transition={{ type: 'spring', stiffness: 120, damping: 20 }}>
         <span className="bar-shine" />
-      </motion.div>
+      </m.div>
     </div>
   );
 }

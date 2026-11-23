@@ -1,7 +1,7 @@
 'use client';
-import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
+import { AnimatePresence, LazyMotion, MotionConfig, domAnimation, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { CourseProvider, shuffle, useCourseIndex, type Course, type Lesson as L } from '@/lib/course';
+import { CourseProvider, shuffle, useChapterQuestions, useCourseIndex, type Course, type Lesson as L } from '@/lib/course';
 import { setSoundEnabled } from '@/lib/sound';
 import { useGame } from '@/lib/store';
 import ChapterView from './Chapter';
@@ -13,6 +13,27 @@ import Results from './Results';
 import { BadgeToast, CalculatorPanel, ProfilePanel, SettingsPanel } from './Panels';
 import { LeaderboardPanel } from './Season';
 import { Asset } from './ui';
+
+/** Loads the chapter's full questions (usually already prefetched by the chapter screen), then shows the lesson. */
+function LessonLoader(props: Omit<React.ComponentProps<typeof Lesson>, 'questions'>) {
+  const { questions, error, retry } = useChapterQuestions(props.lesson.chapterId);
+  if (questions) return <Lesson {...props} questions={questions} />;
+  return (
+    <div className="onboard">
+      <div className="center-col">
+        {error ? (
+          <>
+            <p className="loading-text">Couldn&apos;t load the questions. Check your connection.</p>
+            <button className="btn3d btn-gold" onClick={retry}>Try again</button>
+            <button className="link-btn" onClick={props.onExit}>Back</button>
+          </>
+        ) : (
+          <span className="spinner" aria-label="Loading questions" />
+        )}
+      </div>
+    </div>
+  );
+}
 
 type Screen =
   | { v: 'home' }
@@ -56,15 +77,16 @@ export default function Game({ course: raw }: { course: Course }) {
   if (!g.ready || (g.auth === 'loading' && !g.profile)) {
     return (
       <div className="onboard">
-        <motion.div animate={{ rotate: [0, -10, 10, 0], scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 1.2 }}>
-          <Asset name={course.mascot} size={96} alt="Loading" />
-        </motion.div>
+        <div className="loop-wiggle">
+          <Asset name={course.mascot} size={96} alt="Loading" eager />
+        </div>
       </div>
     );
   }
 
   return (
     <CourseProvider value={course}>
+      <LazyMotion features={domAnimation} strict>
       <MotionConfig reducedMotion="user">
         {!g.profile ? (
           <Onboarding wiped={g.auth === 'wiped'} register={g.register} />
@@ -78,26 +100,26 @@ export default function Game({ course: raw }: { course: Course }) {
             )}
             <AnimatePresence mode="wait">
               {screen.v === 'home' && (
-                <motion.div key="home" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.18 }}>
+                <m.div key="home" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.18 }}>
                   <Home g={g} onOpen={(id) => go({ v: 'chapter', id })} openPanel={setPanel} />
-                </motion.div>
+                </m.div>
               )}
               {screen.v === 'chapter' && (
-                <motion.div key={'c' + screen.id} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }} transition={{ duration: 0.18 }}>
+                <m.div key={'c' + screen.id} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }} transition={{ duration: 0.18 }}>
                   <ChapterView g={g} chapter={course.chapterMap[screen.id]} onBack={() => go({ v: 'home' })} onPlay={play} onQuick={(m, part) => quick(screen.id, m, part)} />
-                </motion.div>
+                </m.div>
               )}
               {screen.v === 'play' && (
-                <motion.div key={'p' + screen.lesson.id} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ type: 'spring', stiffness: 260, damping: 24 }}>
+                <m.div key={'p' + screen.lesson.id} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ type: 'spring', stiffness: 260, damping: 24 }}>
                   {screen.lesson.kind === 'match' ? (
                     <Match g={g} lesson={screen.lesson} onExit={() => back(screen.lesson)} onFinish={(r) => go({ v: 'results', lesson: screen.lesson, r })} />
                   ) : (
-                    <Lesson g={g} lesson={screen.lesson} onExit={() => back(screen.lesson)} onFinish={(r) => go({ v: 'results', lesson: screen.lesson, r })} openCalc={() => setPanel('calc')} />
+                    <LessonLoader g={g} lesson={screen.lesson} onExit={() => back(screen.lesson)} onFinish={(r) => go({ v: 'results', lesson: screen.lesson, r })} openCalc={() => setPanel('calc')} />
                   )}
-                </motion.div>
+                </m.div>
               )}
               {screen.v === 'results' && (
-                <motion.div key="res" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <m.div key="res" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                   <Results
                     g={g}
                     lesson={screen.lesson}
@@ -107,7 +129,7 @@ export default function Game({ course: raw }: { course: Course }) {
                     onRetry={() => (course.lessonMap[screen.lesson.id] ? play(screen.lesson) : quick(screen.lesson.chapterId, screen.lesson.id.startsWith('review') ? 'review' : 'mix', screen.lesson.id.split(':')[2] ?? ''))}
                     onNext={(id) => play(course.lessonMap[id])}
                   />
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
 
@@ -119,6 +141,7 @@ export default function Game({ course: raw }: { course: Course }) {
           </div>
         )}
       </MotionConfig>
+      </LazyMotion>
     </CourseProvider>
   );
 }

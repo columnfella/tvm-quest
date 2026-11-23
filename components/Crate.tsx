@@ -1,6 +1,6 @@
 'use client';
-import confetti from 'canvas-confetti';
-import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
+import confetti from '@/lib/confetti';
+import { AnimatePresence, m, useAnimationControls } from 'framer-motion';
 import { useState } from 'react';
 import { sfx } from '@/lib/sound';
 import { Asset } from './ui';
@@ -23,9 +23,9 @@ function CrateArt({ tier, open }: { tier: CrateTier; open: boolean }) {
   return (
     <svg width="180" height="180" viewBox="0 0 180 180" aria-hidden style={{ overflow: 'visible' }}>
       {open && (
-        <motion.g initial={{ scale: 0.2, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ transformBox: 'fill-box', transformOrigin: '50% 100%' }}>
+        <m.g initial={{ scale: 0.2, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ transformBox: 'fill-box', transformOrigin: '50% 100%' }}>
           <path d="M60 78 L40 10 L75 60 L90 0 L105 60 L140 10 L120 78 Z" fill={emblem} opacity="0.85" />
-        </motion.g>
+        </m.g>
       )}
       {/* body: front face + right side, slight perspective */}
       <path d="M30 80 L130 80 L130 168 L30 168 Z" fill={face} stroke={K} strokeWidth="6" strokeLinejoin="round" />
@@ -33,9 +33,9 @@ function CrateArt({ tier, open }: { tier: CrateTier; open: boolean }) {
       <path d="M38 88 L122 88" stroke="rgba(255,255,255,0.55)" strokeWidth="6" strokeLinecap="round" />
       <path d="M30 150 L130 150" stroke="rgba(0,0,0,0.18)" strokeWidth="10" />
       {/* emblem: dollar sign */}
-      <text x="80" y="152" textAnchor="middle" fontFamily="'Lilita One', sans-serif" fontSize="62" fill={emblem} stroke={K} strokeWidth="5" paintOrder="stroke" style={{ letterSpacing: 0 }}>$</text>
+      <text x="80" y="152" textAnchor="middle" fontFamily="var(--font-display), sans-serif" fontSize="62" fill={emblem} stroke={K} strokeWidth="5" paintOrder="stroke" style={{ letterSpacing: 0 }}>$</text>
       {/* lid */}
-      <motion.g
+      <m.g
         style={{ transformBox: 'fill-box', transformOrigin: '0% 100%' }}
         initial={false}
         animate={open ? { rotate: -32, y: -46, x: -18 } : { rotate: 0, y: 0, x: 0 }}
@@ -45,7 +45,7 @@ function CrateArt({ tier, open }: { tier: CrateTier; open: boolean }) {
         <path d="M22 62 L50 44 L162 44 L134 62 Z" fill={shade} stroke={K} strokeWidth="6" strokeLinejoin="round" />
         <path d="M134 62 L162 44 L162 66 L134 84 Z" fill={shade} stroke={K} strokeWidth="6" strokeLinejoin="round" />
         <path d="M30 70 L126 70" stroke="rgba(255,255,255,0.6)" strokeWidth="5" strokeLinecap="round" />
-      </motion.g>
+      </m.g>
     </svg>
   );
 }
@@ -71,7 +71,7 @@ export default function Crate({ tier, loot, onOpen }: { tier: CrateTier; loot: L
 
   return (
     <div className="chest-stage">
-      <motion.button
+      <m.button
         className="chest-btn"
         onClick={doOpen}
         aria-label={open ? TIER_NAME[tier] : `Open the ${TIER_NAME[tier]}`}
@@ -80,22 +80,20 @@ export default function Crate({ tier, loot, onOpen }: { tier: CrateTier; loot: L
         transition={{ type: 'spring', stiffness: 320, damping: 12, delay: 0.25 }}
         whileTap={!open ? { scaleX: 1.14, scaleY: 0.86 } : undefined}
       >
-        <motion.div animate={ctl}>
-          <motion.div animate={!open ? { y: [0, -8, 0] } : { y: 0 }} transition={!open ? { repeat: Infinity, duration: 1.1, ease: 'easeInOut' } : undefined}>
+        <m.div animate={ctl}>
+          <div className={open ? '' : 'loop-hop'}>
             <CrateArt tier={tier} open={open} />
-          </motion.div>
-        </motion.div>
-      </motion.button>
+          </div>
+        </m.div>
+      </m.button>
       <span className={`chest-label tier-${tier}`}>{TIER_NAME[tier]}</span>
       {!open && (
-        <motion.span className="chest-tap" animate={{ scale: [1, 1.12, 1] }} transition={{ repeat: Infinity, duration: 0.9 }}>
-          TAP TO OPEN!
-        </motion.span>
+        <span className="chest-tap loop-pulse">TAP TO OPEN!</span>
       )}
       {open && (
         <div className="loot">
           {loot.map((l, i) => (
-            <motion.div
+            <m.div
               key={l.label}
               className={`loot-card ${l.rare ? 'rare' : ''}`}
               initial={{ y: -90, scale: 0, rotate: -25, opacity: 0 }}
@@ -103,16 +101,16 @@ export default function Crate({ tier, loot, onOpen }: { tier: CrateTier; loot: L
               transition={{ type: 'spring', stiffness: 340, damping: 13, delay: 0.15 + i * 0.22 }}
               onAnimationStart={() => setTimeout(() => sfx.coin(), 150 + i * 220)}
             >
-              <motion.span animate={{ rotate: [0, -12, 12, 0] }} transition={{ delay: 0.5 + i * 0.22, duration: 0.5 }}>
+              <m.span animate={{ rotate: [0, -12, 12, 0] }} transition={{ delay: 0.5 + i * 0.22, duration: 0.5 }}>
                 <Asset name={l.icon} size={46} />
-              </motion.span>
+              </m.span>
               <b>+{l.amount}</b>
               <small>{l.label}</small>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       )}
-      <AnimatePresence>{flash && <motion.div className="flash" initial={{ opacity: 0.9 }} animate={{ opacity: 0.9 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} />}</AnimatePresence>
+      <AnimatePresence>{flash && <m.div className="flash" initial={{ opacity: 0.9 }} animate={{ opacity: 0.9 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} />}</AnimatePresence>
     </div>
   );
 }

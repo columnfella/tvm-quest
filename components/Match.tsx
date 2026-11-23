@@ -1,6 +1,6 @@
 'use client';
-import confetti from 'canvas-confetti';
-import { motion } from 'framer-motion';
+import confetti from '@/lib/confetti';
+import { m } from 'framer-motion';
 import { Timer, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { shuffle, useCourse, type Lesson } from '@/lib/course';
@@ -86,7 +86,7 @@ export default function Match({ g, lesson, onExit, onFinish }: { g: G; lesson: L
         <div className="match-grid">
           <div className="match-col">
             {left.map((p) => (
-              <motion.button
+              <m.button
                 key={'l' + p.i}
                 className={`tile ${done.has(p.i) ? 'gone' : ''} ${pickL === p.i ? 'sel' : ''}`}
                 disabled={done.has(p.i)}
@@ -94,12 +94,12 @@ export default function Match({ g, lesson, onExit, onFinish }: { g: G; lesson: L
                 animate={done.has(p.i) ? { scale: [1, 1.08, 0.96], opacity: 0.35 } : { scale: 1, opacity: 1 }}
               >
                 {p.name}
-              </motion.button>
+              </m.button>
             ))}
           </div>
           <div className="match-col">
             {right.map((p) => (
-              <motion.button
+              <m.button
                 key={'r' + p.i}
                 className={`tile ${chapter.pairsMono ? 'formula-tile' : ''} ${done.has(p.i) ? 'gone' : ''} ${pickR === p.i ? 'sel' : ''} ${bad === p.i ? 'bad' : ''}`}
                 disabled={done.has(p.i) || pickL === null}
@@ -107,7 +107,7 @@ export default function Match({ g, lesson, onExit, onFinish }: { g: G; lesson: L
                 animate={bad === p.i ? { x: [0, -8, 8, -5, 5, 0] } : done.has(p.i) ? { scale: [1, 1.08, 0.96], opacity: 0.35 } : { scale: 1, opacity: 1 }}
               >
                 <Rich text={p.formula} />
-              </motion.button>
+              </m.button>
             ))}
           </div>
         </div>

@@ -4,7 +4,7 @@
 // See content/README.md for the file format.
 import fs from 'fs';
 import path from 'path';
-import type { Chapter, Coach, Course, Part, Difficulty, Hint, Lesson, Pair, Question, Section } from './course';
+import type { Chapter, Coach, Course, Part, QuestionMeta, Difficulty, Hint, Lesson, Pair, Question, Section } from './course';
 
 const ROOT = path.join(process.cwd(), 'content');
 const ASSETS = path.join(process.cwd(), 'public', 'assets');
@@ -88,7 +88,33 @@ function majority(keys: string[]) {
   return [...c.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? '';
 }
 
-export function loadCourse(): Course {
+/** The full course (server only): questions include text, choices and explanations. */
+export type FullCourse = Omit<Course, 'questions'> & { questions: Record<string, Question> };
+
+let memo: FullCourse | null = null;
+/** Content is read once per server process in production (it only changes on deploy); fresh on every call in dev. */
+export function loadCourse(): FullCourse {
+  if (memo && process.env.NODE_ENV === 'production') return memo;
+  memo = readCourse();
+  return memo;
+}
+
+/** What the page ships: everything except question bodies (those load per chapter from /api/chapter/<id>). */
+export function toClientCourse(c: FullCourse): Course {
+  const questions: Record<string, QuestionMeta> = {};
+  for (const [k, q] of Object.entries(c.questions)) questions[k] = { key: q.key, chapterId: q.chapterId, section: q.section, difficulty: q.difficulty, topic: q.topic, part: q.part };
+  return { ...c, questions };
+}
+
+/** Full questions of one chapter, keyed by question key. */
+export function chapterQuestions(id: string): Record<string, Question> | null {
+  const c = loadCourse();
+  const ch = c.chapters.find((x) => x.id === id);
+  if (!ch) return null;
+  return Object.fromEntries(ch.questionKeys.map((k) => [k, c.questions[k]]));
+}
+
+function readCourse(): FullCourse {
   const issues: string[] = [];
   const raw = (fs.existsSync(path.join(ROOT, 'course.json')) ? readJson(path.join(ROOT, 'course.json'), issues) : null) ?? {};
   const c = isObj(raw) ? raw : {};

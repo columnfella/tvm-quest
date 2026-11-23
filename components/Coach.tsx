@@ -1,5 +1,5 @@
 'use client';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useCourse } from '@/lib/course';
 import { sfx } from '@/lib/sound';
@@ -42,7 +42,7 @@ export default function Coach({ trigger, placement = 'lesson' }: { trigger: numb
   return (
     <AnimatePresence>
       {line && (
-        <motion.div
+        <m.div
           key={trigger}
           className={`coach coach-${placement}`}
           initial={{ x: -260, rotate: -12, opacity: 0 }}
@@ -52,7 +52,7 @@ export default function Coach({ trigger, placement = 'lesson' }: { trigger: numb
           onClick={() => setLine(null)}
           role="status"
         >
-          <motion.div className="coach-figure" animate={{ rotate: [0, -6, 6, -3, 0], y: [0, -4, 0] }} transition={{ duration: 0.9, delay: 0.2 }}>
+          <m.div className="coach-figure" animate={{ rotate: [0, -6, 6, -3, 0], y: [0, -4, 0] }} transition={{ duration: 0.9, delay: 0.2 }}>
             {coach.photo ? (
               <Asset name={coach.image} size={96} alt={coach.name} className="coach-photo" />
             ) : (
@@ -62,11 +62,11 @@ export default function Coach({ trigger, placement = 'lesson' }: { trigger: numb
               </>
             )}
             <span className="coach-tag">{coach.name}</span>
-          </motion.div>
-          <motion.div className="coach-bubble" initial={{ scale: 0, originX: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 420, damping: 16, delay: 0.15 }}>
+          </m.div>
+          <m.div className="coach-bubble" initial={{ scale: 0, originX: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 420, damping: 16, delay: 0.15 }}>
             {line}
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

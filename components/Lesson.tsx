@@ -1,6 +1,6 @@
 'use client';
-import confetti from 'canvas-confetti';
-import { AnimatePresence, motion } from 'framer-motion';
+import confetti from '@/lib/confetti';
+import { AnimatePresence, m } from 'framer-motion';
 import { BookOpen, Calculator, ChevronDown, Lightbulb, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { shuffle, useCourse, type Lesson as L, type Question } from '@/lib/course';
@@ -33,7 +33,7 @@ function canShuffle(q: Question) {
   return !q.choices.some((c) => FIXED_ORDER.test(c));
 }
 
-export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G; lesson: L; onExit: () => void; onFinish: (r: LessonResult) => void; openCalc: () => void }) {
+export default function Lesson({ g, lesson, questions, onExit, onFinish, openCalc }: { g: G; lesson: L; questions: Record<string, Question>; onExit: () => void; onFinish: (r: LessonResult) => void; openCalc: () => void }) {
   const course = useCourse();
   const chapter = course.chapterMap[lesson.chapterId];
   const [queue, setQueue] = useState<string[]>(() => [...lesson.questionKeys]);
@@ -57,7 +57,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
   const checkRef = useRef<HTMLButtonElement>(null);
 
   const qid = queue[pos];
-  const q = course.questions[qid];
+  const q = questions[qid];
   const total = lesson.questionKeys.length;
   const progress = solved.size / total;
   const isRetry = pos >= total; // re-queued after a miss
@@ -162,15 +162,15 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
         <div style={{ flex: 1 }}><Bar value={progress} color="var(--green)" height={18} /></div>
         <AnimatePresence>
           {combo >= 2 && (
-            <motion.span key={combo} className="combo-chip" initial={{ scale: 0.4, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.4, opacity: 0 }}>
+            <m.span key={combo} className="combo-chip" initial={{ scale: 0.4, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.4, opacity: 0 }}>
               <Asset name="fire_3d.png" size={20} /> {combo}
-            </motion.span>
+            </m.span>
           )}
         </AnimatePresence>
         <span className="stat"><Asset name="high_voltage_3d.png" size={26} /><b>{xp}</b></span>
       </div>
 
-      <motion.div className="lesson-body" animate={status === 'wrong' ? { x: [0, -12, 10, -6, 4, 0] } : { x: 0 }} transition={{ duration: 0.35 }}>
+      <m.div className="lesson-body" animate={status === 'wrong' ? { x: [0, -12, 10, -6, 4, 0] } : { x: 0 }} transition={{ duration: 0.35 }}>
         <div className="q-meta">
           <span className="pill" style={{ ['--c' as string]: diff.color }}>{diff.label}</span>
           <span className="pill ghost">{q.topic}</span>
@@ -179,7 +179,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
         </div>
 
         <AnimatePresence initial={false}>
-          <motion.div key={qid + pos} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.16, ease: 'easeOut' }}>
+          <m.div key={qid + pos} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.16, ease: 'easeOut' }}>
             <div className="q-head">
               <Asset name={status === 'wrong' ? 'pensive_face_3d.png' : status === 'correct' ? 'star-struck_3d.png' : 'thinking_face_3d.png'} size={64} className="q-face" />
               <div className="q-stem">
@@ -192,7 +192,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
                 const o = q.choices[i];
                 const state = status === 'idle' ? (sel === i ? 'sel' : '') : i === q.answer ? 'right' : sel === i ? 'bad' : 'dim';
                 return (
-                  <motion.button
+                  <m.button
                     key={i}
                     className={`opt ${state}`}
                     disabled={status !== 'idle'}
@@ -202,40 +202,40 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
                   >
                     <span className="opt-key">{LETTERS[d]}</span>
                     <span className="opt-text">{o}</span>
-                  </motion.button>
+                  </m.button>
                 );
               })}
             </div>
-          </motion.div>
+          </m.div>
         </AnimatePresence>
 
         <AnimatePresence>
           {hintOpen && hint && (
-            <motion.div className="hint-card" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}>
+            <m.div className="hint-card" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}>
               <Asset name="light_bulb_3d.png" size={36} />
               <div>
                 <b>{hint.title}</b>
                 {hint.lines.map((l, i) => <div key={i} className="formula"><Rich text={l} /></div>)}
               </div>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
-      </motion.div>
+      </m.div>
 
       <AnimatePresence>
         {status === 'correct' && !comboFlash && (
-          <motion.div key={'xp' + pos} className="xp-pop" initial={{ scale: 0.2, y: 40, opacity: 0 }} animate={{ scale: [0.2, 1.3, 1], y: -40, opacity: [0, 1, 1, 0] }} transition={{ duration: 1.1, times: [0, 0.3, 0.7, 1] }}>
+          <m.div key={'xp' + pos} className="xp-pop" initial={{ scale: 0.2, y: 40, opacity: 0 }} animate={{ scale: [0.2, 1.3, 1], y: -40, opacity: [0, 1, 1, 0] }} transition={{ duration: 1.1, times: [0, 0.3, 0.7, 1] }}>
             +{gain} XP
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
         {comboFlash && (
-          <motion.div className="combo-flash" initial={{ scale: 0.3, opacity: 0, rotate: -8 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} exit={{ scale: 1.4, opacity: 0 }}>
+          <m.div className="combo-flash" initial={{ scale: 0.3, opacity: 0, rotate: -8 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} exit={{ scale: 1.4, opacity: 0 }}>
             <Asset name="high_voltage_3d.png" size={70} />
             <span>{comboFlash} IN A ROW!</span>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
@@ -255,7 +255,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
               <Btn ref={checkRef} variant="primary" disabled={sel === null} onClick={check} className="check-btn">Check</Btn>
             </>
           ) : (
-            <motion.div className="verdict" initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 400, damping: 28 }}>
+            <m.div className="verdict" initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 400, damping: 28 }}>
               <div className="verdict-row">
                 <div className="verdict-msg">
                   <span className="verdict-icon">
@@ -280,12 +280,12 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
 
               <AnimatePresence>
                 {showSol && (
-                  <motion.pre className="solution" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
+                  <m.pre className="solution" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
                     {q.explanation}
-                  </motion.pre>
+                  </m.pre>
                 )}
               </AnimatePresence>
-            </motion.div>
+            </m.div>
           )}
         </div>
       </footer>

@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Calculator, Settings, Star } from 'lucide-react';
 import { useCourse, type Chapter } from '@/lib/course';
 import { sfx } from '@/lib/sound';
@@ -119,7 +119,7 @@ function ChapterCard({ ch, i, g, onOpen }: { ch: Chapter; i: number; g: Game; on
   const p = chapterProgress(g, ch);
   const missed = ch.questionKeys.filter((k) => g.state.missed.includes(k)).length;
   return (
-    <motion.button
+    <m.button
       className="ch-card"
       style={{ ['--c' as string]: ch.color }}
       onClick={() => { sfx.tap(); onOpen(); }}
@@ -150,7 +150,7 @@ function ChapterCard({ ch, i, g, onOpen }: { ch: Chapter; i: number; g: Game; on
         </span>
         <Bar value={p.total ? p.done / p.total : 0} height={12} color="linear-gradient(180deg, #fff27a, #ffc400)" />
       </span>
-    </motion.button>
+    </m.button>
   );
 }
 

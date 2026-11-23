@@ -1,5 +1,5 @@
 'use client';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useCourse } from '@/lib/course';
 import { levelInfo, type Achievement, type Game } from '@/lib/store';
@@ -190,16 +190,16 @@ export function BadgeToast({ badge, onDone }: { badge: Achievement | null; onDon
   return (
     <AnimatePresence>
       {badge && (
-        <motion.div key={badge.id} className="toast" initial={{ y: 120, scale: 0.6, opacity: 0 }} animate={{ y: 0, scale: 1, opacity: 1 }} exit={{ y: 120, opacity: 0 }} transition={{ type: 'spring', stiffness: 340, damping: 16 }} onClick={onDone}>
-          <motion.span animate={{ rotate: [0, -12, 12, 0], scale: [1, 1.2, 1] }} transition={{ duration: 0.8 }}>
+        <m.div key={badge.id} className="toast" initial={{ y: 120, scale: 0.6, opacity: 0 }} animate={{ y: 0, scale: 1, opacity: 1 }} exit={{ y: 120, opacity: 0 }} transition={{ type: 'spring', stiffness: 340, damping: 16 }} onClick={onDone}>
+          <m.span animate={{ rotate: [0, -12, 12, 0], scale: [1, 1.2, 1] }} transition={{ duration: 0.8 }}>
             <Asset name={badge.icon} size={48} />
-          </motion.span>
+          </m.span>
           <span>
             <small>Badge unlocked</small>
             <b>{badge.name}</b>
             <em>{badge.desc}</em>
           </span>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

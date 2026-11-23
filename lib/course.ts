@@ -1,7 +1,7 @@
 // Course types shared by the server loader (lib/content.ts) and the client.
 // The loader turns the JSON files in /content into one `Course` object; nothing here is course-specific.
 'use client';
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 export type Difficulty = { label: string; xp: number; color: string };
 export type Hint = { title: string; lines: string[]; topics: string[] };
@@ -25,6 +25,9 @@ export type Question = {
   shuffle: boolean;
   part: string; // id of the part (from its section) // shuffle choice order when shown (auto-skipped for "a and c"/"all of the above" style choices)
 };
+
+/** What the page ships for every question (enough for counts, filters and hint matching). */
+export type QuestionMeta = Pick<Question, 'key' | 'chapterId' | 'section' | 'difficulty' | 'topic' | 'part'>;
 
 export type Lesson = {
   id: string;
@@ -68,7 +71,7 @@ export type Course = {
   credits: string;
   coach: Coach | null; // optional pop-up character with encouragement lines
   chapters: Chapter[];
-  questions: Record<string, Question>;
+  questions: Record<string, QuestionMeta>; // full text/choices load per chapter: loadChapter()
   issues: string[]; // content problems found while loading (shown in Settings)
 };
 
@@ -78,7 +81,7 @@ export type CourseIndex = Course & {
   chapterMap: Record<string, Chapter>;
   allLessons: Lesson[];
   diff: (key: string) => Difficulty;
-  hintFor: (q: Question) => Hint | null;
+  hintFor: (q: QuestionMeta & { hint?: Hint | null }) => Hint | null;
   nextLessonId: (id: string) => string | null;
 };
 
@@ -117,6 +120,33 @@ export function useCourseIndex(course: Course): CourseIndex {
       },
     };
   }, [course]);
+}
+
+// ---- full questions, loaded per chapter from /api/chapter/<id> (a static, CDN-cached JSON file) ----
+const chapterCache = new Map<string, Promise<Record<string, Question>>>();
+
+export function loadChapter(id: string): Promise<Record<string, Question>> {
+  let p = chapterCache.get(id);
+  if (!p) {
+    p = fetch(`/api/chapter/${encodeURIComponent(id)}`)
+      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() as Promise<Record<string, Question>>; })
+      .catch((e) => { chapterCache.delete(id); throw e; });
+    chapterCache.set(id, p);
+  }
+  return p;
+}
+
+export function useChapterQuestions(id: string) {
+  const [state, setState] = useState<{ questions: Record<string, Question> | null; error: boolean }>({ questions: null, error: false });
+  const [attempt, setAttempt] = useState(0);
+  useEffect(() => {
+    let alive = true;
+    setState({ questions: null, error: false });
+    loadChapter(id).then((q) => alive && setState({ questions: q, error: false })).catch(() => alive && setState({ questions: null, error: true }));
+    return () => { alive = false; };
+  }, [id, attempt]);
+  const retry = useCallback(() => setAttempt((a) => a + 1), []);
+  return { ...state, retry };
 }
 
 export function shuffle<T>(a: T[]): T[] {

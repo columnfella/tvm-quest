@@ -1,6 +1,6 @@
 import Game from '@/components/Game';
-import { loadCourse } from '@/lib/content';
+import { loadCourse, toClientCourse } from '@/lib/content';
 
 export default function Page() {
-  return <Game course={loadCourse()} />;
+  return <Game course={toClientCourse(loadCourse())} />;
 }

@@ -1,6 +1,6 @@
 'use client';
-import confetti from 'canvas-confetti';
-import { animate, motion } from 'framer-motion';
+import confetti from '@/lib/confetti';
+import { animate, m } from 'framer-motion';
 import { Star } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useCourse, type Lesson } from '@/lib/course';
@@ -83,38 +83,38 @@ export default function Results({ g, lesson, r, nextId, onBack, onRetry, onNext 
   return (
     <div className="results">
       <div className="rays" />
-      <motion.div className="victory" initial={{ scale: 3, opacity: 0, rotate: -6 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 320, damping: 16 }}>
+      <m.div className="victory" initial={{ scale: 3, opacity: 0, rotate: -6 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 320, damping: 16 }}>
         <h1>{perfect ? 'FLAWLESS!' : 'CLEARED!'}</h1>
-      </motion.div>
+      </m.div>
       <p className="subtitle">{lesson.title}</p>
 
       <div className="stars" aria-label={`${stars} of 3 stars`}>
         {[1, 2, 3].map((i) => (
-          <motion.span key={i} initial={{ scale: 0, rotate: -90 }} animate={{ scale: i <= stars ? 1 : 0.8, rotate: 0 }} transition={{ delay: 0.3 + i * 0.22, type: 'spring', stiffness: 300, damping: 12 }}>
+          <m.span key={i} initial={{ scale: 0, rotate: -90 }} animate={{ scale: i <= stars ? 1 : 0.8, rotate: 0 }} transition={{ delay: 0.3 + i * 0.22, type: 'spring', stiffness: 300, damping: 12 }}>
             <Star size={i === 2 ? 64 : 50} fill={i <= stars ? 'var(--yellow)' : 'var(--line)'} stroke={i <= stars ? 'var(--yellow-dark)' : 'var(--line)'} strokeWidth={2} />
-          </motion.span>
+          </m.span>
         ))}
       </div>
 
       <Crate tier={tier} loot={loot} onOpen={() => setOpened(true)} />
 
       <div className="result-tiles">
-        <motion.div className="tile-stat gold" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
+        <m.div className="tile-stat gold" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
           <small>Total XP</small>
           <b><Asset name="high_voltage_3d.png" size={26} /> <Count to={opened ? totalXp : r.xp} /></b>
-        </motion.div>
-        <motion.div className="tile-stat green" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.62 }}>
+        </m.div>
+        <m.div className="tile-stat green" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.62 }}>
           <small>{r.kind === 'match' ? 'Accuracy' : 'First-try accuracy'}</small>
           <b><Asset name="hundred_points_3d.png" size={26} /> <Count to={Math.round(acc * 100)} suffix="%" /></b>
-        </motion.div>
-        <motion.div className="tile-stat blue" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.74 }}>
+        </m.div>
+        <m.div className="tile-stat blue" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.74 }}>
           <small>Time</small>
           <b><Asset name="hourglass_done_3d.png" size={26} /> {Math.floor(secs / 60)}:{String(secs % 60).padStart(2, '0')}</b>
-        </motion.div>
-        <motion.div className="tile-stat orange" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.86 }}>
+        </m.div>
+        <m.div className="tile-stat orange" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.86 }}>
           <small>Best combo</small>
           <b><Asset name="fire_3d.png" size={26} /> {r.bestCombo}</b>
-        </motion.div>
+        </m.div>
       </div>
 
       <div className="reward-row">
@@ -136,18 +136,18 @@ export default function Results({ g, lesson, r, nextId, onBack, onRetry, onNext 
       <Coach trigger={coachTick} placement="results" />
 
       {levelUp && (
-        <motion.div className="levelup" initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => setLevelUp(null)}>
+        <m.div className="levelup" initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => setLevelUp(null)}>
           <div className="rays" />
-          <motion.div className="levelup-card" initial={{ scale: 0.2, rotate: -12 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 300, damping: 12 }}>
-            <motion.div animate={{ y: [0, -10, 0], rotate: [-6, 6, -6] }} transition={{ repeat: Infinity, duration: 2 }}>
-              <Asset name="crown_3d.png" size={120} />
-            </motion.div>
+          <m.div className="levelup-card" initial={{ scale: 0.2, rotate: -12 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 300, damping: 12 }}>
+            <div className="loop-float">
+              <Asset name="crown_3d.png" size={120} eager />
+            </div>
             <span className="chest-label">LEVEL UP!</span>
             <h2>{levelUp}</h2>
             <p>You&apos;re getting stronger. Keep the streak alive.</p>
             <Btn variant="gold" onClick={() => setLevelUp(null)}>Awesome</Btn>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </div>
   );

@@ -7,6 +7,10 @@ const nextConfig = {
   poweredByHeader: false,
   async headers() {
     return [{
+      // static emoji images never change between deploys of the same name: cache them for a week
+      source: '/assets/:path*',
+      headers: [{ key: 'Cache-Control', value: 'public, max-age=604800, stale-while-revalidate=86400' }],
+    }, {
       source: '/:path*',
       headers: [
         { key: 'X-Content-Type-Options', value: 'nosniff' },

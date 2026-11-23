@@ -1,8 +1,8 @@
 'use client';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ArrowLeft, BookOpen, Check, Shuffle, Star, Undo2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useCourse, type Chapter, type Lesson } from '@/lib/course';
+import { loadChapter, useCourse, type Chapter, type Lesson } from '@/lib/course';
 import { sfx } from '@/lib/sound';
 import type { Game } from '@/lib/store';
 import { chapterProgress } from './Home';
@@ -14,7 +14,7 @@ function LessonTile({ lesson, n, g, onPlay, delay }: { lesson: Lesson; n: number
   const d = course.diff(lesson.difficulty);
   const isMatch = lesson.kind === 'match';
   return (
-    <motion.button
+    <m.button
       className={`tile-lesson ${prog?.done ? 'done' : ''}`}
       style={{ ['--d' as string]: d.color }}
       onClick={() => { sfx.tap(); onPlay(); }}
@@ -30,7 +30,7 @@ function LessonTile({ lesson, n, g, onPlay, delay }: { lesson: Lesson; n: number
       <span className="tl-stars" aria-label={`${prog?.stars ?? 0} of 3 stars`}>
         {[1, 2, 3].map((i) => <Star key={i} size={15} fill={i <= (prog?.stars ?? 0) ? '#facc15' : 'rgba(11,18,32,0.18)'} stroke="#0b1220" strokeWidth={2.5} />)}
       </span>
-    </motion.button>
+    </m.button>
   );
 }
 
@@ -76,6 +76,8 @@ export default function ChapterView({ g, chapter, onBack, onPlay, onQuick }: { g
       if (saved && parts.some((x) => x.id === saved)) setPart(saved);
     } catch { /* noop */ }
   }, [tabKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  // warm the cache so lessons open instantly
+  useEffect(() => { loadChapter(chapter.id).catch(() => { /* retried when a lesson opens */ }); }, [chapter.id]);
   const choose = (id: string) => { setPart(id); sfx.tap(); try { localStorage.setItem(tabKey, id); } catch { /* noop */ } };
 
   const sections = chapter.sections.filter((s) => s.part === part);
@@ -93,7 +95,7 @@ export default function ChapterView({ g, chapter, onBack, onPlay, onQuick }: { g
         )}
       </div>
 
-      <motion.section className="ch-hero" initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
+      <m.section className="ch-hero" initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}>
         <div className="ch-hero-text">
           <small>{chapter.number !== null ? `Chapter ${chapter.number}` : 'Chapter'}</small>
           <h1>{chapter.title}</h1>
@@ -103,10 +105,10 @@ export default function ChapterView({ g, chapter, onBack, onPlay, onQuick }: { g
             <span>{p.done}/{p.total}</span>
           </div>
         </div>
-        <motion.div animate={{ y: [0, -8, 0], rotate: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3 }}>
-          <Asset name={chapter.icon} size={110} className="ch-hero-art" />
-        </motion.div>
-      </motion.section>
+        <div className="loop-float">
+          <Asset name={chapter.icon} size={110} className="ch-hero-art" eager />
+        </div>
+      </m.section>
 
       {parts.length > 1 && (
         <div className="part-tabs" role="tablist">

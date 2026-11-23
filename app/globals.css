@@ -26,7 +26,7 @@ Body copy stays Nunito for readability. Content colours (chapters, difficulties)
   --orange: #ff8a1f;
   --green-ink: light-dark(#138a2a, #8bff7a); --red-ink: light-dark(#c0122f, #ff9aaa);
   --radius: 18px;
-  --display: 'Lilita One', 'Nunito', ui-rounded, system-ui, sans-serif;
+  --display: var(--font-display), var(--font-body), ui-rounded, system-ui, sans-serif;
   --skew: -4deg;
   --chart: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='360' viewBox='0 0 1200 360'%3E%3Cpolyline points='0,300 80,280 160,290 240,240 320,255 400,200 480,215 560,160 640,180 720,120 800,140 880,90 960,105 1040,60 1120,75 1200,30' fill='none' stroke='%2334d399' stroke-opacity='0.22' stroke-width='5' stroke-linejoin='round'/%3E%3Cpolyline points='0,330 100,320 200,325 300,300 400,310 500,280 600,290 700,250 800,262 900,230 1000,240 1100,205 1200,190' fill='none' stroke='%23facc15' stroke-opacity='0.14' stroke-width='4' stroke-linejoin='round'/%3E%3Cg fill='%2334d399' fill-opacity='0.12'%3E%3Crect x='60' y='250' width='16' height='60'/%3E%3Crect x='180' y='230' width='16' height='70'/%3E%3Crect x='300' y='200' width='16' height='80'/%3E%3Crect x='420' y='170' width='16' height='70'/%3E%3Crect x='540' y='130' width='16' height='80'/%3E%3Crect x='660' y='110' width='16' height='70'/%3E%3Crect x='780' y='80' width='16' height='80'/%3E%3Crect x='900' y='60' width='16' height='70'/%3E%3Crect x='1020' y='40' width='16' height='70'/%3E%3C/g%3E%3C/svg%3E");
   --dollars: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' font-family='Arial Black,Arial,sans-serif' font-weight='900'%3E%3Ctext x='20' y='60' font-size='44' transform='rotate(-12 40 50)'%3E%24%3C/text%3E%3Ctext x='140' y='150' font-size='30' transform='rotate(10 150 140)'%3E%24%3C/text%3E%3Ctext x='70' y='200' font-size='22'%3E%24%3C/text%3E%3C/g%3E%3C/svg%3E");
@@ -49,7 +49,7 @@ body {
   min-height: 100vh;
   background: var(--bg-c);
   color: var(--ink);
-  font: 700 16px/1.5 'Nunito', ui-rounded, system-ui, sans-serif;
+  font: 700 16px/1.5 var(--font-body), ui-rounded, system-ui, sans-serif;
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
 }
@@ -80,8 +80,10 @@ sup, sub { font-size: 0.7em; }
 .btn3d::after {
   content: ''; position: absolute; z-index: -1; top: -20%; bottom: -20%; left: 0; width: 34%;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-  transform: translateX(-180%) skewX(-20deg); animation: sweep 3.4s ease-in-out infinite; will-change: transform;
+  transform: translateX(-180%) skewX(-20deg); animation: sweep 3.4s ease-in-out infinite;
 }
+/* only call-to-action buttons shimmer; secondary ones stay still (fewer always-running animations) */
+.btn-blue::after, .btn-danger::after, .btn-theory::after { animation: none; display: none; }
 @keyframes sweep { 0%, 62% { transform: translateX(-180%) skewX(-20deg); } 100% { transform: translateX(400%) skewX(-20deg); } }
 .btn3d:hover:not(:disabled) { filter: brightness(1.08) saturate(1.1); }
 .btn3d:active:not(:disabled) { transform: skewX(var(--skew)) translateY(4px) scale(0.97, 0.93); box-shadow: inset 0 3px 0 rgba(255,255,255,0.45), inset 0 -2px 0 rgba(0,0,0,0.2), 0 1px 0 var(--k); }
@@ -93,7 +95,7 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 .btn-gold { --b: var(--yellow); --bh: var(--yellow-hi); --bd: var(--yellow-dark); }
 .btn-blue { --b: var(--cyan); --bh: var(--cyan-hi); --bd: var(--cyan-dark); }
 .btn-theory { --b: var(--purple); --bh: var(--purple-hi); --bd: var(--purple-dark); }
-.btn-secondary, .btn-ghost { --t: var(--k); background: linear-gradient(180deg, #fff, #dfeae6); -webkit-text-stroke: 0; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 15px; }
+.btn-secondary, .btn-ghost { --t: var(--k); background: linear-gradient(180deg, #fff, #dfeae6); -webkit-text-stroke: 0; font-family: var(--font-body), sans-serif; font-weight: 900; font-size: 15px; }
 .btn-secondary::after, .btn-ghost::after { display: none; }
 .btn-ghost { --t: var(--purple-dark); }
 .icon-btn { display: grid; place-items: center; width: 44px; height: 44px; border: 3px solid var(--k); background: linear-gradient(180deg, #fff, #dfeae6); border-radius: 12px; color: var(--k); box-shadow: 0 3px 0 var(--k); transition: transform 0.08s; transform: skewX(var(--skew)); }
@@ -235,7 +237,7 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 .wiped-banner { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 14px; background: linear-gradient(180deg, var(--yellow-hi), var(--yellow)); border: 3px solid var(--k); color: var(--k); box-shadow: 0 4px 0 var(--k); font-size: 14px; }
 .wiped-banner b { font-family: var(--display); font-weight: 400; font-size: 18px; display: block; }
 .field-label { font-family: var(--display); font-size: 18px; color: var(--ink); }
-.name-input { width: 100%; min-height: 56px; border-radius: 14px; border: 3px solid var(--k); background: var(--card-2); color: var(--ink); padding: 10px 16px; font: 900 20px 'Nunito', sans-serif; box-shadow: inset 0 3px 0 rgba(0,0,0,0.08); }
+.name-input { width: 100%; min-height: 56px; border-radius: 14px; border: 3px solid var(--k); background: var(--card-2); color: var(--ink); padding: 10px 16px; font: 900 20px var(--font-body), sans-serif; box-shadow: inset 0 3px 0 rgba(0,0,0,0.08); }
 .name-input.bad { border-color: var(--red); }
 .name-hint { font-size: 13px; color: var(--muted); min-height: 20px; }
 .name-hint.bad { color: var(--red-ink); }
@@ -256,7 +258,7 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 .q-head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px; }
 .q-face { flex: none; filter: drop-shadow(0 4px 0 rgba(0,0,0,0.35)); }
 .q-stem { flex: 1; background: var(--card); border: 3px solid var(--k); border-radius: 6px 18px 18px 18px; padding: 14px 18px; font-size: 18px; line-height: 1.5; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 5px 0 var(--k); }
-.stem-pre { margin: 0; padding: 10px 12px; background: var(--card-2); border-radius: 10px; font: 500 14px/1.45 'JetBrains Mono', ui-monospace, monospace; overflow-x: auto; }
+.stem-pre { margin: 0; padding: 10px 12px; background: var(--card-2); border-radius: 10px; font: 500 14px/1.45 var(--font-mono), ui-monospace, monospace; overflow-x: auto; }
 .options { display: flex; flex-direction: column; gap: 10px; }
 .opt {
   display: flex; align-items: center; gap: 14px; text-align: left; width: 100%; padding: 12px 16px; min-height: 58px;
@@ -274,7 +276,7 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 .opt.dim { opacity: 0.6; }
 .opt:disabled { cursor: default; }
 .hint-card { display: flex; gap: 12px; margin-top: 18px; padding: 14px 16px; border-radius: 14px; background: color-mix(in srgb, var(--yellow) 22%, var(--card)); border: 3px solid var(--k); box-shadow: 0 4px 0 var(--k); }
-.formula { font: 500 15px/1.6 'JetBrains Mono', ui-monospace, monospace; }
+.formula { font: 500 15px/1.6 var(--font-mono), ui-monospace, monospace; }
 
 .lesson-foot { position: fixed; left: 0; right: 0; bottom: 0; border-top: 3px solid var(--k); background: linear-gradient(180deg, var(--k2), var(--k)); z-index: 15; color: #fff; }
 .lesson-foot.correct { background: repeating-linear-gradient(115deg, rgba(255,255,255,0.08) 0 20px, transparent 20px 40px), linear-gradient(180deg, #34d058, #12862b); }
@@ -289,7 +291,7 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 .lesson-foot h3 { color: #fff; font-size: 30px; -webkit-text-stroke: 6px var(--k); paint-order: stroke fill; text-shadow: 0 3px 0 var(--k); transform: skewX(var(--skew)); transform-origin: left; }
 .lesson-foot p { color: #fff; text-shadow: 0 1px 0 rgba(0,0,0,0.45); }
 .sol-toggle { align-self: flex-start; display: inline-flex; gap: 6px; align-items: center; border: 0; background: none; padding: 4px 0; font-weight: 900; color: #fff; }
-.solution { margin: 0; padding: 14px; border-radius: 12px; background: var(--card); color: var(--ink); border: 3px solid var(--k); font: 500 13px/1.5 'JetBrains Mono', ui-monospace, monospace; white-space: pre; overflow: auto; -webkit-overflow-scrolling: touch; }
+.solution { margin: 0; padding: 14px; border-radius: 12px; background: var(--card); color: var(--ink); border: 3px solid var(--k); font: 500 13px/1.5 var(--font-mono), ui-monospace, monospace; white-space: pre; overflow: auto; -webkit-overflow-scrolling: touch; }
 @media (max-width: 600px) { .solution { font-size: 11.5px; padding: 10px; } }
 
 .combo-flash { position: fixed; inset: 0; display: grid; place-content: center; justify-items: center; gap: 8px; pointer-events: none; z-index: 40; }
@@ -301,7 +303,7 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .match-col { display: flex; flex-direction: column; gap: 10px; }
 .tile { min-height: 64px; padding: 10px 12px; border-radius: 14px; background: var(--card); color: var(--ink); border: 3px solid var(--k); box-shadow: 0 5px 0 var(--k); font-weight: 900; font-size: 15px; text-align: center; }
-.formula-tile { font: 500 14px/1.4 'JetBrains Mono', ui-monospace, monospace; }
+.formula-tile { font: 500 14px/1.4 var(--font-mono), ui-monospace, monospace; }
 .tile.sel { background: color-mix(in srgb, var(--pink) 22%, var(--card)); box-shadow: 0 5px 0 var(--pink-dark); border-color: var(--pink-dark); }
 .tile.bad { background: var(--red-soft); box-shadow: 0 5px 0 var(--red-dark); }
 .tile.gone { background: var(--green-soft); box-shadow: none; }
@@ -390,7 +392,7 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 .calc { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .calc-row { display: grid; grid-template-columns: 64px 1fr auto; gap: 8px; align-items: center; }
 .calc-row label { font-weight: 900; }
-.calc-row input, .py input { min-height: 44px; border-radius: 10px; border: 3px solid var(--k); background: var(--card-2); color: var(--ink); padding: 8px 12px; font: 500 16px 'JetBrains Mono', ui-monospace, monospace; width: 100%; }
+.calc-row input, .py input { min-height: 44px; border-radius: 10px; border: 3px solid var(--k); background: var(--card-2); color: var(--ink); padding: 8px 12px; font: 500 16px var(--font-mono), ui-monospace, monospace; width: 100%; }
 .calc-row.hit input { background: var(--green-soft); }
 .cpt { min-height: 44px; padding: 0 14px; border: 3px solid var(--k); border-radius: 10px; background: linear-gradient(180deg, var(--yellow-hi), var(--yellow)); color: var(--k); font-family: var(--display); font-size: 16px; box-shadow: 0 3px 0 var(--k); transform: skewX(var(--skew)); }
 .cpt:active { transform: skewX(var(--skew)) translateY(3px); box-shadow: none; }
@@ -451,7 +453,7 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 }
 
 /* ---------- finance extras ---------- */
-.ticker { position: relative; overflow: hidden; white-space: nowrap; background: #050b16; border-bottom: 3px solid var(--k); font: 800 13px/1 'JetBrains Mono', ui-monospace, monospace; color: #e2e8f0; }
+.ticker { position: relative; overflow: hidden; white-space: nowrap; background: #050b16; border-bottom: 3px solid var(--k); font: 800 13px/1 var(--font-mono), ui-monospace, monospace; color: #e2e8f0; }
 .ticker-track { display: flex; width: max-content; padding: 8px 0; animation: ticker 114s linear infinite; will-change: transform; }
 .ticker-half, .ticker-row { display: flex; flex: none; }
 .tick { flex: none; padding-right: 34px; }
@@ -499,3 +501,22 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 .sheet-table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .sheet-table th, .sheet-table td { text-align: left; padding: 6px 8px; border-bottom: 2px solid var(--line); vertical-align: top; }
 .sheet-table th { font-weight: 900; width: 42%; }
+
+/* ---------- cheap looping animations (compositor-only: transform) ---------- */
+.loop-float { animation: loopFloat 3s ease-in-out infinite; }
+.loop-hop { animation: loopHop 1.1s ease-in-out infinite; }
+.loop-pulse { display: inline-block; animation: loopPulse 0.9s ease-in-out infinite; }
+.loop-wiggle { animation: loopWiggle 1.2s ease-in-out infinite; }
+.loop-sway { display: inline-block; animation: loopSway 2s ease-in-out infinite; }
+@keyframes loopFloat { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-8px) rotate(4deg); } }
+@keyframes loopHop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes loopPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+@keyframes loopWiggle { 0%, 100% { transform: rotate(0) scale(1); } 33% { transform: rotate(-10deg) scale(1.1); } 66% { transform: rotate(10deg) scale(1.05); } }
+@keyframes loopSway { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+.spinner { width: 54px; height: 54px; border-radius: 50%; border: 6px solid rgba(255,255,255,0.18); border-top-color: var(--yellow); animation: spin 0.8s linear infinite; }
+.loading-text { color: #fff; font-weight: 900; text-shadow: 0 2px 0 var(--k); }
+/* skip rendering work for off-screen lesson tiles and cards on long pages */
+.sec, .ch-card { content-visibility: auto; contain-intrinsic-size: auto 260px; }
+@media (prefers-reduced-motion: reduce) {
+  .loop-float, .loop-hop, .loop-pulse, .loop-wiggle, .loop-sway, .banner-art { animation: none; }
+}

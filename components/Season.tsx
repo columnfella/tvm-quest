@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { formatLeft, seasonEnd } from '@/lib/season';
@@ -11,9 +11,15 @@ type Board = { season: string; endsAt: number; total: number; players: Player[] 
 export function useCountdown() {
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
-    setNow(Date.now());
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
+    let id: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      const t = Date.now();
+      setNow(t);
+      // the label only shows seconds in the final hour, so re-render rarely before that
+      id = setTimeout(tick, seasonEnd(t) - t < 3_600_000 ? 1000 : 30_000);
+    };
+    tick();
+    return () => clearTimeout(id);
   }, []);
   return now === null ? '' : formatLeft(seasonEnd(now) - now);
 }
@@ -55,7 +61,7 @@ export function useBoard(open = true) {
 
 function Row({ p, i, me }: { p: Player; i: number; me?: string }) {
   return (
-    <motion.li
+    <m.li
       className={`lb-row r${i + 1} ${p.name.toLowerCase() === me?.toLowerCase() ? 'me' : ''}`}
       initial={{ x: -30, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
@@ -65,7 +71,7 @@ function Row({ p, i, me }: { p: Player; i: number; me?: string }) {
       <span className="lb-av"><Asset name={p.avatar} size={30} /></span>
       <span className="lb-name"><b>{p.name}</b><small>Level {p.level}{p.streak ? ` · ${p.streak}🔥` : ''}</small></span>
       <span className="lb-xp"><Asset name="high_voltage_3d.png" size={18} />{p.xp}</span>
-    </motion.li>
+    </m.li>
   );
 }
 
@@ -120,13 +126,13 @@ export function LeaderboardPanel({ open, onClose, me }: { open: boolean; onClose
           {order.map((idx) => {
             const p = top[idx];
             return (
-              <motion.div key={p.name} className={`pod p${idx + 1}`} initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 15, delay: idx === 0 ? 0.35 : idx === 1 ? 0.2 : 0.05 }}>
-                {idx === 0 && <motion.span animate={{ rotate: [-8, 8, -8] }} transition={{ repeat: Infinity, duration: 2 }}><Asset name="crown_3d.png" size={34} /></motion.span>}
+              <m.div key={p.name} className={`pod p${idx + 1}`} initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 15, delay: idx === 0 ? 0.35 : idx === 1 ? 0.2 : 0.05 }}>
+                {idx === 0 && <span className="loop-sway"><Asset name="crown_3d.png" size={34} /></span>}
                 <span className="lb-av"><Asset name={p.avatar} size={idx === 0 ? 56 : 44} /></span>
                 <b>{p.name}</b>
                 <small className="muted">{p.xp} XP</small>
                 <div className="pod-block">{idx + 1}</div>
-              </motion.div>
+              </m.div>
             );
           })}
         </div>
