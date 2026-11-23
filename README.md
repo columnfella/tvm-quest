@@ -1,6 +1,6 @@
 # Finance Quest
 
-An arcade-style practice app for any multiple-choice course. It ships with FIN 3301 (Ch. 1, 2, 5, 6, 7): 336 questions, including the full Black Book Ch. 5 bank and Black Book Ch. 6 homework exercises. It's built with Next.js 15, React 19, TypeScript and Framer Motion, and has a tiny backend for weekly leaderboards.
+An arcade-style practice app for any multiple-choice course. It ships with FIN 3301 (Ch. 1, 2, 5, 6, 7): 464 questions, including the full Black Book banks for Ch. 5 (TVM) and Ch. 7 (stock valuation) plus Black Book Ch. 6 homework exercises. It's built with Next.js 15, React 19, TypeScript and Framer Motion, and has a tiny backend for weekly leaderboards.
 
 ## Run it locally
 
@@ -13,10 +13,7 @@ With no environment variables set, the backend stores data in `.data/db.json` (g
 
 ## Deploy (Vercel + Upstash Redis, both free)
 
-1. Import this repo at [vercel.com/new](https://vercel.com/new). No settings need changing.
-2. In the project, go to **Storage → Create → Upstash for Redis** (Marketplace) and connect it to the project.
-   This adds `KV_REST_API_URL` and `KV_REST_API_TOKEN` automatically. (`UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` also work.)
-3. Redeploy. That's it.
+See **[DEPLOY.md](DEPLOY.md)** for the step-by-step guide. In short: import the repo on Vercel, add **Upstash for Redis** from the Storage tab, redeploy.
 
 ## Backend
 
@@ -63,7 +60,7 @@ Mistakes in the files are skipped and listed in **Settings → content warnings*
 
 ## Credits
 
-- Questions: course slides, cheat sheets, Black Book Ch. 5, FIN 3301 mock midterm, bond practice set.
+- Questions: course slides, cheat sheets, Black Book Ch. 5 and Ch. 7, Black Book Ch. 6 homework, FIN 3301 mock midterm, bond practice set.
 - 3D icons: [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (MIT).
 - UI icons: [Lucide](https://lucide.dev) (ISC).
 - Confetti: [canvas-confetti](https://github.com/catdad/canvas-confetti) (ISC).

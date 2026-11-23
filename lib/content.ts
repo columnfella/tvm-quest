@@ -165,7 +165,7 @@ export function loadCourse(): Course {
       const qWhere = `${where} question #${i + 1}`;
       if (!isObj(rq)) return issues.push(`${qWhere}: not an object, skipped`);
       const text = parseText(rq.question ?? rq.stem ?? rq.text);
-      const choices = (Array.isArray(rq.choices ?? rq.options ?? rq.opts) ? ((rq.choices ?? rq.options ?? rq.opts) as unknown[]) : []).map((x) => str(x)).filter(Boolean);
+      const choices = (Array.isArray(rq.choices ?? rq.options ?? rq.opts) ? ((rq.choices ?? rq.options ?? rq.opts) as unknown[]) : []).map((x) => str(x).replace(/\$\s+(?=[\d.])/g, '$')).filter(Boolean); // "$ 7.14" → "$7.14"
       if (!text) return issues.push(`${qWhere}: missing "question" text, skipped`);
       if (choices.length < 2) return issues.push(`${qWhere}: needs at least 2 "choices", skipped`);
       const answer = parseAnswer(rq.answer ?? rq.ans, choices);

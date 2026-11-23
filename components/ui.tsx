@@ -1,7 +1,7 @@
 'use client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 /** Free 3D emoji asset (Microsoft Fluent Emoji, MIT) served from /public/assets. */
 export function Asset({ name, size = 32, alt = '', className = '', style }: { name: string; size?: number; alt?: string; className?: string; style?: React.CSSProperties }) {
@@ -45,6 +45,12 @@ export function Btn({ variant = 'primary', block, className = '', ...rest }: Btn
 }
 
 export function Modal({ open, onClose, children, title, wide }: { open: boolean; onClose: () => void; children: React.ReactNode; title?: string; wide?: boolean }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
   return (
     <AnimatePresence>
       {open && (

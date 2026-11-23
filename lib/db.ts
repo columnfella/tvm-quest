@@ -122,5 +122,8 @@ const fileStore: Store = {
   all: async () => Object.values((await readFile()).users),
 };
 
+if (!(REDIS_URL && REDIS_TOKEN) && process.env.VERCEL) {
+  console.error('[db] No Upstash Redis env vars found. On Vercel the file store is NOT persistent: connect "Upstash for Redis" in Storage and redeploy.');
+}
 export const db: Store = REDIS_URL && REDIS_TOKEN ? redisStore : fileStore;
 export const dbKind = REDIS_URL && REDIS_TOKEN ? 'redis' : 'file';

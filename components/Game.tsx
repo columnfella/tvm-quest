@@ -71,10 +71,10 @@ export default function Game({ course: raw }: { course: Course }) {
         ) : (
           <div className="app">
             {(screen.v === 'home' || screen.v === 'chapter') && (
-              <>
+              <div className="top-stack">
                 <TopBar g={g} openPanel={setPanel} onHome={() => go({ v: 'home' })} />
                 <Ticker g={g} />
-              </>
+              </div>
             )}
             <AnimatePresence mode="wait">
               {screen.v === 'home' && (

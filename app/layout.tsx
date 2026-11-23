@@ -7,7 +7,7 @@ export function generateMetadata(): Metadata {
   return { title: c.title, description: c.tagline || c.subtitle || `Practice ${c.title}`, icons: { icon: `/assets/${c.mascot}` } };
 }
 
-export const viewport: Viewport = { width: 'device-width', initialScale: 1 };
+export const viewport: Viewport = { width: 'device-width', initialScale: 1, themeColor: '#0b1220' };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

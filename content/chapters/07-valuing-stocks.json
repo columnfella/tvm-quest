@@ -22,6 +22,11 @@
       "part": "theory"
     },
     {
+      "name": "Black Book Concepts",
+      "blurb": "The 39 conceptual questions from the Black Book: valuation, efficient markets, preferred and common stock.",
+      "part": "theory"
+    },
+    {
       "name": "Dividend Discount Models",
       "blurb": "Zero growth, constant growth, multi-stage growth.",
       "part": "math"
@@ -29,6 +34,21 @@
     {
       "name": "Growth & PVGO",
       "blurb": "Sustainable growth rate and present value of growth opportunities.",
+      "part": "math"
+    },
+    {
+      "name": "Black Book: Easy Problems",
+      "blurb": "Constant growth, preferred stock, required return, dividend yield.",
+      "part": "math"
+    },
+    {
+      "name": "Black Book: Medium Problems",
+      "blurb": "Nonconstant growth, CAPM and beta, FCF valuation, P/E.",
+      "part": "math"
+    },
+    {
+      "name": "Black Book: Hard Problems",
+      "blurb": "Multi-stage growth, changing risk, free cash flow models.",
       "part": "math"
     }
   ],
@@ -82,6 +102,90 @@
   ],
   "hints": [
     {
+      "title": "CAPM & beta",
+      "topics": [
+        "capm",
+        "beta",
+        "risk and stock",
+        "equilibrium",
+        "market equilibrium",
+        "changing beta"
+      ],
+      "lines": [
+        "k_{s} = k_{RF} + (k_{M} − k_{RF}) × b",
+        "Market risk premium = k_{M} − k_{RF}",
+        "Higher beta → higher k_{s} → lower price (same D_{1}, g)",
+        "Equilibrium: expected return = required return"
+      ]
+    },
+    {
+      "title": "Efficient markets",
+      "topics": [
+        "efficient",
+        "efficiency"
+      ],
+      "lines": [
+        "Weak form: past prices can't beat the market",
+        "Semistrong: public info is already in prices",
+        "Strong: even private info is in prices",
+        "Efficient ≠ all stocks have the same return (risk differs)"
+      ]
+    },
+    {
+      "title": "Free cash flow model",
+      "topics": [
+        "fcf",
+        "free cash flow",
+        "firm value"
+      ],
+      "lines": [
+        "Firm value = PV of FCFs at WACC; horizon: FCF_{N+1} / (WACC − g)",
+        "Equity value = firm value − debt − preferred",
+        "Price per share = equity value ÷ shares"
+      ]
+    },
+    {
+      "title": "Nonconstant growth",
+      "topics": [
+        "nonconstant",
+        "supernormal",
+        "declining growth"
+      ],
+      "lines": [
+        "Grow D year by year until growth is constant",
+        "P_{N} = D_{N+1} / (k_{s} − g) at the start of constant growth",
+        "P_{0} = PV of D_{1}…D_{N} + PV of P_{N}",
+        "Declining growth: use a negative g in D_{1} / (k_{s} − g)"
+      ]
+    },
+    {
+      "title": "Preferred stock",
+      "topics": [
+        "preferred stock value",
+        "preferred stock yield"
+      ],
+      "lines": [
+        "V_{p} = D_{p} / k_{p}",
+        "k_{p} = D_{p} / V_{p}",
+        "Quarterly dividends: nominal k_{p} = 4 × quarterly rate"
+      ]
+    },
+    {
+      "title": "Yields & P/E",
+      "topics": [
+        "dividend yield",
+        "capital gains",
+        "p/e",
+        "required return",
+        "expected return"
+      ],
+      "lines": [
+        "k_{s} = dividend yield + capital gains yield = D_{1}/P_{0} + g",
+        "Constant growth: capital gains yield = g",
+        "P/E = price ÷ earnings per share"
+      ]
+    },
+    {
       "title": "Share counts",
       "topics": [
         "share counts"
@@ -102,7 +206,12 @@
         "preferred",
         "cumulative",
         "venture",
-        "ipo"
+        "ipo",
+        "classified",
+        "going public",
+        "dilution",
+        "common stock",
+        "miscellaneous"
       ],
       "lines": [
         "Par value is symbolic, unrelated to market price",
@@ -150,7 +259,9 @@
         "preferred value",
         "required return",
         "two-stage",
-        "price"
+        "price",
+        "constant growth",
+        "growth rate"
       ],
       "lines": [
         "Zero growth: P_{0} = D / r",
@@ -747,6 +858,2171 @@
         "Is preparing to go public with an IPO soon"
       ],
       "answer": "B"
+    },
+    {
+      "id": "bb1",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Required return",
+      "source": "Black Book Ch. 7 Q1",
+      "question": "An increase in a firm's expected growth rate would normally cause the firm's required rate of return to",
+      "choices": [
+        "Increase.",
+        "Decrease.",
+        "Fluctuate.",
+        "Remain constant.",
+        "Possibly increase, possibly decrease, or possibly remain unchanged."
+      ],
+      "answer": "E"
+    },
+    {
+      "id": "bb2",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Required return",
+      "source": "Black Book Ch. 7 Q2",
+      "question": "If the expected rate of return on a stock exceeds the required rate,",
+      "choices": [
+        "The stock is experiencing supernormal growth.",
+        "The stock should be sold.",
+        "The company is probably not trying to maximize price per share.",
+        "The stock is a good buy.",
+        "Dividends are not being declared."
+      ],
+      "answer": "D"
+    },
+    {
+      "id": "bb3",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Required return",
+      "source": "Black Book Ch. 7 Q3",
+      "question": "Stock A has a required return of 10 percent. Its dividend is expected to grow at a constant rate of 7 percent per year. Stock B has a required return of 12 percent. Its dividend is expected to grow at a constant rate of 9 percent per year. Stock A has a price of $25 per share, while Stock B has a price of $40 per share. Which of the following statements is most correct?",
+      "choices": [
+        "The two stocks have the same dividend yield.",
+        "If the stock market were efficient, these two stocks should have the same price.",
+        "If the stock market were efficient, these two stocks should have the same expected return.",
+        "Statements a and c are correct.",
+        "All of the statements above are correct."
+      ],
+      "answer": "A",
+      "explanation": "The total return is made up of a dividend yield and capital gains yield.\nFor Stock A, the total required return is 10 percent and its capital gains\nyield (g) is 7 percent. Therefore, A's dividend yield must be 3 percent.\nFor Stock B, the required return is 12 percent and its capital gains yield\n(g) is 9 percent. Therefore, B's dividend yield must also be 3 percent.\nTherefore, statement a is true. Statement b is false. Market efficiency\njust means that all of the known information is already reflected in the\nprice, and you can't earn above the required return. This would depend on\nbetas, dividends, and the number of shares outstanding. We don't have any\nof that information. Statement c is false. The expected returns of the\ntwo stocks would be the same only if they had the same betas."
+    },
+    {
+      "id": "bb4",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Constant growth model",
+      "source": "Black Book Ch. 7 Q4",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "The constant growth model takes into consideration the capital gains earned on a stock.",
+        "It is appropriate to use the constant growth model to estimate stock value even if the growth rate never becomes constant.",
+        "Two firms with the same dividend and growth rate must also have the same stock price.",
+        "Statements a and c are correct.",
+        "All of the statements above are correct."
+      ],
+      "answer": "A",
+      "explanation": "Statement a is true; the other statements are false. The constant growth\nmodel is not appropriate for stock valuation in the absence of a constant\ngrowth rate. If the required rate of return differs for the two firms due\nto risk differences, then the firms' stock prices would differ."
+    },
+    {
+      "id": "bb5",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Constant growth model",
+      "source": "Black Book Ch. 7 Q5",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "The stock valuation model, P0 = D1/(ks - g), can be used for firms which have negative growth rates.",
+        "If a stock has a required rate of return ks = 12 percent, and its dividend grows at a constant rate of 5 percent, this implies that the stock's dividend yield is 5 percent.",
+        "The price of a stock is the present value of all expected future dividends, discounted at the dividend growth rate.",
+        "Statements a and c are correct.",
+        "All of the statements above are correct."
+      ],
+      "answer": "A",
+      "explanation": "Statement a is true; the other statements are false. If a stock's\nrequired return is 12 percent and its capital gains yield is 5 percent,\nthen its dividend yield is 12% - 5% = 7%. The expected future dividends\nshould be discounted at the required rate of return."
+    },
+    {
+      "id": "bb6",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Constant growth model",
+      "source": "Black Book Ch. 7 Q6",
+      "question": "A stock's dividend is expected to grow at a constant rate of 5 percent a year. Which of the following statements is most correct?",
+      "choices": [
+        "The expected return on the stock is 5 percent a year.",
+        "The stock's dividend yield is 5 percent.",
+        "The stock's price one year from now is expected to be 5 percent higher.",
+        "Statements a and c are correct.",
+        "All of the statements above are correct."
+      ],
+      "answer": "C",
+      "explanation": "Statement c is true; the others are false. Statement a would be true only\nif the dividend yield were zero. Statement b is false; we've been given\nno information about the dividend yield. Statement c is true; the\nconstant rate at which dividends are expected to grow is also the expected\ngrowth rate of the stock's price."
+    },
+    {
+      "id": "bb7",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Constant growth model",
+      "source": "Black Book Ch. 7 Q7",
+      "question": "Stocks A and B have the same required rate of return and the same expected year-end dividend (D1). Stock A's dividend is expected to grow at a constant rate of 10 percent per year, while Stock B's dividend is expected to grow at a constant rate of 5 percent per year. Which of the following statements is most correct?",
+      "choices": [
+        "The two stocks should sell at the same price.",
+        "Stock A has a higher dividend yield than Stock B.",
+        "Currently Stock B has a higher price, but over time Stock A will eventually have a higher price.",
+        "Statements b and c are correct.",
+        "None of the statements above is correct."
+      ],
+      "answer": "E",
+      "explanation": "Statement a is false: P0 = D1/(ks - g). g is different for the two stocks,\nbut the required return and expected dividend are the same, so the prices\nwill be different also. Statement b is false: ks = D1/P0 + g. A has a\nhigher g, so its dividend yield must be lower because the firms have the\nsame required rate of return. Statement c is false. Therefore, statement\ne is the correct answer."
+    },
+    {
+      "id": "bb8",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q8",
+      "question": "Stock X and Stock Y sell for the same price in today's market. Stock X has a required return of 12 percent. Stock Y has a required return of 10 percent. Stock X's dividend is expected to grow at a constant rate of 6 percent a year, while Stock Y's dividend is expected to grow at a constant rate of 4 percent. Assume that the market is in equilibrium and expected returns equal required returns. Which of the following statements is most correct?",
+      "choices": [
+        "Stock X has a higher dividend yield than Stock Y.",
+        "Stock Y has a higher dividend yield than Stock X.",
+        "One year from now, Stock X's price is expected to be higher than Stock Y's price.",
+        "Statements a and c are correct.",
+        "Statements b and c are correct."
+      ],
+      "answer": "C",
+      "explanation": "The correct answer is statement c.\n\nFor Stock X, ks = D1/P0 + g\n                      0.12 = D1/P0 + 0.06, or D1/P0 = 0.06.\n\nFor Stock Y, ks = D1/P0 + g\n                      0.10 = D1/P0 + 0.04, or D1/P0 = 0.06.\n\nSo, both Stock X and Stock Y have the same dividend yield. So, statements a\nand b are incorrect. That also makes statements d and e incorrect. Since both\nstocks X and Y have the same price today, and Stock X has a higher dividend\ngrowth rate than Stock Y, the price of Stock X will be higher than the price\nof Stock Y one year from today. So, statement c is the correct choice."
+    },
+    {
+      "id": "bb9",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q9",
+      "question": "Stock X is expected to pay a dividend of $3.00 at the end of the year (that is, D1 = $3.00). The dividend is expected to grow at a constant rate of 6 percent a year. The stock currently trades at a price of $50 a share. Assume that the stock is in equilibrium, that is, the stock's price equals its intrinsic value. Which of the following statements is most correct?",
+      "choices": [
+        "The required return on the stock is 12 percent.",
+        "The stock's expected price 10 years from now is $89.54.",
+        "The stock's dividend yield is 6 percent.",
+        "Statements a and b are correct.",
+        "All of the statements above are correct."
+      ],
+      "answer": "E",
+      "explanation": "The correct answer is statement e. At a price of $50, ks = D1/P0 + g =\n$3.00/$50 + 0.06 = 12%. So, statement a is correct. P^10 = $50(1.06)10 =\n$89.54. So, statement b is also correct. D1/P0 = $3.00/$50.00 = 6%, so\n\nstatement c is correct. Thus, statement e is the correct choice."
+    },
+    {
+      "id": "bb10",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Constant growth model",
+      "source": "Black Book Ch. 7 Q10",
+      "question": "Stock X has a required return of 12 percent, a dividend yield of 5 percent, and its dividend will grow at a constant rate forever. Stock Y has a required return of 10 percent, a dividend yield of 3 percent, and its dividend will grow at a constant rate forever. Both stocks currently sell for $25 per share. Which of the following statements is most correct?",
+      "choices": [
+        "Stock X pays a higher dividend per share than Stock Y.",
+        "Stock X has a lower expected growth rate than Stock Y.",
+        "One year from now, the two stocks are expected to trade at the same price.",
+        "Statements a and b are correct.",
+        "Statements a and c are correct."
+      ],
+      "answer": "E",
+      "explanation": "If Stock X has a required return of 12 percent and a dividend yield of\n5 percent, we can calculate its growth rate:\n\n ks = D1/P0 + g\n12% = 5% + g\n\n 7% = g.\n\nIf Stock Y has a required return of 10 percent and a dividend yield of\n3 percent, we can calculate its growth rate:\n\n ks = D1/P0 + g\n10% = 3% + g\n\n 7% = g.\n\nSince both stocks have the same price and Stock X has a higher dividend yield\nthan Stock Y, its dividend per share must be higher. Therefore, statement a\nis true. We just showed above, that both stocks have the same growth rate, so\nstatement b must be false. One year from now, the stocks will both trade at\nthe same price. They are starting at the same price today, and will be\ngrowing at the same rate this year, so they will end up with the same stock\nprice one year from now. Therefore, statement c must also be true. Since\nboth statements a and c are true, the correct choice is statement e."
+    },
+    {
+      "id": "bb11",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Constant growth model and CAPM",
+      "source": "Black Book Ch. 7 Q11",
+      "question": "Stock A has a beta of 1.1, while Stock B has a beta of 0.9. The market risk premium, kM - kRF, is 6 percent. The risk-free rate is 6.3 percent. Both stocks have a dividend, which is expected to grow at a constant rate of 7 percent a year. Assume that the market is in equilibrium. Which of the following statements is most correct?",
+      "choices": [
+        "Stock A must have a higher dividend yield than Stock B.",
+        "Stock A must have a higher stock price than Stock B.",
+        "Stock B's dividend yield equals its expected dividend growth rate.",
+        "Statements a and c are correct.",
+        "All of the statements above are correct."
+      ],
+      "answer": "A",
+      "explanation": "The correct answer is statement a. From the information given and the\nCAPM equation, we know that Stock A's and Stock B's required returns are\n12.9% and 11.7%, respectively. The required return is equal to a dividend\nyield and a capital gains yield. Since these are constant growth stocks,\ntheir capital gains yields are equivalent to their dividend growth rates\nof 7%. Therefore, the dividend yields for Stock A and Stock B are 5.9%\nand 4.7%, respectively. Statement b is incorrect; we cannot determine\nwhich stock has the higher price without knowing their expected dividends.\n\n Statement c is incorrect; from the answer given for statement a, we know\nthat Stock B's dividend yield doesn't equal its expected dividend growth\nrate."
+    },
+    {
+      "id": "bb12",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Miscellaneous issues",
+      "source": "Black Book Ch. 7 Q12",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "If a company has two classes of common stock, Class A and Class B, the stocks may pay different dividends, but the two classes must have the same voting rights.",
+        "An IPO occurs whenever a company buys back its stock on the open market.",
+        "The preemptive right is a provision in the corporate charter that gives common stockholders the right to purchase (on a pro rata basis) new issues of common stock.",
+        "Statements a and b are correct.",
+        "Statements a and c are correct."
+      ],
+      "answer": "C",
+      "explanation": "Statement c is true; the others are false. Two classes of common stock\ncan have different voting rights, as well as pay different dividends.\nAn IPO occurs when a firm goes public for the first time. Statement c is\nthe exact definition of a preemptive right."
+    },
+    {
+      "id": "bb13",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Preemptive right",
+      "source": "Black Book Ch. 7 Q13",
+      "question": "The preemptive right is important to shareholders because it",
+      "choices": [
+        "Allows management to sell additional shares below the current market price.",
+        "Protects the current shareholders against dilution of ownership interests.",
+        "Is included in every corporate charter.",
+        "Will result in higher dividends per share.",
+        "The preemptive right is not important to shareholders."
+      ],
+      "answer": "B"
+    },
+    {
+      "id": "bb14",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Classified stock",
+      "source": "Black Book Ch. 7 Q14",
+      "question": "Companies can issue different classes of common stock. Which of the following statements concerning stock classes is most correct?",
+      "choices": [
+        "All common stocks fall into one of three classes: A, B, and C.",
+        "Most firms have several classes of common stock outstanding.",
+        "All common stock, regardless of class, must have voting rights.",
+        "All common stock, regardless of class, must have the same dividend privileges.",
+        "None of the statements above is necessarily true."
+      ],
+      "answer": "E"
+    },
+    {
+      "id": "bb15",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q15",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "If a market is strong-form efficient this implies that the returns on bonds and stocks should be identical.",
+        "If a market is weak-form efficient this implies that all public information is rapidly incorporated into market prices.",
+        "If your uncle earns a return higher than the overall stock market, this means the stock market is inefficient.",
+        "Statements a and b are correct.",
+        "None of the above statements is correct."
+      ],
+      "answer": "E",
+      "explanation": "Statements a through d are false; therefore, statement e is true.\n\nStatement a is false. Strong-form efficiency states that current market\n\nprices reflect all pertinent information, whether publicly available or\n\nprivately held. If it holds, even insiders would find it impossible to\n\nearn abnormal returns in the stock market. Statement b is false; this\n\ndescribes semistrong-form efficiency.  Statement c is false; some\n\ninvestors may be able to analyze and react more quickly than others to\n\nreleases of new information. However, the buy-sell actions of those\n\ninvestors quickly bring market prices into equilibrium."
+    },
+    {
+      "id": "bb16",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q16",
+      "question": "Assume that the stock market is semistrong-form efficient. Which of the following statements is most correct?",
+      "choices": [
+        "Stocks and bonds should have the same expected returns.",
+        "In equilibrium all stocks should have the same expected returns, but returns on stocks should exceed returns on bonds.",
+        "You can expect to outperform the overall market by observing the past price history of an individual stock.",
+        "For the average investor, the expected net present value from investing in the stock market is zero.",
+        "For the average investor, the expected net present value from investing in the stock market is the required return on the stock."
+      ],
+      "answer": "D",
+      "explanation": "Stocks are usually riskier than bonds and should have higher expected\nreturns. Therefore, statement a is false. In equilibrium, stocks with\nmore market risk should have higher expected returns than stocks with less\nmarket risk. Therefore, statement b is false. The semistrong form of\nmarket efficiency says that all publicly available information, including\npast price history, is already accounted for in the stock's price.\nTherefore, statement c is false. Remember, when trying to find the price\nof a stock, we discount all future cash flows by the required return. If\nthe price is equal to the present value of those cash flows, then the NPV\nof the stock must be equal to 0. Therefore, statement d is true. Net\npresent value is stated in dollars and the required return is stated as a\n\npercent. It is impossible for the two to equal each other. Therefore,\n\nstatement e is false."
+    },
+    {
+      "id": "bb17",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q17",
+      "question": "Assume that the stock market is semistrong-form efficient. Which of the following statements is most correct?",
+      "choices": [
+        "The required rates of return on all stocks are the same and the required rates of return on stocks are higher than the required rates of return on bonds.",
+        "The required rates of return on stocks equal the required rates of return on bonds.",
+        "A trading strategy in which you buy stocks that have recently fallen in price is likely to provide you with returns that exceed the rate of return on the overall stock market.",
+        "Statements a and c are correct.",
+        "None of the statements above is correct."
+      ],
+      "answer": "E",
+      "explanation": "Statement a is false; riskier securities have higher required returns.\nStatement b is false for the same reason as statement a. Statement c is\nfalse; semistrong-form efficiency says that you cannot make abnormal\nprofits by trading off publicly available information. So statement e is\nthe correct answer."
+    },
+    {
+      "id": "bb18",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q18",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "If the stock market is weak-form efficient, then information about recent trends in stock prices would be very useful when it comes to selecting stocks.",
+        "If the stock market is semistrong-form efficient, stocks and bonds should have the same expected return.",
+        "If the stock market is semistrong-form efficient, all stocks should have the same expected return.",
+        "Statements a and c are correct.",
+        "None of the statements above is correct."
+      ],
+      "answer": "E",
+      "explanation": "Weak-form efficiency means that you cannot profit from recent trends in\nstock prices (that is, technical analysis doesn't work). Therefore,\nstatement a must be false. Semistrong-form efficiency means that all\npublic information is already accounted for in the stock price. Because\nbonds and stocks have different risk levels and tax implications, there is\nno reason to expect them to have the same return. Therefore, statement b\nmust be false. Similarly, because different stocks have different risk\nlevels, there is no reason to expect all stocks to have the same return.\nTherefore, statement c is also false. The correct choice is statement e."
+    },
+    {
+      "id": "bb19",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q19",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "Semistrong-form market efficiency implies that all private and public information is rapidly incorporated into stock prices.",
+        "Market efficiency implies that all stocks should have the same expected return.",
+        "Weak-form market efficiency implies that recent trends in stock prices would be of no use in selecting stocks.",
+        "All of the statements above are correct.",
+        "None of the statements above is correct."
+      ],
+      "answer": "C",
+      "explanation": "Statement c is true; the other statements are false. Semistrong-form\nmarket efficiency implies that only public information, not private, is\nrapidly incorporated into stock prices. Markets can be efficient yet\nstill price securities differently depending on their risks."
+    },
+    {
+      "id": "bb20",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q20",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "Semistrong-form market efficiency means that stock prices reflect all public information.",
+        "An individual who has information about past stock prices should be able to profit from this information in a weak-form efficient market.",
+        "An individual who has inside information about a publicly traded company should be able to profit from this information in a strong-form efficient market.",
+        "Statements a and c are correct.",
+        "All the statements above are correct."
+      ],
+      "answer": "A"
+    },
+    {
+      "id": "bb21",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q21",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "If a market is weak-form efficient, this means that prices rapidly reflect all available public information.",
+        "If a market is weak-form efficient, this means that you can expect to beat the market by using technical analysis that relies on the charting of past prices.",
+        "If a market is strong-form efficient, this means that all stocks should have the same expected return.",
+        "All of the statements above are correct.",
+        "None of the statements above is correct."
+      ],
+      "answer": "E",
+      "explanation": "The correct answer is statement e. If prices rapidly reflect all\navailable public information, then the market is semistrong-form efficient\nnot weak-form efficient. Therefore, statement a is incorrect. If the\nmarket is weak-form efficient, then you cannot beat the market by using\ntechnical analysis or charting. Therefore, statement b is incorrect.\nDifferent stocks will have different risk and will have different required\nand expected returns, so statement c is incorrect."
+    },
+    {
+      "id": "bb22",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q22",
+      "question": "Most studies of stock market efficiency suggest that the stock market is highly efficient in the weak form and reasonably efficient in the semistrong form. On the basis of these findings which of the following statements is correct?",
+      "choices": [
+        "Information you read in The Wall Street Journal today cannot be used to select stocks that will consistently beat the market.",
+        "The stock price for a company has been increasing for the past 6 months. On the basis of this information it must be true that the stock price will also increase during the current month.",
+        "Information disclosed in companies' most recent annual reports can be used to consistently beat the market.",
+        "Statements a and c are correct.",
+        "All of the statements above are correct."
+      ],
+      "answer": "A",
+      "explanation": "Statement a is true; the other statements are false. Historical\ninformation cannot be used to beat the market under weak-form efficiency.\n\n Public information cannot be used to beat the market under semistrong-\nform efficiency."
+    },
+    {
+      "id": "bb23",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Preferred stock concepts",
+      "source": "Black Book Ch. 7 Q23",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "Preferred stockholders have priority over common stockholders.",
+        "A big advantage of preferred stock is that preferred stock dividends are tax deductible for the issuing corporation.",
+        "Most preferred stock is owned by corporations.",
+        "Statements a and b are correct.",
+        "Statements a and c are correct."
+      ],
+      "answer": "E"
+    },
+    {
+      "id": "bb24",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Preferred stock concepts",
+      "source": "Black Book Ch. 7 Q24",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "One of the advantages to the firm associated with preferred stock financing rather than common stock financing is that control of the firm is not diluted.",
+        "Preferred stock provides steadier and more reliable income to investors than common stock.",
+        "One of the advantages to the firm of financing with preferred stock is that 70 percent of the dividends paid out are tax deductible.",
+        "Statements a and c are correct.",
+        "Statements a and b are correct."
+      ],
+      "answer": "E",
+      "explanation": "Both statements a and b are true; therefore, statement e is the correct\n\nchoice. 70 percent of dividends received, not paid out, are tax\n\ndeductible."
+    },
+    {
+      "id": "bb25",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Common stock concepts",
+      "source": "Black Book Ch. 7 Q25",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "One of the advantages of common stock financing is that a greater proportion of stock in the capital structure can reduce the risk of a takeover bid.",
+        "A firm with classified stock can pay different dividends to each class of shares.",
+        "One of the advantages of common stock financing is that a firm's debt ratio will decrease.",
+        "Statements b and c are correct.",
+        "All of the statements above are correct."
+      ],
+      "answer": "D",
+      "explanation": "Statements b and c are true; therefore, statement d is the correct choice.\nA greater proportion of common stock in the capital structure increases\nthe likelihood of a takeover bid."
+    },
+    {
+      "id": "bb26",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Common stock concepts",
+      "source": "Black Book Ch. 7 Q26",
+      "question": "Stock X has a required return of 10 percent, while Stock Y has a required return of 12 percent. Which of the following statements is most correct?",
+      "choices": [
+        "Stock Y must have a higher dividend yield than Stock X.",
+        "If Stock Y and Stock X have the same dividend yield, then Stock Y must have a lower expected capital gains yield than Stock X.",
+        "If Stock X and Stock Y have the same current dividend and the same expected dividend growth rate, then Stock Y must sell for a higher price.",
+        "All of the statements above are correct.",
+        "None of the statements above is correct."
+      ],
+      "answer": "E",
+      "explanation": "We don't know anything about the dividends of either stock. Stock Y could\nhave a dividend yield of 0 percent and a capital gains yield of 12\npercent, while Stock X has a dividend yield of 10 percent and a capital\ngains yield of 0 percent. Therefore, statement a is false. If the two\nstocks have the same dividend yield, Stock Y must have a higher expected\ncapital gains yield than X because Y has the higher required return.\nTherefore, statement b is false. Remember the DCF formula: P0 = D1/(ks -\ng). If D1 and g are the same, and we know that Y has a higher required\nreturn than X, then Y's dividend yield must be larger than X's. In order\nfor this to be true Y's price must be lower than X's. Therefore,\nstatement c is false. Since statements a, b, and c are false, then the\ncorrect answer is statement e."
+    },
+    {
+      "id": "bb27",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Declining growth stock",
+      "source": "Black Book Ch. 7 Q27",
+      "question": "A stock expects to pay a year-end dividend of $2.00 a share (D1 = $2.00). The dividend is expected to fall 5 percent a year, forever (g = -5%). The company's expected and required rate of return is 15 percent. Which of the following statements is most correct?",
+      "choices": [
+        "The company's stock price is $10.",
+        "The company's expected dividend yield 5 years from now will be 20 percent.",
+        "The company's stock price 5 years from now is expected to be $7.74.",
+        "Statements b and c are correct.",
+        "All of the statements above are correct."
+      ],
+      "answer": "E",
+      "explanation": "Statement e is the correct choice; all the statements are true. Statement\na is true; P0 = $2/(0.15 + 0.05) = $10. Statement b is true; Div yield5 =\nD6/P5 or [$2.00(0.95)5]/[$10.00(0.95)5] = $1.547562/$7.74 = 20%. Statement\nc is true; $10(0.95)5 = $7.74."
+    },
+    {
+      "id": "bb28",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Dividend yield and g",
+      "source": "Black Book Ch. 7 Q28",
+      "question": "If two constant growth stocks have the same required rate of return and the same price, which of the following statements is most correct?",
+      "choices": [
+        "The two stocks have the same per-share dividend.",
+        "The two stocks have the same dividend yield.",
+        "The two stocks have the same dividend growth rate.",
+        "The stock with the higher dividend yield will have a lower dividend growth rate.",
+        "The stock with the higher dividend yield will have a higher dividend growth rate."
+      ],
+      "answer": "D",
+      "explanation": "ks = D1/P0 + g. Both stocks have the same ks and the same P0, but may have\na different D1 and a different g. So statements a, b, and c are not\nnecessarily true. Statement d is true, but statement e is clearly false."
+    },
+    {
+      "id": "bb29",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Dividend yield and g",
+      "source": "Black Book Ch. 7 Q29",
+      "question": "Stocks A and B have the same price, but Stock A has a higher required rate of return than Stock B. Which of the following statements is most correct?",
+      "choices": [
+        "Stock A must have a higher dividend yield than Stock B.",
+        "Stock B must have a higher dividend yield than Stock A.",
+        "If Stock A has a lower dividend yield than Stock B, its expected capital gains yield must be higher than Stock B's.",
+        "If Stock A has a higher dividend yield than Stock B, its expected capital gains yield must be lower than Stock B's.",
+        "Stock A must have both a higher dividend yield and a higher capital gains yield than Stock B."
+      ],
+      "answer": "C",
+      "explanation": "Statements a and b are both false because the required return consists of\nboth a dividend yield (D1/P0) and a growth rate. Statements a and b don't\nmention the growth rate. Statement c is true because if the required\nreturn for Stock A is higher than that of Stock B, and if the dividend\nyield for Stock A is lower than Stock B's, the growth rate for Stock A\nmust be higher to offset this. Statement d is not necessarily true\nbecause the growth rate could go either way depending upon how high the\ndividend yield is. Statement e is also not necessarily true."
+    },
+    {
+      "id": "bb30",
+      "section": "Black Book Concepts",
+      "difficulty": "easy",
+      "topic": "Market equilibrium",
+      "source": "Black Book Ch. 7 Q30",
+      "question": "If markets are in equilibrium, which of the following will occur:",
+      "choices": [
+        "Each investment's expected return should equal its realized return.",
+        "Each investment's expected return should equal its required return.",
+        "Each investment should have the same expected return.",
+        "Each investment should have the same realized return.",
+        "All of the statements above are correct."
+      ],
+      "answer": "B",
+      "explanation": "The correct answer is statement b. The realized return is an historical\n\nreturn. It is what has already happened in the past. There is no reason\n\nthat the expected return in the future should equal the return it has\n\nrealized in the past. Therefore, statement a is incorrect. If the\n\nexpected return does not equal the required return, then markets are not\n\nin equilibrium. If you are expecting a higher return than you require\n\n(given the level of risk) for a stock, then the stock will be a \"bargain.\"\n\nYou will be getting a higher return than you require.  This\n\ndisequilibrium will not last, and the stock price will adjust until its\n\nexpected return equals its required return. Therefore, statement b is\n\ncorrect. Different investments should have different expected returns.\n\nYou will have a different expected return for an oil company stock than\n\nyou would for an airline company stock, depending on what is happening to\n\noil prices. There is no reason for you to expect the same returns on all\n\nof your investments. Therefore, statement c is incorrect. Investments\n\nshould not have the same realized returns. Realized returns are\n\nhistorical, and all stocks have different price histories. Therefore,\n\nstatement d is incorrect."
+    },
+    {
+      "id": "bb31",
+      "section": "Black Book Concepts",
+      "difficulty": "medium",
+      "topic": "Market efficiency and stock returns",
+      "source": "Black Book Ch. 7 Q31",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "If a stock's beta increased but its growth rate remained the same, then the new equilibrium price of the stock will be higher (assuming dividends continue to grow at the constant growth rate).",
+        "Market efficiency says that the actual realized returns on all stocks will be equal to the expected rates of return.",
+        "An implication of the semistrong form of the efficient markets hypothesis is that you cannot consistently benefit from trading on information reported in The Wall Street Journal.",
+        "Statements a and b are correct.",
+        "All of the statements above are correct."
+      ],
+      "answer": "C",
+      "explanation": "Statement c is true; the other statements are false. If beta increased,\nbut g remained the same, the new stock price would be lower. Market\nefficiency says nothing about the relationship between expected and\nrealized rates of return."
+    },
+    {
+      "id": "bb32",
+      "section": "Black Book Concepts",
+      "difficulty": "medium",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q32",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "If the stock market is weak-form efficient this means you cannot use private information to outperform the market.",
+        "If the stock market is semistrong-form efficient, this means the expected return on stocks and bonds should be the same.",
+        "If the stock market is semistrong-form efficient, this means that high- beta stocks should have the same expected return as low-beta stocks.",
+        "Statements b and c are correct.",
+        "None of the statements above is correct."
+      ],
+      "answer": "E",
+      "explanation": "Statement e is true; the other statements are false. If the stock market\nis weak-form efficient, you could use private information to outperform\nthe market. Semistrong-form efficiency means that current market prices\nreflect all publicly available information."
+    },
+    {
+      "id": "bb33",
+      "section": "Black Book Concepts",
+      "difficulty": "medium",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q33",
+      "question": "If the stock market is semistrong-form efficient, which of the following statements is most correct?",
+      "choices": [
+        "All stocks should have the same expected returns; however, they may have different realized returns.",
+        "In equilibrium, stocks and bonds should have the same expected returns.",
+        "Investors can outperform the market if they have access to information that has not yet been publicly revealed.",
+        "If the stock market has been performing strongly over the past several months, stock prices are more likely to decline than increase over the next several months.",
+        "None of the statements above is correct."
+      ],
+      "answer": "C"
+    },
+    {
+      "id": "bb34",
+      "section": "Black Book Concepts",
+      "difficulty": "medium",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q34",
+      "question": "Assume that markets are semistrong-form efficient. statements is most correct?",
+      "choices": [
+        "All stocks should have the same expected return.",
+        "All stocks should have the same realized return.",
+        "Past stock prices can be successfully used to forecast future stock returns.",
+        "Statements a and c are correct.",
+        "None of the statements above is correct."
+      ],
+      "answer": "E",
+      "explanation": "Statement e is the correct choice. Semistrong-form efficiency implies\nthat past stock prices cannot be used to forecast future returns."
+    },
+    {
+      "id": "bb35",
+      "section": "Black Book Concepts",
+      "difficulty": "medium",
+      "topic": "Efficient markets hypothesis",
+      "source": "Black Book Ch. 7 Q35",
+      "question": "Assume that markets are semistrong-form efficient, but not strong-form efficient. Which of the following statements is most correct?",
+      "choices": [
+        "Each common stock has an expected return equal to that of the overall market.",
+        "Bonds and stocks have the same expected return.",
+        "Investors can expect to earn returns above those predicted by the SML if they have access to public information.",
+        "Investors may be able to earn returns above those predicted by the SML if they have access to information that has not been publicly revealed.",
+        "Statements b and c are correct."
+      ],
+      "answer": "D"
+    },
+    {
+      "id": "bb36",
+      "section": "Black Book Concepts",
+      "difficulty": "medium",
+      "topic": "Market equilibrium",
+      "source": "Black Book Ch. 7 Q36",
+      "question": "For markets to be in equilibrium, that is, for there to be no strong pressure for prices to depart from their current levels,",
+      "choices": [
+        "The expected rate of return must be equal to the required rate of return; that is, = k.",
+        "The past realized rate of return must be equal to the expected rate of return; that is, k = .",
+        "The required rate of return must equal the realized rate of return; that is, k = k .",
+        "All three of the statements above must hold for equilibrium to exist; that is, = k = k .",
+        "None of the statements above is correct."
+      ],
+      "answer": "A"
+    },
+    {
+      "id": "bb37",
+      "section": "Black Book Concepts",
+      "difficulty": "medium",
+      "topic": "Ownership and going public",
+      "source": "Black Book Ch. 7 Q37",
+      "question": "Which of the following statements is false?",
+      "choices": [
+        "When a corporation's shares are owned by a few individuals who are associated with or are the firm's management, we say that the firm is \"closely held.\"",
+        "A publicly owned corporation is simply a company whose shares are held by the investing public, which may include other corporations and institutions as well as individuals.",
+        "Going public establishes a true market value for the firm and ensures that a liquid market will always exist for the firm's shares.",
+        "When stock in a closely held corporation is offered to the public for the first time the transaction is called \"going public\" and the market for such stock is called the new issue market.",
+        "It is possible for a firm to go public, and yet not raise any additional new capital."
+      ],
+      "answer": "C"
+    },
+    {
+      "id": "bb38",
+      "section": "Black Book Concepts",
+      "difficulty": "medium",
+      "topic": "Dividend yield and g",
+      "source": "Black Book Ch. 7 Q38",
+      "question": "Which of the following statements is most correct?",
+      "choices": [
+        "Assume that the required rate of return on a given stock is 13 percent. If the stock's dividend is growing at a constant rate of 5 percent, its expected dividend yield is 5 percent as well.",
+        "The dividend yield on a stock is equal to the expected return less the expected capital gain.",
+        "A stock's dividend yield can never exceed the expected growth rate.",
+        "Statements b and c are correct.",
+        "All of the statements above are correct."
+      ],
+      "answer": "B",
+      "explanation": "Statement b is true; the other statements are false. The stock's required\n\nreturn must equal the sum of its expected dividend yield and constant\n\ngrowth rate. A stock's dividend yield can exceed the expected growth\n\nrate."
+    },
+    {
+      "id": "bb39",
+      "section": "Black Book Concepts",
+      "difficulty": "medium",
+      "topic": "Constant growth model",
+      "source": "Black Book Ch. 7 Q39",
+      "question": "The expected rate of return on the common stock of Northwest Corporation is 14 percent. The stock's dividend is expected to grow at a constant rate of 8 percent a year. The stock currently sells for $50 a share. Which of the following statements is most correct?",
+      "choices": [
+        "The stock's dividend yield is 8 percent.",
+        "The stock's dividend yield is 7 percent.",
+        "The current dividend per share is $4.00.",
+        "The stock price is expected to be $54 a share in one year.",
+        "The stock price is expected to be $57 a share in one year."
+      ],
+      "answer": "D",
+      "explanation": "Statement d is true; the other statements are false. ks = Dividend yield\n+ Capital gains. 14% = Dividend yield + 8%; therefore, Dividend yield =\n6%. Dividend yield = Dividend/Price; Dividend = 0.06  $50 = $3. Future\nstock price = $50  1.08 = $54."
+    },
+    {
+      "id": "bb40",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Preferred stock value",
+      "source": "Black Book Ch. 7 Q40",
+      "question": "The Jones Company has decided to undertake a large project. Consequently, there is a need for additional funds. The financial manager plans to issue preferred stock with a perpetual annual dividend of $5 per share and a par value of $30. If the required return on this stock is currently 20 percent, what should be the stock's market value?",
+      "choices": [
+        "$150",
+        "$100",
+        "$ 50",
+        "$ 25",
+        "$ 10"
+      ],
+      "answer": "D",
+      "explanation": "Vp = Dp/kp = $5/0.20 = $25."
+    },
+    {
+      "id": "bb41",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Preferred stock value",
+      "source": "Black Book Ch. 7 Q41",
+      "question": "Johnston Corporation is growing at a constant rate of 6 percent per year. It has both common stock and non-participating preferred stock outstanding. The cost of preferred stock (kp) is 8 percent. The par value of the preferred stock is $120, and the stock has a stated dividend of 10 percent of par. What is the market value of the preferred stock?",
+      "choices": [
+        "$125",
+        "$120",
+        "$175",
+        "$150",
+        "$200"
+      ],
+      "answer": "D",
+      "explanation": "The dividend is calculated as 10%  $120 = $12. We know that the cost of\npreferred stock is equal to the dividend divided by the stock price or 8%\n= $12/Price. Solve this expression for Price = $150. (Note: Non-\npartici-pating preferred stockholders are entitled to just the stated\ndividend rate. There is no growth in the dividend.)"
+    },
+    {
+      "id": "bb42",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Preferred stock yield",
+      "source": "Black Book Ch. 7 Q42",
+      "question": "A share of preferred stock pays a quarterly dividend of $2.50. If the price of this preferred stock is currently $50, what is the nominal annual rate of return?",
+      "choices": [
+        "12%",
+        "18%",
+        "20%",
+        "23%",
+        "28%"
+      ],
+      "answer": "C",
+      "explanation": "Annual dividend = $2.50(4) = $10.\nkp = Dp/Vp = $10/$50 = 0.20 = 20%."
+    },
+    {
+      "id": "bb43",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Preferred stock yield",
+      "source": "Black Book Ch. 7 Q43",
+      "question": "A share of preferred stock pays a dividend of $0.50 each quarter. If you are willing to pay $20.00 for this preferred stock, what is your nominal (not effective) annual rate of return?",
+      "choices": [
+        "10%",
+        "8%",
+        "6%",
+        "12%",
+        "14%"
+      ],
+      "answer": "A",
+      "explanation": "Annual dividend = $0.50(4) = $2.00.\nkp = Dp/Vp = $2.00/$20.00 = 0.10 = 10%."
+    },
+    {
+      "id": "bb44",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Stock price",
+      "source": "Black Book Ch. 7 Q44",
+      "question": "Assume that you plan to buy a share of XYZ stock today and to hold it for 2 years. Your expectations are that you will not receive a dividend at the end of Year 1, but you will receive a dividend of $9.25 at the end of Year 2. In addition, you expect to sell the stock for $150 at the end of Year 2. If your expected rate of return is 16 percent, how much should you be willing to pay for this stock today?",
+      "choices": [
+        "$164.19",
+        "$ 75.29",
+        "$107.53",
+        "$118.35",
+        "$131.74"
+      ],
+      "answer": "D",
+      "explanation": "0 ks = 16% 1                   2 Years\n|                |             |\n                          D2 = 9.25\nP0 = ?           0    P^2 = 150.00\n                     CF2 = 159.25\n\nNumerical solution:\n\n      $159.25\nP0 =    2 = $118.35.\n       (1.16)\n\nFinancial calculator solution:                Output: PV = -$118.35.\nInputs: N = 2; I = 16; PMT = 0; FV = 159.25.\nP0 = $118.35."
+    },
+    {
+      "id": "bb45",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q45",
+      "question": "Womack Toy Company's stock is currently trading at $25 per share. The stock's dividend is projected to increase at a constant rate of 7 percent per year. The required rate of return on the stock, ks, is 10 percent. What is the expected price of the stock 4 years from today?",
+      "choices": [
+        "$36.60",
+        "$34.15",
+        "$28.39",
+        "$32.77",
+        "$30.63"
+      ],
+      "answer": "D",
+      "explanation": "The stock price will grow at 7 percent for 4 years, $25  (1.07)4 =\n$32.77."
+    },
+    {
+      "id": "bb46",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q46",
+      "question": "Allegheny Publishing's stock is expected to pay a year-end dividend, D1, of $4.00. The dividend is expected to grow at a constant rate of 8 percent per year, and the stock's required rate of return is 12 percent. Given this information, what is the expected price of the stock, eight years from now?",
+      "choices": [
+        "$200.00",
+        "$185.09",
+        "$171.38",
+        "$247.60",
+        "$136.86"
+      ],
+      "answer": "B",
+      "explanation": "The stock price today is calculated as:\n$4/(0.12 - 0.08) = $100. If the growth rate is 8 percent, the price in\n8 years will be: $100  (1.08)8 = $185.09."
+    },
+    {
+      "id": "bb47",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q47",
+      "question": "Waters Corporation has a stock price of $20 a share. The stock's year-end dividend is expected to be $2 a share (D1 = $2.00). The stock's required rate of return is 15 percent and the stock's dividend is expected to grow at the same constant rate forever. What is the expected price of the stock seven years from now?",
+      "choices": [
+        "$28",
+        "$53",
+        "$27",
+        "$23",
+        "$39"
+      ],
+      "answer": "A",
+      "explanation": "Step 1:  Find g:\n           P0 = D1/(ks - g)\n\n         $20 = $2/(0.15 - g)\n            g = 5%.\n\nStep 2:  Find P at t = 7:\n         P^ 7 = P0(1 + g)7\n         P^ 7 = $20(1.05)7\n         P^ 7 = $28.14  $28."
+    },
+    {
+      "id": "bb48",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q48",
+      "question": "Trudeau Technologies' common stock currently trades at $40 per share. The stock is expected to pay a year-end dividend, D1, of $2 per share. The stock's dividend is expected to grow at a constant rate g, and its required rate of return is 9 percent. What is the expected price of the stock five years from today (after the dividend D5 has been paid)? In other words, what is P^5 ?",
+      "choices": [
+        "$48.67",
+        "$50.61",
+        "$51.05",
+        "$61.40",
+        "$61.54"
+      ],
+      "answer": "A",
+      "explanation": "Step 1:  Determine the constant growth rate, g:\n            ks = D1/P0 + g\n            9% = $2/$40 + g\n\n         0.09 = 0.05 + g\n         0.04 = g.\n\nStep 2:  Determine the expected price of the stock 5 years from today:\n         P^5 = P0  (1 + g)n\n\n             = $40  (1.04)5\n             = $40  1.21665\n\n             = $48.67."
+    },
+    {
+      "id": "bb49",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q49",
+      "question": "A stock is expected to pay a dividend of $0.50 at the end of the year (i.e., D1 = 0.50). Its dividend is expected to grow at a constant rate of 7 percent a year, and the stock has a required return of 12 percent. What is the expected price of the stock four years from today?",
+      "choices": [
+        "$ 5.46",
+        "$ 9.36",
+        "$10.00",
+        "$12.18",
+        "$13.11"
+      ],
+      "answer": "E",
+      "explanation": "The price today, P0 =      D^1  =  $0.50       = $10.00.\n\n                           ks - g 0.12 - 0.07\n\nSince this is a constant growth stock, its price will grow at the same\nrate as dividends. So, P^4 = P0(1.07)4 = $10.00(1.07)4 = $13.108  $13.11."
+    },
+    {
+      "id": "bb50",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q50",
+      "question": "McKenna Motors is expected to pay a $1.00 per-share dividend at the end of the year (D1 = $1.00). The stock sells for $20 per share and its required rate of return is 11 percent. The dividend is expected to grow at a constant rate, g, forever. What is the growth rate, g, for this stock?",
+      "choices": [
+        "5%",
+        "6%",
+        "7%",
+        "8%",
+        "9%"
+      ],
+      "answer": "B",
+      "explanation": "ks = D1/P0 + g\ng = ks - D1/P0\ng = 0.11 - $1/$20 = 0.06 = 6%."
+    },
+    {
+      "id": "bb51",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q51",
+      "question": "A share of common stock has just paid a dividend of $2.00. If the expected long-run growth rate for this stock is 15 percent, and if investors require a 19 percent rate of return, what is the price of the stock?",
+      "choices": [
+        "$57.50",
+        "$62.25",
+        "$71.86",
+        "$64.00",
+        "$44.92"
+      ],
+      "answer": "A",
+      "explanation": "P0 =  $2.00(1.15)  = $57.50.\n\n      0.19 - 0.15"
+    },
+    {
+      "id": "bb52",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q52",
+      "question": "Thames Inc.'s most recent dividend was $2.40 per share (D0 = $2.40). The dividend is expected to grow at a rate of 6 percent per year. The risk-free rate is 5 percent and the return on the market is 9 percent. If the company's beta is 1.3, what is the price of the stock today?",
+      "choices": [
+        "$72.14",
+        "$57.14",
+        "$40.00",
+        "$68.06",
+        "$60.57"
+      ],
+      "answer": "E",
+      "explanation": "The required rate of return on the stock: 5% + (9% - 5%)1.3 = 10.2%.\nD1 = $2.40  1.06 = $2.544.\nThe price of the stock today is $2.544/(0.102 - 0.06) = $60.57."
+    },
+    {
+      "id": "bb53",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q53",
+      "question": "Albright Motors is expected to pay a year-end dividend of $3.00 a share (D1 = $3.00). The stock currently sells for $30 a share. The required (and expected) rate of return on the stock is 16 percent. If the dividend is expected to grow at a constant rate, g, what is g?",
+      "choices": [
+        "13.00%",
+        "10.05%",
+        "6.00%",
+        "5.33%",
+        "7.00%"
+      ],
+      "answer": "C",
+      "explanation": "P0 = D1/(ks - g)\n              $30 = $3/(0.16 - g)\n$4.8 - $30g = $3\n            $1.8 = $30g\n\n                 g = 6%."
+    },
+    {
+      "id": "bb54",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q54",
+      "question": "A stock with a required rate of return of 10 percent sells for $30 per share. The stock's dividend is expected to grow at a constant rate of 7 percent per year. What is the expected year-end dividend, D1, on the stock?",
+      "choices": [
+        "$0.87",
+        "$0.95",
+        "$1.02",
+        "$0.90",
+        "$1.05"
+      ],
+      "answer": "D",
+      "explanation": "We know that P0 = D1/ks - g) and we have all the information except D1, so\nwe input the data into this equation.\n$30 = D1/(0.10 - 0.07)\n$30 = 33.33D1\n\n  D1 = $0.90."
+    },
+    {
+      "id": "bb55",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q55",
+      "question": "Gettysburg Grocers' stock is expected to pay a year-end dividend, D1, of $2.00 per share. The dividend is expected to grow at a constant rate of 5 percent, and the stock has a required return of 9 percent. What is the expected price of the stock five years from today?",
+      "choices": [
+        "$67.00",
+        "$63.81",
+        "$51.05",
+        "$ 0.64",
+        "$60.83"
+      ],
+      "answer": "B",
+      "explanation": "Step 1:  Calculate the price of the stock today, since it is a constant\n         growth stock.\n         D1 = $2.00; ks = 0.09; g = 0.05.\n         P0 = D1/(ks - g)\n\n             = $2.00/(0.09 - 0.05)\n             = $50.\n\nStep 2: Determine the price of the stock five years from today:\n                P^5 = $50  (1.05)5 = $63.81."
+    },
+    {
+      "id": "bb56",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q56",
+      "question": "A stock is expected to have a dividend per share of $0.60 at the end of the year (D1 = 0.60). The dividend is expected to grow at a constant rate of 7 percent per year, and the stock has a required return of 12 percent. What is the expected price of the stock five years from today? (That is, what is P^5 ?)",
+      "choices": [
+        "$12.02",
+        "$15.11",
+        "$15.73",
+        "$16.83",
+        "$21.15"
+      ],
+      "answer": "D",
+      "explanation": "Step 1:  Using the Gordon constant growth model, calculate today's price:\nStep 2:  P0 = D1/(ks - g)\n\n             = $0.60/(0.12 - 0.07)\n             = $12.00.\n\n         Calculate the price of the stock 5 years from today, assuming\n         g = 7% per year:\n\n            P^5 = P0  (1.07)5\n               = $12.00  (1.07)5\n\n               = $16.83."
+    },
+    {
+      "id": "bb57",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q57",
+      "question": "A stock is expected to pay a $0.45 dividend at the end of the year (D1 = 0.45). The dividend is expected to grow at a constant rate of 4 percent a year, and the stock's required rate of return is 11 percent. What is the expected price of the stock 10 years from today?",
+      "choices": [
+        "$18.25",
+        "$ 9.52",
+        "$ 9.15",
+        "$ 6.02",
+        "$12.65"
+      ],
+      "answer": "B",
+      "explanation": "This is a constant growth stock, so you can use the Gordon constant growth\nmodel to calculate today's price. Once you have today's price, you can\nfind the price in 10 years.\n\nStep 1:     Find the stock's current price.\n            P0 = D1/(ks - g)\n\n                = $0.45/(0.11 - 0.04)\n                = $6.4286.\n\nStep 2:     Find the stock's price in 10 years, given its current stock price.\n            P^10 = P0(1 + g)n\n\n                 = $6.4286(1.04)10\n\n                 = $9.52."
+    },
+    {
+      "id": "bb58",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q58",
+      "question": "The last dividend paid by Klein Company was $1.00. Klein's growth rate is expected to be a constant 5 percent for 2 years, after which dividends are expected to grow at a rate of 10 percent forever. Klein's required rate of return on equity (ks) is 12 percent. What is the current price of Klein's common stock?",
+      "choices": [
+        "$21.00",
+        "$33.33",
+        "$42.25",
+        "$50.16",
+        "$58.75"
+      ],
+      "answer": "D",
+      "explanation": "0             k = 12%    1                   2                   3 Years\n        |            gs = 5%     |\n      1.00                     1.05         gs = 5%    |     gn = 10%      |\n                                                     1.1025              1.21275\nP0 = ?                         1.05\nCFt 0                                       P^2 = 60.6375 = 1.21275\n                                                    61.7400 0.12 - 0.10\n\nNumerical solution:\n\nP0 =  $1.05 $61.74\n                     +         2 = $50.16.\n      1.12 (1.12)\n\nFinancial calculator solution:\nEnter in CFLO register CF0 = 0, CF1 = 1.05, and CF2 = 61.74.\nThen enter I = 12, and press NPV to get NPV = P0 = $50.16."
+    },
+    {
+      "id": "bb59",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q59",
+      "question": "Your company paid a dividend of $2.00 last year. The growth rate is expected to be 4 percent for 1 year, 5 percent the next year, then 6 percent for the following year, and then the growth rate is expected to be a constant 7 percent thereafter. The required rate of return on equity (ks) is 10 percent. What is the current stock price?",
+      "choices": [
+        "$53.45",
+        "$60.98",
+        "$64.49",
+        "$67.47",
+        "$69.21"
+      ],
+      "answer": "D",
+      "explanation": "Time line:\n\n      0  k = 10% 1                   2            3           4 Years\n\n      | g1 = 4% |           g2 = 5%  | g3 = 6% | gn = 7% |\n\n2.00                  2.08           2.1840     2.31504       2.4770928\n\nP0 = ?\n\n                                             ^P3 = 82.56976 = 2.4770928\n\n                                                              0.10 - 0.07\n\nCFt 0                 2.08           2.1840     84.88480\n\nNumerical solution:\n\n       $2.08 $2.1840 $84.8848\nP0 =        +         2+             3 = $67.47.\n       1.10 (1.10)           (1.10)\n\nEnter in calculator:\n\nCF0 = 0; CF1 = 2.08; CF2 = 2.1840; and CF3 = 84.8848; I = 10; and press\n\nNPV to get NPV = P0 = $67.47."
+    },
+    {
+      "id": "bb60",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Beta coefficient",
+      "source": "Black Book Ch. 7 Q60",
+      "question": "Cartwright Brothers' stock is currently selling for $40 a share. The stock is expected to pay a $2 dividend at the end of the year. The stock's dividend is expected to grow at a constant rate of 7 percent a year forever. The risk-free rate (kRF) is 6 percent and the market risk premium (kM - kRF) is also 6 percent. What is the stock's beta?",
+      "choices": [
+        "1.06",
+        "1.00",
+        "2.00",
+        "0.83",
+        "1.08"
+      ],
+      "answer": "B",
+      "explanation": "Step 1:  Find ks:\n         ks = D1/P0 + g\n         ks = $2/$40 + 0.07\n         ks = 0.12.\n\nStep 2:  Use the CAPM to find beta:\n            ks = kRF + (kM - kRF)b\n\n         0.12 = 0.06 + 0.06(b)\n              b = 1."
+    },
+    {
+      "id": "bb61",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "New issues and dilution",
+      "source": "Black Book Ch. 7 Q61",
+      "question": "NOPREM Inc. is a firm whose shareholders don't possess the preemptive right. The firm currently has 1,000 shares of stock outstanding; the price is $100 per share. The firm plans to issue an additional 1,000 shares at $90.00 per share. Since the shares will be offered to the public at large, what is the amount per share that old shareholders will lose if they are excluded from purchasing new shares?",
+      "choices": [
+        "$90.00",
+        "$ 5.00",
+        "$10.00",
+        "$ 0",
+        "$ 2.50"
+      ],
+      "answer": "B",
+      "explanation": "Calculate current and new market value of firm after new stock issue:\n\n1,000 shares × $100 per share = $100,000\n\nPlus 1,000 new shares @ $90 each + 90,000\n\nNew firm market value                           $190,000\n\nCalculate new market share price:\n$190,000/2,000 shares = $95.00 per share\nDilution: Old shareholders lose $100 - $95 = $5.00 per share."
+    },
+    {
+      "id": "bb62",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "FCF model for valuing stock",
+      "source": "Black Book Ch. 7 Q62",
+      "question": "An analyst is trying to estimate the intrinsic value of the stock of Harkleroad Technologies. The analyst estimates that Harkleroad's free cash flow during the next year will be $25 million. The analyst also estimates that the company's free cash flow will increase at a constant rate of 7 percent a year and that the company's WACC is 10 percent. Harkleroad has $200 million of long-term debt and preferred stock, and 30 million outstanding shares of common stock. What is the estimated per- share price of Harkleroad Technologies' common stock?",
+      "choices": [
+        "$ 1.67",
+        "$ 5.24",
+        "$18.37",
+        "$21.11",
+        "$27.78"
+      ],
+      "answer": "D",
+      "explanation": "Firm value = $25,000,000/(0.10 - 0.07) = $833,333,333. This is the value\nof the whole company, including debt, preferred stock, and common stock.\nFrom this, we subtract the $200,000,000 in debt and preferred stock. This\nleaves an equity value of $833,333,333 - $200,000,000 = $633,333,333.\n\nSo, the price/share =       $633,333,333  = $21.11.\n\n                             30,000,000"
+    },
+    {
+      "id": "bb63",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "FCF model for valuing stock",
+      "source": "Black Book Ch. 7 Q63",
+      "question": "An analyst estimating the intrinsic value of the Rein Corporation stock estimates that its free cash flow at the end of the year (t = 1) will be $300 million. The analyst estimates that the firm's free cash flow will grow at a constant rate of 7 percent a year, and that the company's weighted average cost of capital is 11 percent. The company currently has debt and preferred stock totaling $500 million. There are 150 million outstanding shares of common stock. What is the intrinsic value (per share) of the company's stock?",
+      "choices": [
+        "$16.67",
+        "$25.00",
+        "$33.33",
+        "$46.67",
+        "$50.00"
+      ],
+      "answer": "D",
+      "explanation": "FCF1 = $300,000,000, growth rate = 7%, and WACC = 11%.\n\nFirm value = FCF1/(WACC - g)\n                   = $300,000,000/(0.11 - 0.07) = $7,500,000,000.\n\nTotal MV assets = MV debt + MV pref. stock + MV common equity\n $7,500,000,000 = $500,000,000 + MV common equity\n $7,000,000,000 = MV common equity.\n\nP^0 = MV equity/# of shares\nP^0 = $7,000,000,000/150,000,000\nP^0 = $46.67."
+    },
+    {
+      "id": "bb64",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Changing beta and the equilibrium stock price",
+      "source": "Black Book Ch. 7 Q64",
+      "question": "Ceejay Corporation's stock is currently selling at an equilibrium price of $30 per share. The firm has been experiencing a 6 percent annual growth rate. Last year's earnings per share, E0, were $4.00 and the dividend payout ratio is 40 percent. The risk-free rate is 8 percent, and the market risk premium is 5 percent. If market risk (beta) increases by 50 percent, and all other factors remain constant, what will be the new stock price? (Use 4 decimal places in your calculations.)",
+      "choices": [
+        "$16.59",
+        "$18.25",
+        "$21.39",
+        "$22.69",
+        "$53.48"
+      ],
+      "answer": "D",
+      "explanation": "Step 1:  Solve for D1: D0 = 0.40  E0 = 0.40  $4.00 = $1.60, since the\n         firm has a 40% payout ratio. D1 = D0(1 + g) = $1.60(1.06) =\n         $1.6960.\n\nStep 2: Solve for the original ks: ks = D1/P0 + g = $1.6960/$30 + 6% =\n                11.65%.\n\nStep 3: Solve for the original beta using the CAPM formula: 11.65% = 8%\n                + (5%)b0; b0 = 0.7300.\n\nStep 4: Solve for the new beta: b1 = 1.5  b0 = 1.5  0.7300 = 1.0950.\n\nStep 5: Solve for the new ks using the CAPM:        ks = 8% + (5%)1.0950 =\n                13.4750%.\n\nStep 6. Solve for P0 = D1 /(ks - g) = $1.6960/(0.13475 - 0.06) = $22.69."
+    },
+    {
+      "id": "bb65",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Equilibrium stock price",
+      "source": "Black Book Ch. 7 Q65",
+      "question": "You are given the following data:\n\n• The risk-free rate is 5 percent.\n\n• The required return on the market is 8 percent.\n\n• The expected growth rate for the firm is 4 percent.\n\n• The last dividend paid was $0.80 per share.\n\n• Beta is 1.3.\n\nNow assume the following changes occur:\n\n• The inflation premium drops by 1 percent.\n\n• An increased degree of risk aversion causes the required return on the market to rise to 10 percent after adjusting for the changed inflation premium.\n\n• The expected growth rate increases to 6 percent.\n\n• Beta rises to 1.5.\n\nWhat will be the change in price per share, assuming the stock was in equilibrium before the changes occurred?",
+      "choices": [
+        "+$12.11",
+        "-$ 4.87",
+        "+$ 6.28",
+        "-$16.97",
+        "+$ 2.78"
+      ],
+      "answer": "B",
+      "explanation": "Before:  ks = 5% + (8% - 5%)1.3 = 8.9%.\n\n         P0 =        $0.80(1.04)   = $16.98.\n\n                     0.089 - 0.04\n\nAfter:   ks = 4% + (10% - 4%)1.5 = 13%.\n\n         P0 =        $0.80(1.06)   = $12.11.\n\n                     0.130 - 0.06\n\n          Hence, we have $12.11 - $16.98 = -$4.87.      Answer: d Diff: M\n66. Constant growth stock\n\nTo find the stock price seven years from today, we need to find the growth\nrate.\n\nStep 1:  Calculate the required rate of return:\n         ks = kRF + (kM - kRF)b\n\n             = 5% + (5%)1.2\n             = 11%.\n\nStep 2:  Calculate the growth rate using the constant growth formula:\n                           P0 = D1/(ks - g)\n\n                         $40 = $2.00/(0.11 - g)\n         $4.40 - $40g = $2.00\n\n                             g = $2.40/$40.00\n                             g = 0.06 = 6%.\n\nStep 3: Determine the expected stock price seven years from today:\n                P^7 = $40.00  (1.06)7 = $60.1452  $60.15."
+    },
+    {
+      "id": "bb66",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q66",
+      "question": "A stock that currently trades for $40 per share is expected to pay a year- end dividend of $2 per share. The dividend is expected to grow at a constant rate over time. The stock has a beta of 1.2, the risk-free rate is 5 percent, and the market risk premium is 5 percent. What is the stock's expected price seven years from today?",
+      "choices": [
+        "$ 56.26",
+        "$ 58.01",
+        "$ 83.05",
+        "$ 60.15",
+        "$551.00"
+      ],
+      "answer": "D"
+    },
+    {
+      "id": "bb67",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q67",
+      "question": "Yohe Technology's stock is expected to pay a dividend of $2.00 a share at the end of the year. The stock currently has a price of $40 a share, and the stock's dividend is expected to grow at a constant rate of g percent a year. The stock has a beta of 1.2. The market risk premium, kM - kRF, is 7 percent and the risk-free rate is 5 percent. What is the expected price of Yohe's stock 5 years from today?",
+      "choices": [
+        "$51.05",
+        "$55.23",
+        "$59.87",
+        "$64.90",
+        "$66.15"
+      ],
+      "answer": "C",
+      "explanation": "First, we must determine the firm's required return:\nks = kRF + (kM - kRF)b\nks = 5% + (7%)1.2\nks = 13.4%.\n\nUsing the required return, we can determine the constant dividend growth rate:\n      ks = D1/P0 + g\n\n0.134 = $2/$40 + g\n0.134 = 0.05 + g\n0.084 = g.\n\nNow, that we have the constant growth rate, we can find the stock's\n\nexpected price in Year 5:\nP^5 = P0(1 + g)t\nP^5 = $40(1.084)5\nP^5 = $59.87."
+    },
+    {
+      "id": "bb68",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q68",
+      "question": "Motor Homes Inc. (MHI) is presently in a stage of abnormally high growth because of a surge in the demand for motor homes. The company expects earnings and dividends to grow at a rate of 20 percent for the next 4 years, after which time there will be no growth (g = 0) in earnings and dividends. The company's last dividend was $1.50. MHI's beta is 1.6, the return on the market is currently 12.75 percent, and the risk-free rate is 4 percent. What should be the current common stock price?",
+      "choices": [
+        "$15.17",
+        "$17.28",
+        "$22.21",
+        "$19.10",
+        "$24.66"
+      ],
+      "answer": "A",
+      "explanation": "Time line:\n\n0 ks = 18% 1                  2           3           4               5 Years\n| gs = 20% | gs = 20%                                                 |\n                              | gs = 20% | gs = 20% |       gn = 0%\n                                                                     3.1104\n1.50        1.80              2.16        2.592       3.1104\n\nP0 = ?\n\n                                    ^     3.1104\n                                    P4 =            = 17.2780\n                                          0.18 - 0\n\nCFt 0       1.80              2.16        2.592       20.3884\n\nRequired rate of return: ks = 4% + (12.75% - 4%)1.6 = 18%.\n\nFinancial calculator solution:\nInputs: CF0 = 0; CF1 = 1.80; CF2 = 2.16; CF3 = 2.592; CF4 = 20.3884; I = 18.\nOutput: NPV = $15.17. P0 = $15.17."
+    },
+    {
+      "id": "bb69",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q69",
+      "question": "A stock is not expected to pay a dividend over the next four years. Five years from now, the company anticipates that it will establish a dividend of $1.00 per share (i.e., D5 = $1.00). Once the dividend is established, the market expects that the dividend will grow at a constant rate of 5 percent per year forever. The risk-free rate is 5 percent, the company's beta is 1.2, and the market risk premium is 5 percent. The required rate of return on the company's stock is expected to remain constant. What is the current stock price?",
+      "choices": [
+        "$ 7.36",
+        "$ 8.62",
+        "$ 9.89",
+        "$10.98",
+        "$11.53"
+      ],
+      "answer": "D",
+      "explanation": "The required return on the stock is given by:\nks = kRF + RPM(b)\nks = 5% + (5%)1.2 = 11%.\n\nThe stock price is given by:\nP^4 = D5\n\n        ks - g\n             $1.00\n\n    =\n        0.11 - 0.05\n\n    = $16.667.\n\nThus, the current price is given by discounting the future price in Year 4\n\nto the present at the required rate of return:\n\nP0 =  $16.667\n                     4 = $10.98.\n      (1.11)"
+    },
+    {
+      "id": "bb70",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q70",
+      "question": "Mack Industries just paid a dividend of $1.00 per share (D0 = $1.00). Analysts expect the company's dividend to grow 20 percent this year (D1 = $1.20) and 15 percent next year. After two years the dividend is expected to grow at a constant rate of 5 percent. The required rate of return on the company's stock is 12 percent. What should be the company's current stock price?",
+      "choices": [
+        "$12.33",
+        "$16.65",
+        "$16.91",
+        "$18.67",
+        "$19.67"
+      ],
+      "answer": "D",
+      "explanation": "First, find the stock price after two years:\nD1 = $1.20.\nD2 = $1.20  1.15 = $1.38.\nD3 = $1.38  1.05 = $1.449.\n\nP^2 = D3/(ks - g)\n    = $1.449/(0.12 - 0.05)\n    = $20.70.\n\nNext, determine the dividends during the nonconstant growth period:\nD1 = $1.00  1.2 = $1.20.\nD2 = $1.20  1.15 = $1.38.\n\nFinally, determine the company's current stock price:\n\nNumerical solution:\n\nP0 =  $1.20 $1.38 + $20.70\n                     +            = $18.67.\n      1.12              (1.12)2\n\nFinancial calculator solution:                                Then enter I\nEnter in CFLO register CF0 = 0, CF1 = 1.20, and CF2 = 22.08.\n= 12, and press NPV to get NPV = P0 = $18.67."
+    },
+    {
+      "id": "bb71",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q71",
+      "question": "R. E. Lee recently took his company public through an initial public offering. He is expanding the business quickly to take advantage of an otherwise unexploited market. Growth for his company is expected to be 40 percent for the first three years and then he expects it to slow down to a constant 15 percent. The most recent dividend (D0) was $0.75. Based on the most recent returns, his company's beta is approximately 1.5. The risk-free rate is 8 percent and the market risk premium is 6 percent. What is the current price of Lee's stock?",
+      "choices": [
+        "$77.14",
+        "$75.17",
+        "$67.51",
+        "$73.88",
+        "$93.20"
+      ],
+      "answer": "A",
+      "explanation": "ks = kRF + RPM(b)\n    = 8% + 6%(1.5)\n    = 17%.\n\nD1 = $0.75(1.4) = $1.05.\nD2 = $0.75(1.4)2 = $1.47.\nD3 = $0.75(1.4)3 = $2.058.\nD4 = $0.75(1.4)3(1.15) = $2.3667.\n\nP^3 = D4/ks - g\n    = $2.3667/(0.17 - 0.15)\n    = $118.335.\n\nP0 =  $1.05   +  $1.472 +  $2.058 + $118.335\n\n      1.17 (1.17 )            (1.17 )3\n\n= $77.14."
+    },
+    {
+      "id": "bb72",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q72",
+      "question": "A stock is expected to pay no dividends for the first three years, that is, D1 = $0, D2 = $0, and D3 = $0. The dividend for Year 4 is expected to be $5.00 (D4 = $5.00), and it is anticipated that the dividend will grow at a constant rate of 8 percent a year thereafter. The risk-free rate is 4 percent, the market risk premium is 6 percent, and the stock's beta is 1.5. Assuming the stock is fairly priced, what is its current stock price?",
+      "choices": [
+        "$ 69.31",
+        "$ 72.96",
+        "$ 79.38",
+        "$ 86.38",
+        "$100.00"
+      ],
+      "answer": "A",
+      "explanation": "First, find the expected return ks: ks = 4% + 6%(1.5) = 13%. (Using the CAPM.)\n\nNext, determine value of the stock at t = 3:\nP^3 = D4/(ks - g)\n\n     = $5/(0.13 - 0.08) = $100.\n\nFinally, find PV of P^3 :\n\nP0 =  $1003 = $69.305  $69.31.\n\n      (1.13)"
+    },
+    {
+      "id": "bb73",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q73",
+      "question": "Stewart Industries expects to pay a $3.00 per share dividend on its common stock at the end of the year (D1 = $3.00). The dividend is expected to grow 25 percent a year until t = 3, after which time the dividend is expected to grow at a constant rate of 5 percent a year (D3 = $4.6875 and D4 = $4.921875). The stock's beta is 1.2, the risk-free rate of interest is 6 percent, and the market rate of return is 11 percent. What is the company's current stock price?",
+      "choices": [
+        "$29.89",
+        "$30.64",
+        "$37.29",
+        "$53.69",
+        "$59.05"
+      ],
+      "answer": "E",
+      "explanation": "To find ks, the return on the stock, we use the CAPM.\nks = 6% + (11% - 6%)  1.2 = 12%.\n\nThe value of the dividends for Years 1 - 4 are:\n\nD1 = $3.00.\nD2 = $3.00  1.25 = $3.75.\nD3 = $3.75  1.25 = $4.6875.\nD4 = $4.6875  1.05 = $4.921875.\n\nThe value of the stock at t = 3 is:\nP^3 = D4/(ks - g) = $4.921875/(0.12 - 0.05) = $70.3125.\n\nNow find the present value of the supernormal growth dividends and the\nvalue of the stock at t = 3.\n\n      $3.00 $3.75 $4.6875 + $70.3125\nP0 =                 +     2+\n      1.12 (1.12)                           3\n                                     (1.12)\n\n= $59.05."
+    },
+    {
+      "id": "bb74",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q74",
+      "question": "McPherson Enterprises is planning to pay a dividend of $2.25 per share at the end of the year (D1 = $2.25). The company is planning to pay the same dividend each of the following 2 years and will then increase the dividend to $3.00 for the subsequent 2 years (D4 and D5). After that time the dividends will grow at a constant rate of 5 percent per year. If the required return on the company's common stock is 11 percent per year, what is its current stock price?",
+      "choices": [
+        "$52.50",
+        "$40.41",
+        "$37.50",
+        "$50.00",
+        "$32.94"
+      ],
+      "answer": "B",
+      "explanation": "We're given D1, D2, and D3 = $2.25. D4 and D5 = $3.00. Calculate D6 as\n$3.00  1.05 = $3.15. The stock price at t = 5 is P^5 = $3.15/(0.11 -\n\n0.05) = $52.50. The stock price today represents the sum of the present\nvalues of D1, D2, D3, D4, D5, and P^5 .\n\n      $2.25 $2.25 $2.25 $3.00 $3.00 + $52.50\nP0 =                 +     2+        3+        4+\n      1.11 (1.11) (1.11) (1.11)                              5\n                                                       (1.11)\n\n= $40.41."
+    },
+    {
+      "id": "bb75",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q75",
+      "question": "Hadlock Healthcare expects to pay a $3.00 dividend at the end of the year (D1 = $3.00). The stock's dividend is expected to grow at a rate of 10 percent a year until three years from now (t = 3). After this time, the stock's dividend is expected to grow at a constant rate of 5 percent a year. The stock's required rate of return is 11 percent. What is the price of the stock today?",
+      "choices": [
+        "$49",
+        "$54",
+        "$64",
+        "$52",
+        "$89"
+      ],
+      "answer": "B",
+      "explanation": "Step 1:  Calculate D1 through D4:\n         Since the dividend grows at 10 percent a year for 3 years, D1 =\n         $3.00, D2 = $3.30, and D3 = $3.63. The dividend starts to grow\n         at 5 percent after t = 3, so D4 = $3.8115.\n\nStep 2:  Find the stock price at t = 3 when growth becomes constant:\n\n         P^3 = D4/(ks - g)\n         P^3 = $3.8115/(0.11 - 0.05)\n         P^3 = $63.525.\n\nStep 3:  Find the current stock price:\n\n         The current stock price (at t = 0) is the              present value of the\n                                                                of P^3 . Discount these\n         dividends D1, D2, D3, and the present value\n\n         values at 11 percent.\n\n                           $3.00 $3.30 $3.63 + $63.525\n         P0 =              +            2+\n                           1.11 (1.11)             3\n                                               (1.11)\n\n                        = $54.48  $54."
+    },
+    {
+      "id": "bb76",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q76",
+      "question": "Rogers Robotics currently (2003) does not pay a dividend. However, the company is expected to pay a $1.00 dividend two years from today (2005). The dividend is then expected to grow at a rate of 20 percent a year for the following three years. After the dividend is paid in 2008, it is expected to grow forever at a constant rate of 7 percent. Currently, the risk-free rate is 6 percent, market risk premium (kM - kRF) is 5 percent, and the stock's beta is 1.4. What should be the price of the stock today?",
+      "choices": [
+        "$22.91",
+        "$21.20",
+        "$30.82",
+        "$28.80",
+        "$20.16"
+      ],
+      "answer": "E",
+      "explanation": "2003ks = 13%2004               2005         2006       2007     2008   2009\n\n|                       |      | gs = 20% | gs = 20% | gs = 20% | gn = 7% |\n\n                        0      1.00         1.20       1.44     1.728  1.84896\n\nP0 = ?                                                          30.816 = $1.84896\n                                                                32.544 0.13 - 0.07\n\nStep 1: Determine ks:\n\n         ks = kRF + (kM - kRF)b\n              = 6% + 5%(1.4) = 13%.\n\nStep 2:  Calculate the dividends:\n         D2005 = $1.00.\n         D2006 = $1.00(1.2) = $1.20.\n         D2007 = $1.00(1.2)2 = $1.44.\n         D2008 = $1.00(1.2)3 = $1.728.\n         D2009 = $1.00(1.2)3(1.07) = $1.84896.\n\nStep 3:  Calculate P2008 (when growth becomes constant):\n         P2008 = D2009 = $1.84896\n\n                     ks - g 0.13 - 0.07\n\n               $0 $1.00 $1.20 $1.44 $1.728 + $30.816\nStep 4:  P0 =  +              2+     3+    4+\n               1.13 (1.13) (1.13) (1.13)                     5\n                                                       (1.13)\n\n         = $20.16."
+    },
+    {
+      "id": "bb77",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q77",
+      "question": "Whitesell Technology has just paid a dividend (D0) and is expected to pay a $2.00 per-share dividend at the end of the year (D1). The dividend is expected to grow 25 percent a year for the following four years, (D5 = $2.00 (1.25)4 = $4.8828). After this time period, the dividend will grow forever at a constant rate of 7 percent a year. The stock has a required rate of return of 13 percent (ks = 0.13). What is the expected price of the stock two years from today? (Calculate the price assuming that D2 has already been paid.)",
+      "choices": [
+        "$83.97",
+        "$95.87",
+        "$69.56",
+        "$67.63",
+        "$91.96"
+      ],
+      "answer": "C",
+      "explanation": "Step 1:  Calculate the dividends each year:\n\n         D1 = $2.00.\n         D2 = $2.00  1.25 = $2.50.\n         D3 = $2.50  1.25 = $3.125.\n         D4 = $3.125  1.25 = $3.90625.\n         D5 = $3.90625  1.25 = $4.8828125.\n         D6 = $4.8828125  1.07 = $5.224609375.\n\nStep 2:  Find the stock's value at Year 5:\n         P^5 = D6/(ks - g)\n\n             = $5.224609375/(0.13 - 0.07) = $87.076823.\n\nStep 3:  Now find the value of the stock in Year 2:\n         P^2 = $3.125/1.13 + $3.90625/(1.13)2 + ($4.8828125 + $87.076823)/(1.13)3\n\n            = $2.7655 + $3.0592 + $63.7326\n            = $69.5573  $69.56.\n\nFinancial calculator solution:\n\nStep 1: Calculate the dividends each year:\n\n                D1 = $2.00.\n                D2 = $2.00  1.25 = $2.50.\n                D3 = $2.50  1.25 = $3.125.\n                D4 = $3.125  1.25 = $3.90625.\n                D5 = $3.90625  1.25 = $4.8828125.\n                D6 = $4.8828125  1.07 = $5.224609375.\n\nStep 2: Find the stock's value at Year 5:\n\n         P^5 = D6/(ks - g)\n            = $5.224609375/(0.13 - 0.07) = $87.076823.\n\nStep 3:  Now find the value of the stock in Year 2:\n         Enter the following inputs in the calculator:\n         CF0 = 0; CF1 = 3.125; CF2 = 3.90625; CF3 = 4.8828125 + 87.076823;\n         I = 13; and then solve for NPV = $69.55729  $69.56."
+    },
+    {
+      "id": "bb78",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q78",
+      "question": "A stock, which currently does not pay a dividend, is expected to pay its first dividend of $1.00 per share in five years (D5 = $1.00). After the dividend is established, it is expected to grow at an annual rate of 25 percent per year for the following three years (D8 = $1.953125) and then grow at a constant rate of 5 percent per year thereafter. Assume that the risk-free rate is 5.5 percent, the market risk premium is 4 percent, and that the stock's beta is 1.2. What is the expected price of the stock today?",
+      "choices": [
+        "$23.87",
+        "$30.56",
+        "$18.72",
+        "$20.95",
+        "$20.65"
+      ],
+      "answer": "E",
+      "explanation": "Step 1:  Find the cost of equity using the CAPM:\n         ks = kRF + (kM - kRF)b\n\n             = 5.5% + (4%  1.2) = 10.3%.\n\nStep 2:  Determine the dividends during the  nonconstant  period:\n         D1 - D4 = $0.\n         D5 = $1.00.\n         D6 = $1.00  1.25 = $1.25.\n         D7 = $1.25  1.25 = $1.5625.\n         D8 = $1.5625  1.25 = $1.953125.\n\nStep 3:  Determine the value of the stock at Year 8:\n         P^8 = D9/(ks - g)\n\n             = ($1.953125  1.05)/(0.103 - 0.05)\n\n             = $38.694.\n\nStep 4:  Calculate the expected price of the stock today:\n         P0 = $1.00/(1.103)5 + (1.103)6 + $1.5625/(1.103)7 +\n\n                 ($1.953125 + $38.694)/(1.103)8\n         P0 = $0.6125 + $0.6942 + $0.7867 + $18.5535\n         P0 = $20.6469  $20.65."
+    },
+    {
+      "id": "bb79",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q79",
+      "question": "An analyst estimates that Cheyenne Co. will pay the following dividends: D1 = $3.0000, D2 = $3.7500, and D3 = $4.3125. The analyst also estimates that the required rate of return on Cheyenne's stock is 12.2 percent. After the third dividend, the dividend is expected to grow by 8 percent per year forever. What is the price of the stock today?",
+      "choices": [
+        "$81.40",
+        "$84.16",
+        "$85.27",
+        "$87.22",
+        "$94.02"
+      ],
+      "answer": "D",
+      "explanation": "Step 1:  Calculate the dividend in Year 4, D4:\n         D4 = D3  (1 + g)\n\n             = $4.3125  (1.08)\n\n         = $4.6575.\n\nStep 2:  Calculate the expected stock price in Year 3,P^3 :\n         P^3 = D4/(ks - g)\n\n             = $4.6575/(0.122 - 0.08)\n\n             = $110.8929.\n\nStep 3:  Calculate the price of the stock today:\n         P0 = $3.00/1.122 + $3.75/(1.122)2 + ($4.3125 + $110.8929)/(1.122)3\n\n             = $2.6738 + $2.9788 + $81.5632\n             = $87.2158  $87.22."
+    },
+    {
+      "id": "bb80",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q80",
+      "question": "Lewisburg Company's stock is expected to pay a dividend of $1.00 per share at the end of the year. The dividend is expected to grow 20 percent per year each of the following three years (D4 = $1.7280), after which time the dividend is expected to grow at a constant rate of 7 percent per year. The stock's beta is 1.2, the market risk premium is 4 percent, and the risk-free rate is 5 percent. What is the price of the stock today?",
+      "choices": [
+        "$49.61",
+        "$45.56",
+        "$48.43",
+        "$46.64",
+        "$45.45"
+      ],
+      "answer": "A",
+      "explanation": "Step 1: Draw a time line:\n\n         0 ks = 9.8% 1        2         3                       4             5  Years\n                                                     gs = 20% |    gn = 7% |\n         |           |        gs = 20% | gs = 20% |\n\n         P0 = ?  1.000        1.200     1.440        1.728         1.84896\n\nStep 2:  Calculate the dividends for 5  years:\n         D1 = $1.000.\n         D2 = $1  1.2 = $1.200.\n         D3 = $1.20  1.2 = $1.440.\n         D4 = $1.44  1.2 = $1.728.\n         D5 = $1.728  1.07 = $1.84896.\n\nStep 3:  Calculate the required rate of return:\n         ks = kRF + (kM - kRF)b\n\n             = 5% + (4%)1.2\n             = 9.8%.\n\nStep 4:  Calculate the stock price at the end of Year 4:\n         P^4 = D5/(k - g)\n\n             = $1.84896/(0.098 - 0.07)\n\n             = $66.0343.\n\nStep 5:  Calculate the price of the stock today:\n         NPV = $1.000/1.098 + $1.200/(1.098)2 + $1.440/(1.098)3 + ($1.7280\n\n                   + $66.0343)/(1.098)4\n\n                        = $0.9107 + $0.9954 + 1.0878 + $46.6207\n                        = $49.6146  $49.61."
+    },
+    {
+      "id": "bb81",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q81",
+      "question": "Namath Corporation's stock is expected to pay a dividend of $1.25 per share at the end of the year. The dividend is expected to increase by 20 percent per year for each of the following two years. After that, the dividend is expected to increase at a constant rate of 8 percent per year. The stock has a required return of 10 percent. What should be the price of the stock today?",
+      "choices": [
+        "$50.00",
+        "$59.38",
+        "$70.11",
+        "$76.76",
+        "$84.43"
+      ],
+      "answer": "D",
+      "explanation": "Step 1:  Draw the time line:\n\n                     0 ks = 10% 1        2            3          4 Years\n\n                     |  | gs = 20% | gs = 20% | gn = 8% |\n\n         P0 = ?         1.25             1.50         1.80       1.9440\n\n                                   ^P3 = 1.9440       = 97.20\n\n                                         0.10 - 0.08\n\nStep 2:  Calculate the dividends:\n         D1 = $1.25.\n         D2 = $1.25  1.20 = $1.50.\n         D3 = $1.50  1.20 = $1.80.\n         D4 = $1.80  1.08 = $1.944.\n\nStep 3:  Calculate the price of the stock at Year 3, when it becomes a\n         constant growth stock:\n         P^3 = D4/(ks - g)\n\n             = $1.944/(0.10 - 0.08)\n             = $97.20.\n\nStep 4:  Calculate the price of the stock today:\n         P0 = ($1.25/1.10) + $1.50/(1.10)2 + ($1.80 + $97.20)/(1.10)3\n\n             = $1.1364 + $1.2397 + $74.3802\n             = $76.7563  $76.76."
+    },
+    {
+      "id": "bb82",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q82",
+      "question": "A stock is expected to pay a dividend of $1.00 at the end of the year (i.e., D1 = $1.00). The dividend is expected to grow 25 percent each of the following two years, after which time it is expected to grow at a constant rate of 6 percent a year. The stock's required return is 11 percent. Assume that the market is in equilibrium. What is the stock's price today?",
+      "choices": [
+        "$26.14",
+        "$27.28",
+        "$30.48",
+        "$32.71",
+        "$35.38"
+      ],
+      "answer": "B",
+      "explanation": "Step 1: Calculate dividends during the nonconstant period and the first\n                year of constant growth:\n\n         D1 = $1.00.\n         D2 = $1.00  1.25 = $1.25.\n         D3 = $1.00  (1.25)2 = $1.5625.\n         D4 = $1.00  (1.25)2  1.06 = $1.65625.\n\nStep 2:  Calculate the price of the stock once growth is constant (which\n\n         would be at the end of the third year).\n\n         P3 =^ D4      =      $1.65625     = $33.125.\n\n               ks - g 0.11 - 0.06\n\nStep 3:        $1.00 $1.25 ($33.125 + $1.5625)\n         P0 =          +      2+\n               1.11 (1.11)                       3\n                                           (1.11)\n\n            = $0.9009 + $1.0145 + $25.3632\n\n            = $27.2786  $27.28.\n\nAlternatively, enter the nonconstant dividends and the stock price at the\npoint of time when growth becomes constant into your calculator as\nfollows:\nCF0 = 0; CF1 = 1.00; CF2 = 1.25; CF3 = 33.125 + 1.5625 = 34.6875; I = 11;\nand then solve for NPV = P0 = $27.28."
+    },
+    {
+      "id": "bb83",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q83",
+      "question": "Garcia Inc. has a current dividend of $3.00 per share (D0 = $3.00). Analysts expect that the dividend will grow at a rate of 25 percent a year for the next three years, and thereafter it will grow at a constant rate of 10 percent a year. The company's cost of equity capital is estimated to be 15 percent. What is Garcia's current stock price?",
+      "choices": [
+        "$ 75.00",
+        "$ 88.55",
+        "$ 95.42",
+        "$103.25",
+        "$110.00"
+      ],
+      "answer": "C",
+      "explanation": "Time line:\n\n0        ks = 15% 1             2           3             4 Years\n                                | gs = 25%\n| gs = 25% | gs = 25%         4.6875        | gn = 10% |\n\n3.00           3.75                         5.859375 6.4453125\n\nP0 = ?\n\n                                        P3 = 128.90625 =^ 6.4453125\n\n                                                          0.15 - 0.10\n\nCFt 0          3.75           4.6875 134.765625\n\nStep 1:  Find the dividend stream to D3:\n         D0 = $3.00;\n         D1 = ($3.00)(1.25) = $3.7500\n         D2 = ($3.75)(1.25) = $4.6875\n         D3 = ($4.6875)(1.25) = $5.859375\n\nStep 2:  Find P^3 :\n\n         ^ D3(1 + g) ($5.859375)(1.10)=\n         P3 =                               = $128.90625.\n               ks - g         0.15 - 0.10\n\nStep 3:  Find the NPV of the cash flows, the stock's value:\n         CF0 = 0; CF1 = 3.7500; CF2 = 4.6875; CF3 = 134.765625; I = 15; and\n         then solve for NPV = $95.42."
+    },
+    {
+      "id": "bb84",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q84",
+      "question": "Holmgren Hotels' stock has a required return of 11 percent. The stock currently does not pay a dividend but it expects to begin paying a dividend of $1.00 per share starting five years from today (D5 = $1.00). Once established the dividend is expected to grow by 25 percent per year for two years, after which time it is expected to grow at a constant rate of 10 percent per year. What should be Holmgren's stock price today?",
+      "choices": [
+        "$ 84.80",
+        "$174.34",
+        "$ 76.60",
+        "$ 94.13",
+        "$ 77.27"
+      ],
+      "answer": "A",
+      "explanation": "Time line:\n\n0 ks = 11%            5            6           7       8 Years\n                      | gs = 25%   | gs = 25%\n|                 1.00         1.25         | gn = 10% |\n\nP0 = ?                                         1.5625  1.71875\n\n                                  ^                    1.71875\n                                  P7 = 171.875 =\n                                                       0.01\n\nStep 1:  Determine the dividends to be received:\n         D5 = $1.00.\n         D6 = $1.00  1.25 = $1.2500.\n         D7 = $1.25  1.25 = $1.5625.\n         D8 = $1.5625  1.10 = $1.71875.\n\nStep 2:  Determine the value of the stock once         dividend growth is\n\n         constant:\n\n         ^P7 =       D8\n\n                     ks - g\n\n         P7 =^       $1.71875\n\n                     0.11 - 0.10\n\n         P^7 = $171.875.\n\nStep 3: Determine the price of the stock today:\n\n         As an investor today, you would be entitled to D5, D6, D7, and P^7 .\n         Enter the following input data in your calculator:\n         CF0 = 0; CF1-4 = 0; CF5 = 1.00; CF6 = 1.25; CF7 = 1.5625 + 171.875\n         = 173.4375; I = 11; and then solve for NPV = $84.80."
+    },
+    {
+      "id": "bb85",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q85",
+      "question": "A stock just paid a $1.00 dividend (D0 = 1.00). The dividend is expected to grow 25 percent a year for the next four years, after which time the dividend is expected to grow at a constant rate of 5 percent a year. The stock's required return is 12 percent. What is the price of the stock today?",
+      "choices": [
+        "$28.58",
+        "$26.06",
+        "$32.01",
+        "$ 9.62",
+        "$27.47"
+      ],
+      "answer": "A",
+      "explanation": "Time line:\n\n0 ks = 12% 1                   2           3          4             5 Years\n| gs = 25% | gs = 25%          | gs = 25%                           |\n                              1.5625       | gs = 25% |  gn = 5%\n                                                                   2.5635\n1.00        1.25                           1.9531     2.4414\n\nP0 = ?\n\n                                                   ^               2.5635\n                                                   P4 = 36.6211 =\n                                                                   0.12 - 0.05\n\nCFt 0       1.25              1.5625       1.9531     39.0625\n\nStep 1:  Calculate the dividends during the nonconstant growth period and\n         the first dividend after that period.\n         D1 = D0(1 + g) = $1.00(1.25) = $1.2500.\n         D2 = D1(1 + g) = $1.25(1.25) = $1.5625.\n         D3 = D2(1 + g) = $1.5625(1.25) = $1.9531.\n         D4 = D3(1 + g) = $1.9531(1.25) = $2.4414.\n         D5 = D4(1 + g) = $2.4414(1.05) = $2.5635.\n\nStep 2:  Calculate the stock price when the stock's growth rate becomes\n         constant.\n         P^4 = D5/(ks - g)\n\n              = $2.5635/(0.12 - 0.05)\n              = $36.6211.\n\nStep 3:  Using your financial calculator, enter the cash flows to\n         determine the stock's current price.\n         CF0 = 0; CF1 = 1.25; CF2 = 1.5625; CF3 = 1.9531; CF4 = 39.0625; I\n         = 12. Solve for NPV = $28.5768  $28.58."
+    },
+    {
+      "id": "bb86",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Supernormal growth stock",
+      "source": "Black Book Ch. 7 Q86",
+      "question": "A share of stock has a dividend of D0 = $5. The dividend is expected to grow at a 20 percent annual rate for the next 10 years, then at a 15 percent rate for 10 more years, and then at a long-run normal growth rate of 10 percent forever. If investors require a 10 percent return on this stock, what is its current price?",
+      "choices": [
+        "$100.00",
+        "$ 82.35",
+        "$195.50",
+        "$212.62",
+        "The data given in the problem are internally inconsistent, that is, the situa- tion described is impossible in that no equilibrium price can be produced."
+      ],
+      "answer": "E",
+      "explanation": "The data in the problem are unrealistic and inconsistent with the require-\nments of the growth model; k less than g implies a negative stock price.\nIf k equals g, the denominator is zero, and the numerical result is\nundefined. k must be greater than g for a reasonable application of the\nmodel."
+    },
+    {
+      "id": "bb87",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Supernormal growth stock",
+      "source": "Black Book Ch. 7 Q87",
+      "question": "ABC Company has been growing at a 10 percent rate, and it just paid a dividend of D0 = $3.00. Due to a new product, ABC expects to achieve a dramatic increase in its short-run growth rate, to 20 percent annually for the next 2 years. After this time, growth is expected to return to the long-run constant rate of 10 percent. The company's beta is 2.0, the required return on an average stock is 11 percent, and the risk-free rate is 7 percent. What should be the dividend yield (D1/P0) today?",
+      "choices": [
+        "3.93%",
+        "4.60%",
+        "10.00%",
+        "7.54%",
+        "2.33%"
+      ],
+      "answer": "B",
+      "explanation": "Time line:\n\n      0  ks = 15% 1                  2      3 Years\n\n      | gs = 20% | gs = 20% | gn = 10% |\n\n3.00                    3.60  4.32       4.752\n\nP0 = ?\n\n                              P^2 = 95.04 = 4.752\n                                                      0.15 - 0.10\n\nCFt 0                   3.60  99.36\n\nks = 0.07 + (0.11 - 0.07)2.0 = 0.15 = 15%.\n\nNumerical solution:\n\n       $3.60 $99.36\nP0 =                 +  2 = $78.26.\n       1.15 (1.15)\n\nDividend yield = D1 = $3.60 = 4.60%.\n                              P0 $78.26\n\nFinancial calculator solution:\nInputs: CF0 = 0; CF1 = 3.60; CF2 = 99.36; I = 15.\nOutput: NPV = $78.26.\n\nDividend yield = $3.60/$78.26 = 0.0460 = 4.60%."
+    },
+    {
+      "id": "bb88",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Supernormal growth stock",
+      "source": "Black Book Ch. 7 Q88",
+      "question": "DAA's stock is selling for $15 per share. The firm's income, assets, and stock price have been growing at an annual 15 percent rate and are expected to continue to grow at this rate for 3 more years. No dividends have been declared as yet, but the firm intends to declare a dividend of D3 = $2.00 at the end of the last year of its supernormal growth. After that, dividends are expected to grow at the firm's normal growth rate of 6 percent. The firm's required rate of return is 18 percent. The stock is",
+      "choices": [
+        "Undervalued by $3.03.",
+        "Overvalued by $3.03.",
+        "Correctly valued.",
+        "Overvalued by $2.25.",
+        "Undervalued by $2.25."
+      ],
+      "answer": "B",
+      "explanation": "Time line:\n\n      0      ks = 18% 1               2            3                    4 Years\n\n      | gs = 15% |                    |            | gn = 6% |\n\n      0                 0             0            2.00        2.12\n\nP0 = ?\n\n                                           P^3 = 17.667 =      2.12\n\n                                                               0.18 - 0.06\n\nCFt 0                   0             0         19.667\n\nNumerical solution:\n\n^        $0  +      $0      $19.667\nP0 =                    2+         3 = $11.97.\n      1.18 (1.18) (1.18)\n\nP0  P^0 . Stock is overvalued: $15.00 - $11.97 = $3.03.\n\nFinancial calculator solution:\nCalculate current expected price of stock, P^0 :\nInputs: CF0 = 0; CF1 = 0; Nj = 2; CF2 = 19.667; I = 18.\nOutput: NPV = $11.97. P^0 = $11.97.\nP0  P^0 . Stock is overvalued: $15.00 - $11.97 = $3.03."
+    },
+    {
+      "id": "bb89",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Supernormal growth stock",
+      "source": "Black Book Ch. 7 Q89",
+      "question": "Faulkner Corporation expects to pay an end-of-year dividend, D1, of $1.50 per share. For the next two years the dividend is expected to grow by 25 percent per year, after which time the dividend is expected to grow at a constant rate of 7 percent per year. The stock has a required rate of return of 12 percent. Assuming that the stock is fairly valued, what is the price of the stock today?",
+      "choices": [
+        "$45.03",
+        "$40.20",
+        "$37.97",
+        "$36.38",
+        "$45.03"
+      ],
+      "answer": "B",
+      "explanation": "Step 1:      Draw   the     time   line for the stock:\n                 0\n                 |      ks  = 12%  1            2              3                 4 Years\n\n             P0 =   ?              | gs = 25% | gs             = 25% |  gn = 7% |\n                                   1.5000       1.87500        2.34375           2.5078125\n\n                                                         P^ 3                           2.5078125\n                                                               = 50.15625 =\n\n                                                                                       0.12 - 0.07\n\nStep 2:      Calculate the stock's dividends for Years 2-4:\n             D2 = $1.50  1.25 = $1.8750.\n             D3 = $1.8750  1.25 = $2.34375.\n             D4 = $2.34375  1.07 = $2.5078125.\n\nStep 3:      Calculate the stock's expected price in Year 3:\n             P^3 = D4/(ks - g)\n\n                 = $2.5078125/(0.12 - 0.07)\n\n                 = $50.15625.\n\nStep 4:      Calculate the value of the stock today:\n             As an investor today, you will get D1, D2, D3, and can sell the\n             stock at t = 3 for $50.15625.\n\n      P0 =              $1.50 $1.875 $2.34375 + $50.15625\n                               +         2+\n                        1.12 (1.12)                      3\n                                               (1.12)\n\n                        = $1.3393 + $1.4947 + $37.3685\n\n                        = $40.2025  $40.20."
+    },
+    {
+      "id": "bb90",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Supernormal growth stock",
+      "source": "Black Book Ch. 7 Q90",
+      "question": "Assume that the average firm in your company's industry is expected to grow at a constant rate of 5 percent, and its dividend yield is 4 percent. Your company is about as risky as the average firm in the industry, but it has just developed a line of innovative new products, which leads you to expect that its earnings and dividends will grow at a rate of 40 percent (D1 = D0(1.40)) this year and 25 percent the following year after which growth should match the 5 percent industry average rate. The last dividend paid (D0) was $2. What is the stock's value per share?",
+      "choices": [
+        "$ 42.60",
+        "$ 82.84",
+        "$ 91.88",
+        "$101.15",
+        "$110.37"
+      ],
+      "answer": "B",
+      "explanation": "Time line:                        1 g2 = 25% 2 gn = 5%         3 Years\n         0 ks = 9%                |            |               |\n\n                  g1 = 40%        2.80         3.50           3.675\n\n         |                  ^        3.675\n       2.00                 P2 =               = 91.875\nP0 = ?                            0.09 - 0.05\n\nCFt 0                             2.80         95.375\n\nks = Dividend yield + g = 0.04 + 0.05 + 0.09  9%.\n\nNumerical solution:\n\nP0 =  $2.80 $95.375\n                     +         2 = $82.84.\n      1.09 (1.09)\n\nFinancial calculator solution:\nInputs: CF0 = 0; CF1 = 2.80; CF2 = 95.375; I = 9.\nOutput: NPV = $82.84; P0 = $82.84."
+    },
+    {
+      "id": "bb91",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Declining growth stock",
+      "source": "Black Book Ch. 7 Q91",
+      "question": "The Textbook Production Company has been hit hard due to increased competition. The company's analysts predict that earnings (and dividends) will decline at a rate of 5 percent annually forever. Assume that ks = 11 percent and D0 = $2.00. What will be the price of the company's stock three years from now?",
+      "choices": [
+        "$27.17",
+        "$ 6.23",
+        "$28.50",
+        "$10.18",
+        "$20.63"
+      ],
+      "answer": "D",
+      "explanation": "Time  line:              1               2            3        4 Years\n                         |               |            |        |\n 0    ks = 11%          1.90            1.805        1.71475  1.6290125\n |    gn = -5%\n2.00\n\nP0 =^ $1.90                    =  $1.90  = $11.875.\n\n      0.11 - (-0.05) 0.16\n\nP^3 = $11.875(0.95)3 = $10.18."
+    },
+    {
+      "id": "bb92",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Stock growth rate",
+      "source": "Black Book Ch. 7 Q92",
+      "question": "Berg Inc. has just paid a dividend of $2.00. Its stock is now selling for $48 per share. The firm is half as risky as the market. The expected return on the market is 14 percent, and the yield on U.S. Treasury bonds is 11 percent. If the market is in equilibrium, what growth rate is expected?",
+      "choices": [
+        "13%",
+        "10%",
+        "4%",
+        "8%",
+        "-2%"
+      ],
+      "answer": "D",
+      "explanation": "Required rate of return: ks = 11% + (14% - 11%)0.5 = 12.5%.\n\nCalculate growth rate using ks:\n             P0 = D0 (1 + g)\n                        ks - g\n                      $2(1 + g)\n\n          $48 =\n                     0.125 - g\n\n$6 - $48g = $2 + $2g\n        $50g = $4\n              g = 0.08 = 8%.\n\nRequired return equals total yield (Dividend yield + Capital gains yield).\nDividend yield = $2.16/$48.00 = 4.5%; Capital gains yield = g = 8%."
+    },
+    {
+      "id": "bb93",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Stock growth rate",
+      "source": "Black Book Ch. 7 Q93",
+      "question": "Grant Corporation's stock is selling for $40 in the market. The company's beta is 0.8, the market risk premium is 6 percent, and the risk-free rate is 9 percent. The previous dividend was $2 (D0 = $2) and dividends are expected to grow at a constant rate. What is the stock's growth rate?",
+      "choices": [
+        "5.52%",
+        "5.00%",
+        "13.80%",
+        "8.80%",
+        "8.38%"
+      ],
+      "answer": "E",
+      "explanation": "The required rate of return on the stock is 9% + (6%)0.8 = 13.8%. Using\nthe constant growth model, we can solve for the growth rate as follows:\n\n               $40 = $2(1 + g)\n                           0.138 - g\n\n$5.52 - $40g = $2 + $2g\n              $42g = $3.52\n                   g = 8.38%."
+    },
+    {
+      "id": "bb94",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Capital gains yield",
+      "source": "Black Book Ch. 7 Q94",
+      "question": "Carlson Products, a constant growth company, has a current market (and equilibrium) stock price of $20.00. Carlson's next dividend, D1, is forecasted to be $2.00, and Carlson is growing at an annual rate of 6 percent. Carlson has a beta coefficient of 1.2, and the required rate of return on the market is 15 percent. As Carlson's financial manager, you have access to insider information concerning a switch in product lines that would not change the growth rate, but would cut Carlson's beta coefficient in half. If you buy the stock at the current market price, what is your expected percentage capital gain?",
+      "choices": [
+        "23%",
+        "33%",
+        "43%",
+        "53%",
+        "There would be a capital loss."
+      ],
+      "answer": "C",
+      "explanation": "Step 1:  Calculate ks, the required rate of return:\n\n         ks =    $2    + 6% = 10% + 6% = 16%.\n\n               $20\n\nStep 2:  Calculate kRF, the risk-free    rate:\n            16% = kRF + (15% - kRF)1.2\n            16% = kRF - 1.2kRF + 18%\n\n         0.2kRF = 2%\n              kRF = 10%.\n\nStep 3:  Calculate the new stock price and capital gain:\n\n         New ks = 10% + (15% - 10%)0.6 = 13%.\n\n         ^               $2\n         PNew =               = $28.57.\n                 0.13 - 0.06\n\n         Therefore, the percentage capital gain is 43% calculated as\n\n         follows:\n\n         $28.57 - $20.00 = $8.57 = 0.4285  43%.\n               $20.00         $20.00"
+    },
+    {
+      "id": "bb95",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Capital gains yield",
+      "source": "Black Book Ch. 7 Q95",
+      "question": "Given the following information, calculate the expected capital gains yield for Chicago Bears Inc.: beta = 0.6; kM = 15%; kRF = 8%; D1 = $2.00; P0 = $25.00. Assume the stock is in equilibrium and exhibits constant growth.",
+      "choices": [
+        "3.8%",
+        "0%",
+        "8.0%",
+        "4.2%",
+        "2.5%"
+      ],
+      "answer": "D",
+      "explanation": "Required rate of return, ks = 8% + (15% - 8%)0.6 = 12.2%.\nCalculate dividend yield and use to calculate capital gains yield:\nDividend yield = D1 = $2.00 = 0.08 = 8%.\n\n                              P0 $25.00\nCapital gains yield = Total yield - Dividend yield = 12.2% - 8% = 4.2%.\n\nAlternative method:\n                 P0 = D1\n                           ks - g\n                              $2.00\n\n                $25 =\n                           0.122 - g\n\n$3.05 - $25g = $2.00\n              $25g = $1.05\n                   g = 0.042 = 4.2%.\n\nSince the stock is growing at a constant rate, g = Capital gains yield."
+    },
+    {
+      "id": "bb96",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Capital gains yield and dividend yield",
+      "source": "Black Book Ch. 7 Q96",
+      "question": "Conner Corporation has a stock price of $32.35 per share. The last dividend was $3.42 (D0 = $3.42). The long-run growth rate for the company is a constant 7 percent. What is the company's capital gains yield and dividend yield?",
+      "choices": [
+        "Capital gains yield = 7.00%; Dividend yield = 10.57%",
+        "Capital gains yield = 10.57%; Dividend yield = 7.00%",
+        "Capital gains yield = 7.00%; Dividend yield = 4.31%",
+        "Capital gains yield = 11.31%; Dividend yield = 7.00%",
+        "Capital gains yield = 7.00%; Dividend yield = 11.31%"
+      ],
+      "answer": "E",
+      "explanation": "The capital gains yield is equal to the long-run growth rate for this\nstock (since it is a constant growth rate stock) or 7%. To calculate the\ndividend yield, first determine D1 as $3.42  1.07 = $3.6594. The\ndividend yield is $3.6594/$32.35 = 11.31%."
+    },
+    {
+      "id": "bb97",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Expected return and P/E ratio",
+      "source": "Black Book Ch. 7 Q97",
+      "question": "Lamonica Motors just reported earnings per share of $2.00. The stock has a price earnings ratio of 40, so the stock's current price is $80 per share. Analysts expect that one year from now the company will have an EPS of $2.40, and it will pay its first dividend of $1.00 per share. The stock has a required return of 10 percent. What price earnings ratio must the stock have one year from now so that investors realize their expected return?",
+      "choices": [
+        "44.00",
+        "36.25",
+        "4.17",
+        "40.00",
+        "36.67"
+      ],
+      "answer": "B",
+      "explanation": "Data given: EPS = $2.00; P/E = 40; P0 = $80; D1 = $1.00; ks = 10%; EPS1 =\n$2.40.\n\nStep 1:  Calculate the price of the stock one year from today:\n            ks = D1/P0 + (P1 - P0)/P0\n\n         0.10 = $1/$80 + (P1 - $80)/$80\n              8 = $1 + P1 - $80\n\n          $87 = P1.\n\nStep 2: Calculate the P/E ratio one year from today:\n                P/E = $87/$2.40 = 36.25."
+    },
+    {
+      "id": "bb98",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Stock price and P/E ratio",
+      "source": "Black Book Ch. 7 Q98",
+      "question": "During the past few years, Swanson Company has retained, on the average, 70 percent of its earnings in the business. The future retention rate is expected to remain at 70 percent of earnings, and long-run earnings growth is expected to be 10 percent. If the risk-free rate, kRF, is 8 percent, the expected return on the market, kM, is 12 percent, Swanson's beta is 2.0, and the most recent dividend, D0, was $1.50, what is the most likely market price and P/E ratio (P0/E1) for Swanson's stock today?",
+      "choices": [
+        "$27.50; 5.0",
+        "$33.00; 6.0",
+        "$25.00; 5.0",
+        "$22.50; 4.5",
+        "$45.00; 4.5"
+      ],
+      "answer": "A",
+      "explanation": "Step 1: Calculate the required rate of return:\n                ks = 8% + 2.0(12% - 8%) = 16%.\n\nStep 2: Calculate the current market price:\n\n         P0 = $1.50(1.10) = $27.50.\n                 0.16 - 0.10\n\nStep 3:  Calculate the earnings and P/E ratio:\n\n         D1 = $1.50(1.10) = $1.65 = 0.30E1.\n\n         E1 = $1.65/0.30 = $5.50.\n\n         P0 = $27.50 = 5.0.\n                 $5.50\n         E1"
+    },
+    {
+      "id": "bb99",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Stock price",
+      "source": "Black Book Ch. 7 Q99",
+      "question": "You have been given the following projections for Cali Corporation for the coming year.\n\n• Sales = 10,000 units.\n\n• Sales price per unit = $10.\n\n• Variable cost per unit = $5.\n\n• Fixed costs = $10,000.\n\n• Bonds outstanding = $15,000.\n\n• kd on outstanding bonds = 8%.\n\n• Tax rate = 40%.\n\n• Shares of common stock outstanding = 10,000 shares.\n\n• Beta = 1.4.\n\n• kRF = 5%.\n\n• kM = 9%.\n\n• Dividend payout ratio = 60%.\n\n• Growth rate = 8%.\n\nCalculate the current price per share for Cali Corporation.",
+      "choices": [
+        "$35.22",
+        "$46.27",
+        "$48.55",
+        "$53.72",
+        "$59.76"
+      ],
+      "answer": "D",
+      "explanation": "Step 1:  Set up an income  statement   to find net income:\n         Sales             $100,000       $10  10,000\n         Variable costs                   $5  10,000\n         Fixed costs          50,000      (Given)\n         EBIT                 10,000\n         Interest          $ 40,000       0.08  $15,000\n         EBT\n         Taxes                  1,200     0.40  $38,800\n         NI                $ 38,800\n\n                              15,520\n                           $ 23,280\n\n         Then, calculate the total amount of dividends, Div = Net income\n         Payout = $23,280  0.6 = $13,968.\n\n         Dividends/Share = Total dividend/# of shares outstanding\n                                     = $13,968/10,000 = $1.3968.\n\n                 Note: Because these projections are for the coming year, this\n                           dividend is D1, or the dividend for the coming year.\n\n      Step 2: Use the CAPM equation to find the required return on the stock:\n                      kS = kRF + (kM - kRF)b = 0.05 + (0.09 - 0.05)1.4 = 0.106 = 10.6%.\n\n      Step 3:    Calculate stock price:\n                 P0 = D1/(kS - g)\n\n                     = $1.3968/(0.106 - 0.08)\n                     = $53.72."
+    },
+    {
+      "id": "bb100",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Beta coefficient",
+      "source": "Black Book Ch. 7 Q100",
+      "question": "As financial manager of Material Supplies Inc., you have recently participated in an executive committee decision to enter into the plastics business. Much to your surprise, the price of the firm's common stock subsequently declined from $40 per share to $30 per share. While there have been several changes in financial markets during this period, you are anxious to determine how the market perceives the relevant risk of your firm. Assume that the market is in equilibrium. From the following data you find that the beta value associated with your firm has changed from an old beta of ____ to a new beta of ____.\n\n• The real risk-free rate is 2 percent, but the inflation premium has increased from 4 percent to 6 percent.\n\n• The expected growth rate has been re-evaluated by security analysts, and a 10.5 percent rate is considered to be more realistic than the previous 5 percent rate. This change had nothing to do with the move into plastics; it would have occurred anyway.\n\n• The risk aversion attitude of the market has shifted somewhat, and now the market risk premium is 3 percent instead of 2 percent.\n\n• The next dividend, D1, was expected to be $2 per share, assuming the \"old\" 5 percent growth rate.",
+      "choices": [
+        "2.00; 1.50",
+        "1.50; 3.00",
+        "2.00; 3.17",
+        "1.67; 2.00",
+        "1.50; 1.67"
+      ],
+      "answer": "C",
+      "explanation": "Calculate old required return and beta:\n\nks(old) =  $2   + 0.05 = 0.10.\n\n           $40\n\n0.10 = kRF + (RPM)bOld = 0.06 + (0.02)bOld; bOld = 2.00.\n\nCalculate new required return and beta:\n\nNote that D0 =      $2.00  = $1.90476.\n\n                     1.05\n\nD1,New = $1.90476(1.105) = $2.10476.\n\nks(New) =  2.10476   + 0.105 = 0.1752.\n\n               $30\n\n0.1752 = 0.08 + (0.03)bNew; bNew = 3.172   3.17."
+    },
+    {
+      "id": "bb101",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Risk and stock value",
+      "source": "Black Book Ch. 7 Q101",
+      "question": "The probability distribution for kM for the coming year is as follows:\n\n```\nProbability          kM\n0.05                 7%\n0.30                 8\n0.30                 9\n0.30                 10\n0.05                 12\n```\n\nIf kRF = 6.05% and Stock X has a beta of 2.0, an expected constant growth rate of 7 percent, and D0 = $2, what market price gives the investor a return consistent with the stock's risk?",
+      "choices": [
+        "$25.00",
+        "$37.50",
+        "$21.72",
+        "$42.38",
+        "$56.94"
+      ],
+      "answer": "D",
+      "explanation": "Calculate required return on market and stock:\nkM = 0.05(7%) + 0.30(8%) + 0.30(9%) + 0.30(10%) + 0.05(12%) = 9.05%.\nks = 6.05% + (9.05% - 6.05%)2.0 = 12.05%.\n\nCalculate expected equilibrium stock price:\n\n^P0 =      $2(1.07)  = $42.38.\n\n      0.1205 - 0.07"
+    },
+    {
+      "id": "bb102",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q102",
+      "question": "Newburn Entertainment's stock is expected to pay a year-end dividend of $3.00 a share (D1 = $3.00). The stock's dividend is expected to grow at a constant rate of 5 percent a year. The risk-free rate, kRF, is 6 percent and the market risk premium, (kM - kRF), is 5 percent. The stock has a beta of 0.8. What is the stock's expected price five years from now?",
+      "choices": [
+        "$60.00",
+        "$76.58",
+        "$96.63",
+        "$72.11",
+        "$68.96"
+      ],
+      "answer": "B",
+      "explanation": "First, find ks = 6% + 5%(0.8) = 10%. Then, find P0 = D1/(ks - g). P0 =\n\n$3.00/(0.10 - 0.05) = $60. Finally, compound this at the 5% growth rate\nfor 5 years to find P^5 . P^5 = $60(1.05)5 = $76.58."
+    },
+    {
+      "id": "bb103",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q103",
+      "question": "A stock currently sells for $28 a share. Its dividend is growing at a constant rate, and its dividend yield is 5 percent. The required rate of return on the company's stock is expected to remain constant at 13 percent. What is the expected stock price seven years from now?",
+      "choices": [
+        "$24.62",
+        "$29.99",
+        "$39.40",
+        "$41.83",
+        "$47.99"
+      ],
+      "answer": "E",
+      "explanation": "The growth rate is the required return minus the dividend yield.\ng = 0.13 - 0.05 = 0.08.\n\nWhat is D1?\n0.05 = D1/$28\n\n    D1 = $1.40.\n\nWhat will be the Year 8 dividend?\nD8 = D1  (1 + g)7 = $1.40  (1.08)7 = $2.399354.\n\nThe Year 7 price is given by:\nP^7 = D8/(ks - g) = $2.399354/0.05 = $47.99."
+    },
+    {
+      "id": "bb104",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q104",
+      "question": "Graham Enterprises anticipates that its dividend at the end of the year will be $2.00 a share (D1 = $2.00). The dividend is expected to grow at a constant rate of 7 percent a year. The risk-free rate is 6 percent, the market risk premium is 5 percent, and the company's beta equals 1.2. What is the expected stock price five years from now?",
+      "choices": [
+        "$52.43",
+        "$56.10",
+        "$63.49",
+        "$70.49",
+        "$72.54"
+      ],
+      "answer": "B",
+      "explanation": "First, find D6 = $2.00(1.07)5 = $2.8051. Then, calculate ks = 0.06 +\n0.05(1.2) = 0.12.\nIt follows that: P5 = $2.8051/(0.12 - 0.07) = $56.10."
+    },
+    {
+      "id": "bb105",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q105",
+      "question": "Kirkland Motors expects to pay a $2.00 per share dividend on its common stock at the end of the year (D1 = $2.00). The stock currently sells for $20.00 a share. The required rate of return on the company's stock is 12 percent (ks = 0.12). The dividend is expected to grow at some constant rate over time. What is the expected stock price five years from now, that is, what is P^5 ?",
+      "choices": [
+        "$21.65",
+        "$22.08",
+        "$25.64",
+        "$35.25",
+        "$36.78"
+      ],
+      "answer": "B",
+      "explanation": "To find the growth rate:\nks = D1/P0 + g\nTherefore ks - D1/P0 = g\n\n          0.12 - $2/$20 = 0.02.\n\nTo find P^5 we can use the following formula:\nP^5 = D6/ks - g).\n\nWe therefore need D6.\nD6 = D1(1 + g)5\n\n    = $2(1.02)5 = $2.208.\nTherefore P^5 = D6/ks - g) = $2.208/0.12 - 0.02) = $22.08."
+    },
+    {
+      "id": "bb106",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q106",
+      "question": "McNally Motors has yet to pay a dividend on its common stock. However, the company expects to pay a $1.00 dividend starting two years from now (D2 = $1.00). Thereafter, the stock's dividend is expected to grow at a constant rate of 5 percent a year. The stock's beta is 1.4, the risk-free rate is kRF = 0.06, and the expected market return is kM = 0.12. What is the stock's expected price four years from now, that is, what is P^4 ?",
+      "choices": [
+        "$10.63",
+        "$12.32",
+        "$11.87",
+        "$13.58",
+        "$11.21"
+      ],
+      "answer": "B",
+      "explanation": "Step 1: Find the cost of equity:\n                ks = 6% + (12% - 6%)1.4 = 14.4%.\n\nStep 2:  Find the value of the stock at the end of Year 1:\n         P^1 = D2/(ks - g) = $1.00/(0.144 - 0.05) = $10.6383.\n\nStep 3:  Find the value of the stock in Year 4:\n         P^4 = P^1 (1.05)3 = $10.6383(1.05)3 = $12.3152  $12.32."
+    },
+    {
+      "id": "bb107",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q107",
+      "question": "Dawson Energy is expected to pay an end-of-year dividend, D1, of $2.00 per share, and it is expected to grow at a constant rate over time. The stock has a required rate of return of 14 percent and a dividend yield, D1/P0, of 5 percent. What is the expected price of the stock five years from today?",
+      "choices": [
+        "$77.02",
+        "$61.54",
+        "$56.46",
+        "$40.00",
+        "$51.05"
+      ],
+      "answer": "B",
+      "explanation": "Step 1:  Determine the stock's capital gains yield, g:\n           ks = D1/P0 + g\n\n         14% = 5% + g\n\n          9% = g.\n         This is the stock's growth rate.\n\nStep 2:  Calculate the stock's price today:\n         P0 = D1/(ks - g)\n\n             = $2.00/(0.14 - 0.09)\n             = $40.\n\nStep 3: Calculate the stock's price 5 years from today:\n                P^5 = $40  (1.09)5 = $61.545  $61.54.\n\nIf the stock price today is $40 and the capital gains yield is\n9 percent, the stock price must grow by 9 percent per year for the next\nfive years, because this stock is a constant growth stock."
+    },
+    {
+      "id": "bb108",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q108",
+      "question": "A stock is expected to pay a $2.50 dividend at the end of the year (D1 = $2.50). The dividend is expected to grow at a constant rate of 6 percent a year. The stock's beta is 1.2, the risk-free rate is 4 percent, and the market risk premium is 5 percent. What is the expected stock price eight years from today?",
+      "choices": [
+        "$105.59",
+        "$104.86",
+        "$133.97",
+        "$ 65.79",
+        "$ 99.62"
+      ],
+      "answer": "E",
+      "explanation": "Step 1:  Calculate the firm's cost of equity:\n         ks = kRF + (RPM)b\n\n              = 4% + (5%)1.2\n              = 10%.\n\nStep 2:  Calculate the firm's         stock  price  today:\n         P0 = D1\n\n                 ks - g\n\n             = $2.50\n                 0.10 - 0.06\n\n             = $62.50.\n\nStep 3:  Find the expected stock price eight years from today:\n         P^N = $62.50  (1 + g)N\n         P^8 = $62.50  (1.06)8\n\n              = $99.6155  $99.62."
+    },
+    {
+      "id": "bb109",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "FCF model for valuing stock",
+      "source": "Black Book Ch. 7 Q109",
+      "question": "Today is December 31, 2003. Airlines:\n\n• After-tax, operating income [EBIT(1 - T)] for the year 2004 is expected to be $400 million.\n\n• The company's depreciation expense for the year 2004 is expected to be $80 million.\n\n• The company's capital expenditures for the year 2004 are expected to be $160 million.\n\n• No change is expected in the company's net operating working capital.\n\n• The company's free cash flow is expected to grow at a constant rate of 5 percent per year.\n\n• The company's cost of equity is 14 percent.\n\n• The company's WACC is 10 percent.\n\n• The current market value of the company's debt is $1.4 billion.\n\n• The company currently has 125 million shares of stock outstanding.\n\nUsing the free cash flow valuation method, what should be the company's stock price today?",
+      "choices": [
+        "$ 40",
+        "$ 50",
+        "$ 25",
+        "$ 85",
+        "$100"
+      ],
+      "answer": "A",
+      "explanation": "Step 1:  Calculate the free cash flow amount:\n\n                                                              Net\n                                                             operating\n                                                    Capital\n         FCF1 = EBIT(1 - T) + Depreciation - Expenditures    working\n\n                                                                       capital\n\n                     = $400 million + $80 million - $160 million - $0\n\n                     = $320 million.\n\nStep 2: Calculate the firm value today using the constant growth\n                corporate value model:\n                Firm value = FCF1\n                                         WACC - g\n                                              $320\n                                    =\n                                        0.10 - 0.05\n\n             $320\n         =\n\n             0.05\n\n         = $6,400 million.\n\n         This is the total firm value today.\n\nStep 3:  Determine the market value of the equity and price per share:\n                           MVTotal = MVEquity + MVDebt\n\n           $6,400 million = MVEquity + $1,400 million\n                         MVEquity = $5,000 million.\n\n         This is today's market value of the firm's equity. Divide by the\n         number of shares to find the current price per share.\n         $5,000 million/125 million = $40.00."
+    },
+    {
+      "id": "bb110",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "FCF model for valuing stock",
+      "source": "Black Book Ch. 7 Q110",
+      "question": "A stock market analyst is evaluating the common stock of Keane Investment. She estimates that the company's operating income (EBIT) for the next year will be $800 million. Furthermore, she predicts that Keane Investment will require $255 million in gross capital expenditures (gross expenditures represent capital expenditures before deducting depreciation) next year. In addition, next year's depreciation expense will be $75 million, and no changes in net operating working capital are expected. Free cash flow is expected to grow at a constant annual rate of 6 percent a year. The company's WACC is 9 percent, its cost of equity is 14 percent, and its before-tax cost of debt is 7 percent. The company has $900 million of debt, $500 million of preferred stock, and has 200 million outstanding shares of common stock. The firm's tax rate is 40 percent. Using the free cash flow valuation method, what is the predicted price of the stock today?",
+      "choices": [
+        "$ 11.75",
+        "$ 43.00",
+        "$ 55.50",
+        "$ 96.33",
+        "$108.83"
+      ],
+      "answer": "B",
+      "explanation": "First, we must find the expected free cash flow to be generated next year.\n(Remember, there was no change in net operating working capital.)\n\nFCF1 = EBIT(1 - T) + Depreciation - Gross capital expenditures\nFCF1 = $800(1 - 0.4) + $75 - $255\nFCF1 = $300 million.\n\nNow, we can find the value of the entire firm since there is a constant\ngrowth assumption.\n\nValue of firm = FCF1/(WACC - g)\nValue of firm = $300/(0.09 - 0.06)\nValue of firm = $10,000 million.\n\nNext, we must find the value of the firm's equity.\n\nValue of equity = Value of firm - Value of debt and preferred stock\nValue of equity = $10,000 - ($900 + $500)\nValue of equity = $8,600 million.\n\nTo find the value per share of stock, we must divide the total value of\nthe firm's equity by the number of shares outstanding.\n\nValue per share = Value of equity/# of shares\nValue per share = $8,600/200\nValue per share = $43.00."
+    },
+    {
+      "id": "bb111",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "FCF model for valuing stock",
+      "source": "Black Book Ch. 7 Q111",
+      "question": "An analyst is trying to estimate the intrinsic value of Burress Inc. The analyst has estimated the company's free cash flows for the following years:\n\n```\nYear    Free Cash Flow\n   1           $3,000\n   2            4,000\n   3            5,000\n```\n\nThe analyst estimates that after three years (t = 3) the company's free cash flow will grow at a constant rate of 6 percent per year. The analyst estimates that the company's weighted average cost of capital is 10 percent. The company's debt and preferred stock has a total market value of $25,000 and there are 1,000 outstanding shares of common stock. What is the (per-share) intrinsic value of the company's common stock?",
+      "choices": [
+        "$ 78.31",
+        "$ 84.34",
+        "$ 98.55",
+        "$109.34",
+        "$112.50"
+      ],
+      "answer": "B",
+      "explanation": "Time Line:           0 10% 1               2          3\n                     |            |        |\nFCFs                                     4,000        |\nContinuing Value                  3,000\nTotal FCFs                               4,000     5,000 5,000(1 + 0.06)\n                     0            3,000         132,500 = 0.10 - 0.06\n                                                137,500\n\nEnter the following data as inputs in the financial calculator:\nCF0 = 0; CF1 = 3000; CF2 = 4000; CF3 = 137500; I = 10; and then solve for\nNPV = Total value of firm = $109,338.84.\n\nSo, the entire company is worth $109,338.84. This, less the market value\nof debt and preferred stock, which was given in the problem, leaves\n$109,338.84 - $25,000 = $84,338.84 as the value of the firm's common\nequity. The value of its common stock is calculated as $84,338.84/1,000\nshares = $84.34/share."
+    },
+    {
+      "id": "bb112",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "FCF model for valuing stock",
+      "source": "Black Book Ch. 7 Q112",
+      "question": "An analyst has collected the following information about Franklin Electric:\n\n• Projected EBIT for the next year $300 million.\n\n• Projected depreciation expense for the next year $50 million.\n\n• Projected capital expenditures for the next year $100 million.\n\n• Projected increase in operating working capital next year $60 million.\n\n• Tax rate 40%.\n\n• WACC 10%.\n\n• Cost of equity 13%.\n\n• Market value of debt and preferred stock today $500 million.\n\n• Number of shares outstanding today 20 million.\n\nThe company's free cash flow is expected to grow at a constant rate of 6 percent a year. The analyst uses the corporate value model approach to estimate the stock's intrinsic value. What is the stock's intrinsic value today?",
+      "choices": [
+        "$ 87.50",
+        "$212.50",
+        "$110.71",
+        "$ 25.00",
+        "$ 62.50"
+      ],
+      "answer": "E",
+      "explanation": "Step 1:  Calculate the firm's free cash flows (in millions of dollars) for\nStep 2:  the next year:\n         FCF1 = EBIT(1 - T) + Dep - Cap Exp.  NOWC\n\n                 = $300(1 - 0.4) + $50 - $100 - $60\n                 = $70 million.\n\n         Calculate total firm value (TFV) today:\n         TFV = FCF1/(WACC - g)\n\n               = $70/(0.10 - 0.06)\n               = $1,750 million.\n\n      Step 3:  Calculate the firm's equity value      today by     subtracting  today's\n               market value of the firm's debt and    preferred    stock:\n               MVE = TFV - MVD+P\n\n                    = $1,750 - $500\n                    = $1,250 million.\n\n      Step 4:  Calculate the firm's price per share today:\n               P0 = MVE/# shares\n\n                   = $1,250/20\n                   = $62.50."
+    },
+    {
+      "id": "bb113",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "New equity and equilibrium price",
+      "source": "Black Book Ch. 7 Q113",
+      "question": "Nahanni Treasures Corporation is planning a new common stock issue of five million shares to fund a new project. The increase in shares will bring to 25 million the number of shares outstanding. Nahanni's long-term growth rate is 6 percent, and its current required rate of return is 12.6 percent. The firm just paid a $1.00 dividend and the stock sells for $16.06 in the market. When the new equity issue was announced, the firm's stock price dropped. Nahanni estimates that the company's growth rate will increase to 6.5 percent with the new project, but since the project is riskier than average, the firm's cost of capital will increase to 13.5 percent. Using the DCF growth model, what is the change in the equilibrium stock price?",
+      "choices": [
+        "-$1.77",
+        "-$1.06",
+        "-$0.85",
+        "-$0.66",
+        "-$0.08"
+      ],
+      "answer": "C",
+      "explanation": "Calculate new equilibrium price and determine change:\n\nP0, Old = D0 (1.06) = $1.00(1.06) = $16.06.\n         0.126 - 0.06         0.066\n\nP0, New = $1.00(1 + gNew) = $1.00(1.065) = $1.065 = $15.21.\n             k^s, New - gNew  0.135 - 0.065  0.07\n\nChange in price = $15.21 - $16.06 = -$0.85."
+    },
+    {
+      "id": "bb114",
+      "section": "Black Book: Hard Problems",
+      "difficulty": "hard",
+      "topic": "Risk and stock price",
+      "source": "Black Book Ch. 7 Q114",
+      "question": "Hard Hat Construction's stock is currently selling at an equilibrium price of $30 per share. The firm has been experiencing a 6 percent annual growth rate. Last year's earnings per share, E0, were $4.00, and the dividend payout ratio is 40 percent. The risk-free rate is 8 percent, and the market risk premium is 5 percent. If market risk (beta) increases by 50 percent, and all other factors remain constant, by how much will the stock price change? (Hint: Use four decimal places in your calculations.)",
+      "choices": [
+        "-$ 7.33",
+        "+$ 7.14",
+        "-$15.00",
+        "-$15.22",
+        "+$22.63"
+      ],
+      "answer": "A",
+      "explanation": "Calculate the required rate of return:\n\nD0 = E0(Payout ratio) = $4.00(0.40) = $1.60.\n\n^ D0(1 + g)                   $1.60(1.06)\nks =              + g =                    + 0.06 = 11.65%.\n                              $30\n         P0\n\nCalculate beta:\n\n11.65% = 8% + (5%)b; b = 0.73.\n\nCalculate the new beta:\nbNew = 0.73(1.5) = 1.095.\n\nCalculate the new required rate of return:\nks = 8% + (5%)1.095 = 13.475%  13.48%.\n\nCalculate the new expected equilibrium stock price:\n\n^P0 =    $1.696          = $22.67.\n\n      0.1348 - 0.06\n\nChange in stock price = $22.67 - $30.00 = -$7.33."
+    },
+    {
+      "id": "bb115",
+      "section": "Black Book: Hard Problems",
+      "difficulty": "hard",
+      "topic": "Constant growth stock",
+      "source": "Black Book Ch. 7 Q115",
+      "question": "Philadelphia Corporation's stock recently paid a dividend of $2.00 per share (D0 = $2), and the stock is in equilibrium. The company has a constant growth rate of 5 percent and a beta equal to 1.5. The required rate of return on the market is 15 percent, and the risk-free rate is 7 percent. Philadelphia is considering a change in policy that will increase its beta coefficient to 1.75. If market conditions remain unchanged, what new constant growth rate will cause Philadelphia's common stock price to remain unchanged?",
+      "choices": [
+        "8.85%",
+        "18.53%",
+        "6.77%",
+        "5.88%",
+        "13.52%"
+      ],
+      "answer": "C",
+      "explanation": "Calculate the initial required return and equilibrium price:\n\n      ks = 0.07 + (0.08)1.5 = 0.19 = 19%.\n\n      P0 = D0(1 + g) = $2(1.05) = $15.00.\n              ks - g      0.19 - 0.05\n\n      Calculate the new required return and equilibrium growth rate:\n\n      New ks = 0.07 + (0.08)1.75 = 0.21.\n\n      0.21 =   $2(1 + g)  + g; P0 = $15 (Unchanged).\n\n                   $15\n\n$3.15 - $2.0 = $2g + $15g\n            $1.15 = $17g\n                   g = 0.06765  6.77%."
+    },
+    {
+      "id": "bb116",
+      "section": "Black Book: Hard Problems",
+      "difficulty": "hard",
+      "topic": "Supernormal growth stock",
+      "source": "Black Book Ch. 7 Q116",
+      "question": "The Hart Mountain Company has recently discovered a new type of kitty litter that is extremely absorbent. It is expected that the firm will experience (beginning now) an unusually high growth rate (20 percent) during the period (3 years) it has exclusive rights to the property where the raw material used to make this kitty litter is found. How-ever, beginning with the fourth year the firm's competition will have access to the material, and from that time on the firm will achieve a normal growth rate of 8 percent annually. During the rapid growth period, the firm's dividend payout ratio will be relatively low (20 percent) in order to conserve funds for reinvestment. However, the decrease in growth in the fourth year will be accompanied by an increase in the dividend payout to 50 percent. Last year's earnings were E0 = $2.00 per share, and the firm's required return is 10 percent. What should be the current price of the common stock?",
+      "choices": [
+        "$66.50",
+        "$87.96",
+        "$71.54",
+        "$61.78",
+        "$93.50"
+      ],
+      "answer": "C",
+      "explanation": "Time line:\n\n   0 ks = 10% 1 2                                             3 gn = 8%         4 Years\n        gs = 20%              gs = 20%           gs = 20%     |                 |\n   |                       |                  |                            E4 = 3.73248\n\nE0 = 2.00               E1 = 2.40       E2 = 2.88          E3 = 3.456\n\nP0 = ?                  D1 = 0.48       D2 = 0.576 D3 = 0.6912 D4 = 1.86624\n\n                                    ^P3 =        1.86624      = 93.31\n\n                                              0.10 - 0.08\n\nCFt 0                         0.48               0.576        94.003\n\nNumerical solution:\n\nP0 =  $0.48 $0.576 $94.003\n                     +        2+        3 = $71.54.\n      1.10 (1.10) (1.10)\n\nFinancial calculator solution:\nInputs: CF0 = 0; CF1 = 0.48; CF2 = 0.576; CF3 = 94.003; I = 10.\nOutput: NPV = $71.54. P0 = $71.54."
+    },
+    {
+      "id": "bb117",
+      "section": "Black Book: Hard Problems",
+      "difficulty": "hard",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q117",
+      "question": "Club Auto Parts' last dividend, D0, was $0.50, and the company expects to experience no growth for the next 2 years. However, Club will grow at an annual rate of 5 percent in the third and fourth years, and, beginning with the fifth year, it should attain a 10 percent growth rate that it will sustain thereafter. Club has a required rate of return of 12 percent. What should be the price per share of Club stock at the end of the second year, P^2 ?",
+      "choices": [
+        "$19.98",
+        "$25.08",
+        "$31.21",
+        "$19.48",
+        "$27.55"
+      ],
+      "answer": "B",
+      "explanation": "Time line:\n\n0 ks = 12% 1               g1 = 0%   2 g2 = 5%    3 g2 = 5%    4 gn = 10%   5 Years\n      g1 = 0%                        |            |            |            |\n|                       |           0.50         0.525        0.55125      0.606375\n\n0.50                 0.50\n\n                              P^ 2  = ?       = 0.606375\n                                         P^4     0.12 - 0.10\nCFt                                                    0.525  = 30.319\n                                    0                            30.87025\n\nNumerical solution:\n\n^ $0.525 $30.87025\nP2 =          +        2 = $25.08.\n      1.12       (1.12)\n\nFinancial calculator solution:\nCalculate the PV of the stock's expected cash flows as of time = 2.\nInputs: CF0 = 0; CF1 = 0.525; CF2 = 30.87025; I = 12.\nOutput: NPV = $25.08. P^2 = $25.08."
+    },
+    {
+      "id": "bb118",
+      "section": "Black Book: Hard Problems",
+      "difficulty": "hard",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q118",
+      "question": "Modular Systems Inc. just paid dividend D0, and it is expecting both earnings and dividends to grow by 0 percent in Year 2, by 5 percent in Year 3, and at a rate of 10 percent in Year 4 and thereafter. The required return on Modular is 15 percent, and it sells at its equilibrium price, P0 = $49.87. What is the expected value of the next dividend, D1? (Hint: Draw a time line and then set up and solve an equation with one unknown, D1.)",
+      "choices": [
+        "It cannot be estimated without more data.",
+        "$1.35",
+        "$1.85",
+        "$2.35",
+        "$2.85"
+      ],
+      "answer": "E",
+      "explanation": "Time line:\n\n0 ks = 15%         1 g1 = 0%       2 g2 = 5%     3 gn = 10%      4 Years\n|                  |               |             |               |\n\nP0 = 49.87 D1 = ?              D2 = D1        D3 = D2(1.05) D4 = D3(1.10)\n\n                                              ^            D4\n                                              P3 =\n                                                    0.15 - 0.10\n\nP0 = $49.87.\n\n^ (1.05)(1.10)D1\nP3 =               .\n      0.15 - 0.10\n\n                                    (1.05)(1.10)D1\n\n$49.87 = D1 + 2 D1 + 3 (1.05)D1 +             0.15 - 0.10\n               1.15 (1.15) (1.15)                (1.15)3\n\n$49.87 = 0.8696D1 + 0.7561D1 + 0.6904D1 + 15.1886D1 = 17.5047D1\n\n      D1 = $2.85."
+    },
+    {
+      "id": "bb119",
+      "section": "Black Book: Hard Problems",
+      "difficulty": "hard",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q119",
+      "question": "A financial analyst has been following Fast Start Inc., a new high-growth company. She estimates that the current risk-free rate is 6.25 percent, the market risk premium is 5 percent, and that Fast Start's beta is 1.75.\n\nThe current earnings per share (EPS0) are $2.50. The company has a 40 percent payout ratio. The analyst estimates that the company's dividend will grow at a rate of 25 percent this year, 20 percent next year, and 15 percent the following year. After three years the dividend is expected to grow at a constant rate of 7 percent a year. The company is expected to maintain its current payout ratio. The analyst believes that the stock is fairly priced. What is the current stock price?",
+      "choices": [
+        "$16.51",
+        "$17.33",
+        "$18.53",
+        "$19.25",
+        "$19.89"
+      ],
+      "answer": "C",
+      "explanation": "Use the SML equation to solve for ks:\nks = 0.0625 + (0.05)(1.75) = 0.15 = 15%.\n\nCalculate dividend per share:\nD0 = (EPS0)(Payout ratio) = ($2.50)(0.4) = $1.00.\n\nCalculate the dividend and price stream (once the stock becomes a constant\ngrowth stock):\nD0 = $1.00; D1 = $1.00  1.25 = $1.25; D2 = $1.25  1.20 = $1.50;\n\nD3 = $1.50  1.15 = $1.725; D4 = $1.725  1.07 = $1.84575;\n\n^ $1.725(1.07)       = $23.071875.\nP3 =\n      0.15 - 0.07\n\nPut all the cash flows on a time line:\n\nTime line:\n\n      0 ks = 15% 1                     2                 3       4 Years\n                                                                 |\n      | gs = 25% | gs = 20% | gs = 15% | gn = 7%                1.84575\n\n      1.00           1.2500            1.5000      1.7250         1.84575\n                                                                0.15 - 0.07\nP0 = ?\n\n                                                   23.071875 =\n\nCFt 0                1.2500            1.5000 24.796875\n\nFinally, use the cash flow register to calculate PV:\nCF0 = 0; CF1 = 1.25; CF2 = 1.50; CF3 = 24.796875; I = 15%; and then solve\nfor NPV = $18.53."
+    },
+    {
+      "id": "bb120",
+      "section": "Black Book: Hard Problems",
+      "difficulty": "hard",
+      "topic": "Stock growth rate",
+      "source": "Black Book Ch. 7 Q120",
+      "question": "Mulroney Motors' stock has a required return of 10 percent. The stock currently trades at $50 per share. The year-end dividend, D1, is expected to be $1.00 per share. After this payment, the dividend is expected to grow by 25 percent per year for the next three years. That is, D4 = $1.00(1.25)3 = $1.953125. After t = 4, the dividend is expected to grow at a constant rate of X percent per year forever. What is the stock's expected constant growth rate after t = 4? In other words, what is X?",
+      "choices": [
+        "5.47%",
+        "6.87%",
+        "6.98%",
+        "8.00%",
+        "8.27%"
+      ],
+      "answer": "B",
+      "explanation": "ks = 10%; P0 = $50; D1 = $1.00; g4+ = ?\n\nStep 1: Draw the time line:\n\n                     0 ks = 10%  1           2              3   4                 5 Years\n                     | gs = 25%  | gs = 25%  | gs = 25%                           |\n                                                            | gs = 25% |  gn = ?\n\n                                 1.00        1.25        1.5625 1.953125\n\n            P0 = 50\n\nStep 2:  Calculate the dividends:\n         g2-4 = 25%.\n         D1 = $1.00.\n         D2 = $1  (1.25) = $1.25.\n         D3 = $1.25  (1.25) = $1.5625.\n         D4 = $1.5625  (1.25) = $1.953125.\n\nStep 3:  Calculate the present value of these dividends:\n         PVdiv = $1.00/1.10 + $1.25/(1.10)2 + $1.5625/(1.10)3 +\n\n                     $1.953125/(1.10)4\n         PVdiv = $0.9091 + $1.0331 + $1.1739 + $1.3340\n         PVdiv = $4.4501  $4.45.\n\nStep 4:  Determine the stock's price at t = 4:\n         The PV of the stock at t = 4 must be the future value of the\n         difference between today's price and the PV of the dividends\n         through t = 4.\n         PV P^4 = $50.00 - $4.45\n\n                  = $45.55.\n\n         FV = $45.55(1.10)4 = $66.6898.\n         This is the price at t = 4.\n\nStep 5:  Determine the constant growth rate:\n                                         P^4 = D5/(ks - g)\n                                         P^4 = [D4(1 + g)]/(ks - g)\n\n                              $66.6898 = [$1.953125(1 + g)]/(0.10 - g)\n         $6.66898 - $66.6898g = $1.953125 + $1.953125g\n         $6.66898 - $1.953125 = $68.64288g\n\n              $4.7158/$68.64288 = g\n                                   6.87% = g."
+    },
+    {
+      "id": "bb121",
+      "section": "Black Book: Hard Problems",
+      "difficulty": "hard",
+      "topic": "Preferred stock value",
+      "source": "Black Book Ch. 7 Q121",
+      "question": "Assume that you would like to purchase 100 shares of preferred stock that pays an annual dividend of $6 per share. However, you have limited resources now, so you cannot afford the purchase price. In fact, the best that you can do now is to invest your money in a bank account earning a simple interest rate of 6 percent, but where interest is compounded daily (assume a 365-day year). Because the preferred stock is riskier, it has a required annual rate of return of 12 percent. (Assume that this rate will remain constant over the next 5 years.) For you to be able to purchase this stock at the end of 5 years, how much must you deposit in your bank account today, at t = 0?",
+      "choices": [
+        "$2,985.00",
+        "$4,291.23",
+        "$3,138.52",
+        "$3,704.18",
+        "$4,831.25"
+      ],
+      "answer": "D",
+      "explanation": "Time line:\n\n0 EAR = 6.183% 1            2            3  4                           5 Years\n\n|           |               |            |  |                           |\n\nPV = ?                                                                  FV = 5,000\n\nNumerical solution:\nPp = $6 = $50.\n\n         0.12\n\nAmount needed to buy 100 shares:\n$50(100) = $5,000.\n\n   $5,000 = PV(1 + 0.06/365)5(365)\n   $5,000 = PV(1.3498)\n\n          PV = $3,704.18.\n\nFinancial calculator solution:\nConvert the nominal interest rate to an EAR:\nInputs: P/YR = 365; NOM% = 6. Output: EFF% = EAR = 6.18313%.\n\nCalculate PV of deposit required today:\nInputs: N = 5; I = 6.18313; PMT = 0; FV = 5000.\nOutput: PV = -$3,704.182  -$3,704.18. Deposit $3,704.18.\n\nNote: If the financial calculator derived EAR is expressed to five\ndecimal places it yields a PV = -$3,704.18."
+    },
+    {
+      "id": "bb122",
+      "section": "Black Book: Hard Problems",
+      "difficulty": "hard",
+      "topic": "Firm value",
+      "source": "Black Book Ch. 7 Q122",
+      "question": "Assume an all equity firm has been growing at a 15 percent annual rate and is expected to continue to do so for 3 more years. At that time, growth is expected to slow to a constant 4 percent rate. The firm maintains a 30 percent payout ratio, and this year's retained earnings net of dividends were $1.4 million. The firm's beta is 1.25, the risk-free rate is 8 percent, and the market risk premium is 4 percent. If the market is in equilibrium, what is the market value of the firm's common equity (1 million shares outstanding)?",
+      "choices": [
+        "$ 6.41 million",
+        "$12.96 million",
+        "$ 9.17 million",
+        "$10.56 million",
+        "$ 7.32 million Multiple Part: (The following information applies to the next two problems.) Bridges & Associates' stock is expected to pay a $0.75 per-share dividend at the end of the year. The dividend is expected to grow 25 percent the next year and 35 percent the following year. After t = 3, the dividend is expected to grow at a constant rate of 6 percent a year. The company's cost of common equity is 10 percent and it is expected to remain constant."
+      ],
+      "answer": "C",
+      "explanation": "Time line:                         1 gs = 15%        2  gs = 15%  3  gn = 4%           4 Years\n                                   |                                                   |\n                       ks = 13%  0.69                |            |                  0.949026\n\n            0 gs = 15%                        P^3 =  0.7935       0.912525\n            |\n          0.60                   0.69                 0.949026\nP0 = ?                                                                   = 10.54473\n\nCFt 0                                                0.13 - 0.04\n\n                                                     0.7935       11.4573\n\nCalculate required rate of return:\nks = 8% + (4%)1.25 = 13.0%.\n\nCalculate net income, total dividends, and D0:\nNet income = $1.4 million/(1 - payout ratio)\n\n                   = $1.4 million/0.7 = $2.0 million.\n Dividends = $2.0 million  0.3 = $0.6 million.\n\n              D0 = $600,000/1,000,000 shares = $0.60.\n\nFinancial calculator solution:\nInputs: CF0 = 0; CF1 = 0.69; CF2 = 0.7935; CF3 = 11.4573; I = 13.\nOutput: NPV = $9.17. P0 = $9.17.\n\nvalue Total market = P0  outstanding Shares = $9.17  1,000,000 = $9,170,000."
+    },
+    {
+      "id": "bb123",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Stock price: nonconstant growth",
+      "source": "Black Book Ch. 7 Q123",
+      "question": "What is the expected price of the stock today?",
+      "choices": [
+        "$18.75",
+        "$27.61",
+        "$30.77",
+        "$34.50",
+        "$35.50"
+      ],
+      "answer": "B",
+      "explanation": "First, we must       find the explicit forecasted dividends:\nD1 = 0.75\nD2 = 0.9375                (0.75  1.25 = 0.9375)\nD3 = 1.265625              (0.9375  1.35 = 1.265625)\nD4 = 1.3415625             (1.265625  1.06 = 1.3415625)\n\nNow, we need to determine the terminal value of the stock in Year 3, using\nthe Year 4 dividend:\n\nP^3 = D4/(ks - g)\nP^3 = $1.3415625/(0.10 - 0.06)\nP^3 = $33.5390625.\n\n      $0.75 $0.9375 ($1.265625 + $33.5390625\nP0 =        +              2+\n                                          3\n      1.10           (1.10)       (1.10)\n\n= $0.6818 + $0.7748 + $26.1493\n= $27.6059  $27.61.\n\nAlternatively, enter all of the dividend cash flows along with the\nterminal value of the stock into the cash flow register and enter the 10%\ncost of equity to solve for the price of the stock today:\nCF0 = 0; CF1 = 0.75; CF2 = 0.9375; CF3 = 1.265625 + 33.5390625 =\n34.8046875; I/YR = 10; and then solve for NPV = $27.61."
+    },
+    {
+      "id": "bb124",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Future stock price: constant growth",
+      "source": "Black Book Ch. 7 Q124",
+      "question": "What is the expected price of the stock 10 years from today?",
+      "choices": [
+        "$47.58",
+        "$49.45",
+        "$50.43",
+        "$53.46",
+        "$55.10 (The following information applies to the next two problems.) An analyst has put together the following spreadsheet to estimate the intrinsic value of the stock of Rangan Company (in millions of dollars): Sales t = 1 t = 2 t = 3 NOPAT $3,000 $3,600 $4,500 Net investment in operating capital* 500 600 750 300 400 500 *Net investment in operating capital = Capital expenditures + Changes in net operating capital - Depreciation. After Year 3 (t = 3), assume that the company's free cash flow will grow at a constant rate of 7 percent a year and the company's WACC equals 11 percent. The market value of the company's debt and preferred stock is $700 million. The company has 100 million outstanding shares of common stock."
+      ],
+      "answer": "C",
+      "explanation": "In 10 years, this stock will be a constant growth stock. Therefore, use\nthe constant growth formula and find the price in Year 10. In order to\nfind the value in Year 10, determine the dividend in Year 11:\nD11 = 0.75  1.25  1.35  (1.06)8 = $2.0172.\n\nNow, calculate the stock price in Year 10:\nP^10 = D11/(ks - g)\nP^10 = $2.0172/(0.10 - 0.06)\nP^10 = $50.43.\n\nAlternatively, you could have taken the terminal value P^3 calculated in\nthe previous question and used the constant growth rate to find P^10 :\nP^10 = P^3  (1 + g)7\nP^10 = $33.5391  (1.06)7\nP^10 = $50.43."
+    },
+    {
+      "id": "bb125",
+      "section": "Black Book: Easy Problems",
+      "difficulty": "easy",
+      "topic": "Free cash flow",
+      "source": "Black Book Ch. 7 Q125",
+      "question": "What is the company's free cash flow the first year (t = 1)?",
+      "choices": [
+        "$100 million",
+        "$200 million",
+        "$300 million",
+        "$400 million",
+        "$500 million"
+      ],
+      "answer": "B",
+      "explanation": "FCF1 = EBIT(1 - T) + Depreciation - NOWC - Capital expenditures\n        = $500,000,000 - $300,000,000 = $200,000,000."
+    },
+    {
+      "id": "bb126",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "FCF model for valuing stock",
+      "source": "Black Book Ch. 7 Q126",
+      "question": "Using the free cash flow model, what is the intrinsic value of the company's stock today?",
+      "choices": [
+        "$46.84",
+        "$47.15",
+        "$52.87",
+        "$58.12",
+        "$59.87 (The following information applies to the next two problems.) An analyst is estimating the intrinsic value of the stock of Xavier Company. The analyst estimates that the stock will pay a dividend of $1.75 a share at the end of the year (that is, D^1 = $1.75). The dividend is expected to remain at this level until 4 years from now (that is, D^2 = D^3 = D^4 = $1.75). After this time, the dividend is expected to grow forever at a constant rate of 6 percent a year (that is, D^5 = $1.855). The stock has a required rate of return of 13 percent."
+      ],
+      "answer": "B",
+      "explanation": "Using the FCF model, P^3 = FC^F3 (1.07)/(0.11 - 0.07) = [($750 - $500)\n(1.07)]/0.04 = $6,687.50, which is the value of the firm at t = 3 after\n\nthe dividend is received.\n\nSo, the value of the firm today = $200/(1.11) + $200/(1.11)2 + ($250 +\n$6,687.50)/(1.11)3 = $5,415.1449 million  $5,415 million.\n\nThis is the value of the total firm (debt, preferred stock, and equity),\n\n      so the value of debt and preferred stock must be deducted to arrive at the\n      value of the firm's common equity. The common equity has a value of\n      $5,415 million - $700 million = $4,715 million. So, the price/share =\n      $4,715 million/100 million = $47.15."
+    },
+    {
+      "id": "bb127",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Nonconstant growth stock",
+      "source": "Black Book Ch. 7 Q127",
+      "question": "What is the stock's intrinsic value today? (That is, what is P^0 ?)",
+      "choices": [
+        "$20.93",
+        "$21.46",
+        "$22.91",
+        "$25.00",
+        "$26.50"
+      ],
+      "answer": "B",
+      "explanation": "P^4 = D4(1 + g)/(ks - g) = $1.75(1.06)/(0.13 - 0.06) = $26.50.\n\nP^0 = $1.75/1.13 + $1.75/(1.13)2 + $1.75/(1.13)3 + ($1.75 + $26.50)/(1.13)4\nP^0 = $1.5487 + $1.3705 + $1.2128 + $17.3263\nP^0 = $21.4583  $21.46."
+    },
+    {
+      "id": "bb128",
+      "section": "Black Book: Medium Problems",
+      "difficulty": "medium",
+      "topic": "Future stock price: nonconstant growth",
+      "source": "Black Book Ch. 7 Q128",
+      "question": "Assume that the forecasted dividends and the required return are the same one year from now, as those forecasted today. What is the expected intrinsic value of the stock one year from now, just after the dividend has been paid at t = 1? (That is, what is P^1 ?)",
+      "choices": [
+        "$20.93",
+        "$22.50",
+        "$23.75",
+        "$24.75",
+        "$27.18 CHAPTER 8"
+      ],
+      "answer": "B",
+      "explanation": "P^1 = $1.75/1.13 + $1.75/(1.13)2 + ($1.75 + $26.50)/(1.13)3\nP^1 = $1.5487 + $1.3705 + $19.5787\nP^1 = $22.4979  $22.50."
     }
   ]
 }
