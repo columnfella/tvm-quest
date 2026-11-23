@@ -3,6 +3,7 @@ import { m } from 'framer-motion';
 import { Calculator, Settings, Star } from 'lucide-react';
 import { useCourse, type Chapter } from '@/lib/course';
 import { learnLessons } from '@/lessons';
+import { progressFrom } from '@/lib/progress';
 import { sfx } from '@/lib/sound';
 import { levelInfo, type Game } from '@/lib/store';
 import type { PanelId } from './Game';
@@ -108,13 +109,7 @@ function Sparkline({ seed, progress }: { seed: string; progress: number }) {
   );
 }
 
-/** Chapter progress counts interactive lessons (Learn tab) and exercise sets alike. */
-export function chapterProgress(g: Game, ch: Chapter) {
-  const ids = [...learnLessons(ch.id).map((l) => l.id), ...ch.sections.flatMap((s) => s.lessons.map((l) => l.id))];
-  const done = ids.filter((id) => g.state.lessons[id]?.done).length;
-  const stars = ids.reduce((a, id) => a + (g.state.lessons[id]?.stars ?? 0), 0);
-  return { done, total: ids.length, stars, maxStars: ids.length * 3 };
-}
+export const chapterProgress = (g: Game, ch: Chapter) => progressFrom(g.state.lessons, ch);
 
 function ChapterCard({ ch, i, g, onOpen }: { ch: Chapter; i: number; g: Game; onOpen: () => void }) {
   const course = useCourse();

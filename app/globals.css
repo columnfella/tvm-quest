@@ -731,3 +731,18 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 .hbar-track { height: 22px; border: 2px solid var(--k); border-radius: 8px; background: var(--card-2); overflow: hidden; }
 .hbar { height: 100%; border-right: 2px solid var(--k); transition: width 0.15s linear; }
 @media (max-width: 600px) { .chart text.wf { font-size: 14px; } }
+
+/* ---------- player profiles from the leaderboard ---------- */
+.clickable { cursor: pointer; transition: transform 0.1s, filter 0.1s; }
+.lb-row.clickable:hover { filter: brightness(1.06); transform: translateX(3px); }
+.pod.clickable:hover { transform: translateY(-3px); }
+.clickable:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+.player { display: flex; flex-direction: column; gap: 10px; }
+.player-back { align-self: flex-start; margin-bottom: 4px; }
+.player .profile-head { margin-bottom: 0; }
+.player-av { width: 76px; height: 76px; border-radius: 16px; flex: none; }
+.player-chapters { display: flex; flex-direction: column; gap: 8px; }
+.player-ch { display: flex; align-items: center; gap: 10px; }
+.player-ch-row { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; margin-bottom: 3px; }
+.player-ch-row b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.player-ch-row span { font-weight: 900; color: var(--muted); flex: none; }

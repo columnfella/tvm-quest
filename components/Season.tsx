@@ -3,6 +3,8 @@ import { m } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { formatLeft, seasonEnd } from '@/lib/season';
+import { sfx } from '@/lib/sound';
+import { PlayerView } from './Player';
 import { Asset, Modal } from './ui';
 
 type Player = { name: string; avatar: string; xp: number; level: number; streak: number };
@@ -59,10 +61,20 @@ export function useBoard(open = true) {
   return { board, err, reload: load };
 }
 
-function Row({ p, i, me }: { p: Player; i: number; me?: string }) {
+/** Keyboard + click handlers that make a non-button element open a player's profile. */
+const opener = (name: string, onOpen: (name: string) => void) => ({
+  role: 'button' as const,
+  tabIndex: 0,
+  title: `See ${name}'s profile`,
+  onClick: () => { sfx.tap(); onOpen(name); },
+  onKeyDown: (e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(name); } },
+});
+
+function Row({ p, i, me, onOpen }: { p: Player; i: number; me?: string; onOpen: (name: string) => void }) {
   return (
     <m.li
-      className={`lb-row r${i + 1} ${p.name.toLowerCase() === me?.toLowerCase() ? 'me' : ''}`}
+      {...opener(p.name, onOpen)}
+      className={`lb-row clickable r${i + 1} ${p.name.toLowerCase() === me?.toLowerCase() ? 'me' : ''}`}
       initial={{ x: -30, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 300, damping: 22, delay: Math.min(i, 12) * 0.04 }}
@@ -79,6 +91,7 @@ function Row({ p, i, me }: { p: Player; i: number; me?: string }) {
 export function MiniBoard({ me, onOpen }: { me?: string; onOpen: () => void }) {
   const { board } = useBoard();
   const left = useCountdown();
+  const [viewing, setViewing] = useState<string | null>(null);
   const rank = board?.players.findIndex((p) => p.name.toLowerCase() === me?.toLowerCase()) ?? -1;
   return (
     <div className="card">
@@ -92,13 +105,16 @@ export function MiniBoard({ me, onOpen }: { me?: string; onOpen: () => void }) {
         <p className="lb-empty">No one yet. Be first!</p>
       ) : (
         <ul className="lb-list">
-          {board.players.slice(0, 5).map((p, i) => <Row key={p.name} p={p} i={i} me={me} />)}
-          {rank >= 5 && <Row p={board.players[rank]} i={rank} me={me} />}
+          {board.players.slice(0, 5).map((p, i) => <Row key={p.name} p={p} i={i} me={me} onOpen={setViewing} />)}
+          {rank >= 5 && <Row p={board.players[rank]} i={rank} me={me} onOpen={setViewing} />}
         </ul>
       )}
       <button className="btn3d btn-blue block" onClick={onOpen} style={{ minHeight: 44, fontSize: 17 }}>
         <Asset name="trophy_3d.png" size={22} /> Full leaderboard
       </button>
+      <Modal open={!!viewing} onClose={() => setViewing(null)} title="Player" wide>
+        {viewing && <PlayerView name={viewing} me={me} onBack={() => { setViewing(null); onOpen(); }} />}
+      </Modal>
     </div>
   );
 }
@@ -106,10 +122,13 @@ export function MiniBoard({ me, onOpen }: { me?: string; onOpen: () => void }) {
 export function LeaderboardPanel({ open, onClose, me }: { open: boolean; onClose: () => void; me?: string }) {
   const { board, err, reload } = useBoard(open);
   const left = useCountdown();
+  const [viewing, setViewing] = useState<string | null>(null);
+  useEffect(() => { if (!open) setViewing(null); }, [open]);
   const top = board?.players ?? [];
   const order = [1, 0, 2]; // podium: 2nd, 1st, 3rd
   return (
-    <Modal open={open} onClose={onClose} title="Leaderboard" wide>
+    <Modal open={open} onClose={onClose} title={viewing ? 'Player' : 'Leaderboard'} wide>
+      {viewing ? <PlayerView name={viewing} me={me} onBack={() => setViewing(null)} /> : <>
       <div className="season-card" style={{ marginBottom: 12 }}>
         <div className="timer">
           <Asset name="hourglass_done_3d.png" size={36} />
@@ -126,7 +145,7 @@ export function LeaderboardPanel({ open, onClose, me }: { open: boolean; onClose
           {order.map((idx) => {
             const p = top[idx];
             return (
-              <m.div key={p.name} className={`pod p${idx + 1}`} initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 15, delay: idx === 0 ? 0.35 : idx === 1 ? 0.2 : 0.05 }}>
+              <m.div key={p.name} {...opener(p.name, setViewing)} className={`pod clickable p${idx + 1}`} initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 15, delay: idx === 0 ? 0.35 : idx === 1 ? 0.2 : 0.05 }}>
                 {idx === 0 && <span className="loop-sway"><Asset name="crown_3d.png" size={34} /></span>}
                 <span className="lb-av"><Asset name={p.avatar} size={idx === 0 ? 56 : 44} /></span>
                 <b>{p.name}</b>
@@ -139,9 +158,10 @@ export function LeaderboardPanel({ open, onClose, me }: { open: boolean; onClose
       )}
       {board && top.length === 0 && <p className="lb-empty">Nobody has played this season yet.</p>}
       <ul className="lb-list">
-        {top.slice(top.length >= 3 ? 3 : 0).map((p, i) => <Row key={p.name} p={p} i={i + (top.length >= 3 ? 3 : 0)} me={me} />)}
+        {top.slice(top.length >= 3 ? 3 : 0).map((p, i) => <Row key={p.name} p={p} i={i + (top.length >= 3 ? 3 : 0)} me={me} onOpen={setViewing} />)}
       </ul>
-      {board && <p className="small muted" style={{ marginTop: 10, textAlign: 'center' }}>{board.total} player{board.total === 1 ? '' : 's'} this season</p>}
+      {board && <p className="small muted" style={{ marginTop: 10, textAlign: 'center' }}>{board.total} player{board.total === 1 ? '' : 's'} this season · tap a player to see their profile</p>}
+      </>}
     </Modal>
   );
 }
