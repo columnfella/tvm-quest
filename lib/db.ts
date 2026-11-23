@@ -1,6 +1,6 @@
 // Tiny storage layer. The whole "database" is one hash per weekly season:
 //
-//   key   tvmq:<seasonId>          e.g. tvmq:2026-11-23
+//   key   <courseId>:<seasonId>    e.g. fin3301:2026-11-23   (courseId comes from content/course.json)
 //   field <lowercase username>
 //   value JSON UserRecord
 //
@@ -9,6 +9,7 @@
 // Local dev with no env vars: a JSON file in .data/ that is wiped when the season changes.
 import { promises as fs } from 'fs';
 import path from 'path';
+import { courseId } from './content';
 import { seasonEnd, seasonId } from './season';
 
 export type UserRecord = {
@@ -31,7 +32,8 @@ interface Store {
   all(): Promise<UserRecord[]>;
 }
 
-const key = () => `tvmq:${seasonId()}`;
+const COURSE = courseId();
+const key = () => `${COURSE}:${seasonId()}`;
 
 // ---------- Upstash Redis (REST) ----------
 const REDIS_URL = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;

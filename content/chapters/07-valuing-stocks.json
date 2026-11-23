@@ -1,0 +1,97 @@
+{
+  "number": 7,
+  "title": "Valuing Stocks",
+  "tagline": "Debt vs equity, common & preferred stock, DDM, PVGO, dividends",
+  "icon": "rocket_3d.png",
+  "color": "#ec4899",
+  "calculator": true,
+  "sections": [
+    { "name": "Debt vs Equity", "blurb": "Claims, voting, tax treatment and cost of capital." },
+    { "name": "Common & Preferred Stock", "blurb": "Rights, share counts, voting classes, preferred features, IPOs." },
+    { "name": "Dividend Discount Models", "blurb": "Zero growth, constant growth, multi-stage growth." },
+    { "name": "Growth & Dividend Policy", "blurb": "Sustainable growth, PVGO, dividend signals." }
+  ],
+  "pairsTitle": "Stock Match",
+  "pairsMono": true,
+  "pairs": [
+    { "left": "Zero-growth stock value", "right": "D / r" },
+    { "left": "Constant-growth (Gordon) value", "right": "D_{1} / (r − g)" },
+    { "left": "Next dividend", "right": "D_{1} = D_{0}(1 + g)" },
+    { "left": "Required return (constant growth)", "right": "r = D_{1} / P_{0} + g" },
+    { "left": "Sustainable growth rate", "right": "ROE × retention ratio" },
+    { "left": "Retention ratio", "right": "1 − payout ratio" },
+    { "left": "Payout ratio", "right": "Dividends / earnings" },
+    { "left": "Return on equity", "right": "Net income / equity" },
+    { "left": "PVGO", "right": "P_{0} − EPS / r" },
+    { "left": "Outstanding shares", "right": "Issued − treasury shares" },
+    { "left": "Preferred stock value", "right": "D_{p} / r_{p}" }
+  ],
+  "hints": [
+    {
+      "title": "Dividend discount models",
+      "topics": ["ddm", "growth model", "value", "preferred value", "required return", "two-stage", "price"],
+      "lines": [
+        "Zero growth: P_{0} = D / r",
+        "Constant growth: P_{0} = D_{1} / (r − g), with D_{1} = D_{0}(1 + g), needs r > g",
+        "Multi-stage: PV of early dividends + PV of P_{N} = D_{N+1} / (r − g_{long})"
+      ]
+    },
+    {
+      "title": "Growth & PVGO",
+      "topics": ["sustainable", "pvgo", "payout", "retention"],
+      "lines": [
+        "SGR = ROE × (1 − payout ratio)",
+        "No-growth value = EPS / r (or D / r if all earnings are paid out)",
+        "PVGO = price − no-growth value; negative = growth destroys value"
+      ]
+    },
+    {
+      "title": "Stock basics",
+      "topics": ["*"],
+      "lines": [
+        "Debt: contractual, priority, tax-deductible interest, no vote",
+        "Equity: owners, vote, residual claim, dividends not deductible",
+        "Liquidation order: secured creditors → unsecured creditors → equity",
+        "Outstanding = issued − treasury"
+      ]
+    }
+  ],
+  "questions": [
+    { "id": "1", "section": "Debt vs Equity", "difficulty": "easy", "topic": "Debt vs equity", "question": "Which feature belongs to DEBT rather than equity?", "choices": ["Voting rights", "Ownership of the firm", "A contractual obligation to pay interest and principal", "A residual claim on assets", "Dividends at the board's discretion"], "answer": "C" },
+    { "id": "2", "section": "Debt vs Equity", "difficulty": "easy", "topic": "Liquidation order", "question": "If a firm fails and its assets are sold, in what order are the proceeds paid out?", "choices": ["Equity holders, then unsecured creditors, then secured creditors", "Secured creditors, then unsecured creditors, then equity holders", "Unsecured creditors, then equity holders, then secured creditors", "Everyone is paid equally", "Equity holders first, since they own the firm"], "answer": "B" },
+    { "id": "3", "section": "Debt vs Equity", "difficulty": "medium", "topic": "Tax treatment", "question": "Which payment is tax-deductible for the firm?", "choices": ["Dividends to common shareholders", "Dividends to preferred shareholders", "Interest paid to debt holders", "Share buybacks", "None of them"], "answer": "C", "explanation": "Interest is deducted before taxes (EBIT − interest = taxable income). Dividends are paid from after-tax income." },
+    { "id": "4", "section": "Debt vs Equity", "difficulty": "medium", "topic": "Cost of capital", "question": "Which is generally higher: the cost of debt or the cost of equity?", "choices": ["Cost of debt, because interest is contractual", "Cost of equity, because equity is riskier and dividends aren't tax-deductible", "They're always equal", "Cost of debt, because debt has priority", "It's impossible to compare"], "answer": "B", "explanation": "Debt is less risky (contractual, priority) and interest is tax-deductible, so equity costs more." },
+    { "id": "5", "section": "Common & Preferred Stock", "difficulty": "easy", "topic": "Par value", "question": "The par value of common stock is:", "choices": ["Its market price", "Mostly symbolic and unrelated to its market value", "The dividend per share", "The price at the IPO", "The book value per share"], "answer": "B" },
+    { "id": "6", "section": "Common & Preferred Stock", "difficulty": "medium", "topic": "Preemptive rights", "question": "John owns 50,000 of a firm's 100,000 shares. The firm issues 50,000 new shares to outsiders. What protection would have let John keep his 50% stake?", "choices": ["A stock split", "Preemptive rights (a rights offering)", "A proxy statement", "Cumulative preferred dividends", "Treasury shares"], "answer": "B", "explanation": "Without preemptive rights John drops to 50,000/150,000 = 33% (dilution of ownership). Preemptive rights let existing holders buy new shares first." },
+    { "id": "7", "section": "Common & Preferred Stock", "difficulty": "medium", "topic": "Share counts", "question": "A firm has 55,000,000 authorized shares, has issued 20,000,000, and holds 1,000,000 in treasury. How many shares are outstanding?", "choices": ["55,000,000", "20,000,000", "19,000,000", "21,000,000", "35,000,000"], "answer": "C", "explanation": "Outstanding = issued − treasury = 20M − 1M = 19M." },
+    { "id": "8", "section": "Common & Preferred Stock", "difficulty": "medium", "topic": "Share counts", "question": "Same firm: 55,000,000 authorized, 20,000,000 issued, 1,000,000 treasury. How many more shares can it issue without shareholder approval?", "choices": ["35,000,000", "36,000,000", "19,000,000", "55,000,000", "34,000,000"], "answer": "A", "explanation": "Authorized − issued = 55M − 20M = 35M." },
+    { "id": "9", "section": "Common & Preferred Stock", "difficulty": "medium", "topic": "Voting classes", "question": "Why might founders create super-voting (multiple votes per share) stock?", "choices": ["To pay higher dividends", "To defend against hostile takeovers and keep control", "To lower the tax rate", "To make the stock cheaper", "To avoid issuing bonds"], "answer": "B", "explanation": "Different share classes (e.g. Google's A/B/C) keep voting control with founders and defend against takeovers or proxy fights." },
+    { "id": "10", "section": "Common & Preferred Stock", "difficulty": "easy", "topic": "Voting classes", "question": "Google's GOOG (Class C) shares carry:", "choices": ["1 vote per share", "10 votes per share", "No voting rights", "Guaranteed dividends", "Preferred status"], "answer": "C", "explanation": "GOOGL (A) = 1 vote, Class B = 10 votes, GOOG (C) = no votes." },
+    { "id": "11", "section": "Common & Preferred Stock", "difficulty": "easy", "topic": "Proxy", "question": "A proxy is:", "choices": ["A type of bond", "A written authorization letting someone vote on behalf of a shareholder", "A dividend paid in stock", "A share held in treasury", "An IPO document"], "answer": "B" },
+    { "id": "12", "section": "Common & Preferred Stock", "difficulty": "easy", "topic": "Stock dividends", "question": "You own 100 shares and the firm declares a 5% stock dividend. You receive:", "choices": ["$5 in cash", "5 additional shares", "50 additional shares", "Nothing", "$0.50 per share"], "answer": "B" },
+    { "id": "13", "section": "Common & Preferred Stock", "difficulty": "medium", "topic": "Preferred stock", "question": "Which is NOT a typical feature of preferred stock?", "choices": ["A fixed periodic dividend", "Priority over common stock in dividends and liquidation", "Normally no voting rights", "Unlimited voting power over the board", "May be convertible into common shares"], "answer": "D" },
+    { "id": "14", "section": "Common & Preferred Stock", "difficulty": "medium", "topic": "Cumulative preferred", "question": "A firm skips two years of dividends on its CUMULATIVE preferred stock. Before paying common dividends again, it must:", "choices": ["Pay nothing extra to preferred holders", "Pay all missed preferred dividends first", "Convert preferred into common", "Issue new bonds", "Get government approval"], "answer": "B", "explanation": "Cumulative: unpaid dividends accumulate and must be paid before common holders get anything. Non-cumulative: missed dividends are lost." },
+    { "id": "15", "section": "Common & Preferred Stock", "difficulty": "medium", "topic": "Venture capital", "question": "Wealthy individuals who invest their own money in early-stage firms for equity, without operating as a business, are called:", "choices": ["Venture capitalists", "Angel investors", "Investment bankers", "Hedge fund managers", "Underwriters"], "answer": "B" },
+    { "id": "16", "section": "Common & Preferred Stock", "difficulty": "medium", "topic": "IPO", "question": "In an IPO, the investment bank that underwrites the offering:", "choices": ["Lends the firm money at a fixed rate", "Buys the shares at an agreed price and bears the risk of reselling them to the public", "Guarantees investors a return", "Takes deposits from investors", "Sets the dividend policy"], "answer": "B" },
+    { "id": "17", "section": "Dividend Discount Models", "difficulty": "easy", "topic": "Market vs intrinsic value", "question": "A stock trades at $40, but your valuation says its intrinsic value is $50. The stock is:", "choices": ["Overpriced, so sell", "Underpriced, so buy", "Fairly priced", "Worthless", "Impossible to judge"], "answer": "B" },
+    { "id": "18", "section": "Dividend Discount Models", "difficulty": "easy", "topic": "Zero growth model", "question": "Perry Motors just paid a $1.80 dividend. The required return is 12%. If dividends never grow, what is the stock worth?", "choices": ["$15.00", "$16.80", "$21.60", "$27.00", "$1.80"], "answer": "A", "explanation": "P₀ = D / r = 1.80 / 0.12 = $15.00." },
+    { "id": "19", "section": "Dividend Discount Models", "difficulty": "medium", "topic": "Constant growth model", "question": "Perry Motors just paid a $1.80 dividend. The required return is 12% and dividends grow at 5% forever. What is the stock worth?", "choices": ["$25.71", "$27.00", "$15.00", "$36.00", "$15.75"], "answer": "B", "explanation": "D₁ = 1.80 × 1.05 = 1.89. P₀ = 1.89 / (0.12 − 0.05) = $27.00." },
+    { "id": "20", "section": "Dividend Discount Models", "difficulty": "medium", "topic": "Constant growth model", "question": "Sweet Candy will pay a $0.72 dividend next year and grow 7% per year forever. What is the stock worth at a 10% required return?", "choices": ["$7.20", "$24.00", "$25.68", "$10.29", "$72.00"], "answer": "B", "explanation": "P₀ = D₁ / (r − g) = 0.72 / 0.03 = $24.00. (Next year's dividend is already D₁, so don't grow it again.)" },
+    { "id": "21", "section": "Dividend Discount Models", "difficulty": "hard", "topic": "Constant growth sensitivity", "question": "Sweet Candy ($0.72 next dividend, 7% growth) is worth $24 at r = 10%. What is it worth at r = 8%, and what does that show?", "choices": ["$9.00; the model is insensitive to r", "$72.00; the model is very sensitive to r and g", "$24.00; r doesn't matter", "$36.00; growth doesn't matter", "Undefined; r must equal g"], "answer": "B", "explanation": "0.72 / (0.08 − 0.07) = $72. A 2-point change in r tripled the value: the Gordon model is very sensitive to r − g, and r must exceed g." },
+    { "id": "22", "section": "Dividend Discount Models", "difficulty": "medium", "topic": "Constant growth model", "question": "A stock just paid a $2.00 dividend, which will grow 6% per year forever. The required return is 11%. What is it worth?", "choices": ["$40.00", "$42.40", "$18.18", "$38.55", "$33.33"], "answer": "B", "explanation": "D₁ = 2 × 1.06 = 2.12. P₀ = 2.12 / (0.11 − 0.06) = $42.40." },
+    { "id": "23", "section": "Dividend Discount Models", "difficulty": "medium", "topic": "Required return", "question": "A stock sells for $40, will pay a $2.00 dividend next year, and dividends grow at 5% per year. What return do investors require?", "choices": ["5%", "10%", "15%", "7.5%", "20%"], "answer": "B", "explanation": "r = D₁ / P₀ + g = 2 / 40 + 0.05 = 10%." },
+    { "id": "24", "section": "Dividend Discount Models", "difficulty": "easy", "topic": "Preferred value", "question": "A preferred share pays a fixed $5 dividend forever. The required return is 8%. What is it worth?", "choices": ["$40.00", "$62.50", "$5.40", "$50.00", "$80.00"], "answer": "B", "explanation": "Preferred stock = a perpetuity (zero-growth model): 5 / 0.08 = $62.50." },
+    { "id": "25", "section": "Dividend Discount Models", "difficulty": "hard", "topic": "Two-stage growth", "question": "Warren Industries' last dividend was $1.50. Dividends grow 10% per year for 3 years, then 5% per year forever. The required return is 15%. What is the stock worth?", "choices": ["$15.75", "$17.93", "$21.00", "$13.04", "$22.05"], "answer": "B", "explanation": "D₁ = 1.65, D₂ = 1.82, D₃ = 2.00, D₄ = 2.10. P₃ = 2.10 / (0.15 − 0.05) = $21. P₀ = 1.65/1.15 + 1.82/1.15² + (2.00 + 21)/1.15³ = $17.93 (the slide's rounded dividends; unrounded ≈ $17.90)." },
+    { "id": "26", "section": "Dividend Discount Models", "difficulty": "hard", "topic": "Two-stage growth", "question": "A stock just paid $1.00. Dividends grow 20% for 2 years, then 5% forever. The required return is 12%. What is it worth?", "choices": ["$15.00", "$19.44", "$21.60", "$17.22", "$14.29"], "answer": "B", "explanation": "D₁ = 1.20, D₂ = 1.44, D₃ = 1.512. P₂ = 1.512 / 0.07 = $21.60. P₀ = 1.20/1.12 + (1.44 + 21.60)/1.12² = $19.44." },
+    { "id": "27", "section": "Dividend Discount Models", "difficulty": "hard", "topic": "Two-stage growth", "question": "Home Place Hotels paid $3.40 last year. Growth: 0% next year, 5% in years 2 and 3, 15% in year 4, then 10% forever. At a 14% required return, what is the maximum price per share?", "choices": ["$81.00", "$118.55", "$70.18", "$85.00", "$60.71"], "answer": "A", "explanation": "D₁ = 3.40, D₂ = 3.57, D₃ = 3.75, D₄ = 4.31, D₅ = 4.74. P₄ = 4.74 / (0.14 − 0.10) = $118.55. Discounting everything back at 14% gives $81.00." },
+    { "id": "28", "section": "Dividend Discount Models", "difficulty": "hard", "topic": "Two-stage growth", "question": "Perry Motors just paid $1.80. Dividends grow 5% for 3 years, then 4% forever. The required return is 12%. What is the stock worth?", "choices": ["$22.50", "$24.03", "$27.00", "$27.09", "$19.62"], "answer": "B", "explanation": "D₁ = 1.89, D₂ = 1.98, D₃ = 2.08, D₄ = 2.17. P₃ = 2.17 / 0.08 = $27.09. P₀ = 1.89/1.12 + 1.98/1.12² + (2.08 + 27.09)/1.12³ ≈ $24.03 (the slide shows $23.96 from rounding)." },
+    { "id": "29", "section": "Growth & Dividend Policy", "difficulty": "medium", "topic": "Sustainable growth", "question": "DTE Energy had an ROE of 10%, EPS of $4.05 and a dividend of $2.35. What is its sustainable growth rate?", "choices": ["5.8%", "4.2%", "10%", "58%", "2.35%"], "answer": "B", "explanation": "Payout = 2.35 / 4.05 = 58% → retention = 42%. SGR = 10% × 42% = 4.2%." },
+    { "id": "30", "section": "Growth & Dividend Policy", "difficulty": "medium", "topic": "Sustainable growth", "question": "A firm has an ROE of 15% and pays out 40% of its earnings as dividends. What is its sustainable growth rate?", "choices": ["6%", "9%", "15%", "40%", "25%"], "answer": "B", "explanation": "SGR = ROE × (1 − payout) = 15% × 60% = 9%." },
+    { "id": "31", "section": "Growth & Dividend Policy", "difficulty": "hard", "topic": "PVGO", "question": "Alpha Manufacturing pays $4 per share (all earnings), r = 12%, and the market price is $30. What is its PVGO?", "choices": ["$3.33", "−$3.33", "$0", "$33.33", "−$30.00"], "answer": "B", "explanation": "No-growth value = 4 / 0.12 = $33.33. PVGO = 30 − 33.33 = −$3.33: investors think its growth plans will earn less than 12%." },
+    { "id": "32", "section": "Growth & Dividend Policy", "difficulty": "hard", "topic": "PVGO", "question": "A stock trades at $70, its EPS is $5, and the required return is 10%. What is the present value of its growth opportunities?", "choices": ["$50", "$20", "$65", "$7", "$0"], "answer": "B", "explanation": "No-growth value = EPS / r = 5 / 0.10 = $50. PVGO = 70 − 50 = $20." },
+    { "id": "33", "section": "Growth & Dividend Policy", "difficulty": "medium", "topic": "PVGO", "question": "A negative PVGO suggests:", "choices": ["The firm should reinvest even more", "Reinvesting is destroying value, so paying out earnings may be better", "The stock is risk-free", "The firm has no debt", "Dividends must be cut"], "answer": "B" },
+    { "id": "34", "section": "Growth & Dividend Policy", "difficulty": "easy", "topic": "Dividend signals", "question": "A firm announces a dividend INCREASE. The market usually reads this as:", "choices": ["A sign of financial trouble", "Management's confidence in future earnings and cash flow", "A sign the firm will go bankrupt", "Irrelevant", "A plan to issue more debt"], "answer": "B" },
+    { "id": "35", "section": "Growth & Dividend Policy", "difficulty": "medium", "topic": "Dividend policy", "question": "Which firm is MOST likely to pay a low dividend?", "choices": ["A mature utility with stable earnings", "A young, fast-growing firm with many profitable investment opportunities", "A firm with no investment needs", "A firm with very high liquidity and no debt", "A firm during a boom with large reserves"], "answer": "B", "explanation": "New firms retain earnings for growth; firms with profitable opportunities are justified in retaining earnings." },
+    { "id": "36", "section": "Growth & Dividend Policy", "difficulty": "medium", "topic": "Dividend signals", "question": "A one-time special dividend most likely signals that the firm:", "choices": ["Is about to go bankrupt", "Has excess cash it can't reinvest effectively, or had an unusually profitable period", "Will raise dividends every year from now on", "Needs to borrow money", "Plans an IPO"], "answer": "B" }
+  ]
+}

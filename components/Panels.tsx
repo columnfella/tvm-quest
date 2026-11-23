@@ -1,15 +1,17 @@
 'use client';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { ACHIEVEMENTS, levelInfo, type Achievement, type useGame } from '@/lib/store';
+import { useCourse } from '@/lib/course';
+import { levelInfo, type Achievement, type Game } from '@/lib/store';
 import { solve, type TvmKey } from '@/lib/tvm';
 import { sfx } from '@/lib/sound';
 import { AVATARS } from '@/lib/avatars';
 import { Asset, Bar, Btn, Modal } from './ui';
 
-type G = ReturnType<typeof useGame>;
+type G = Game;
 
 export function ProfilePanel({ open, onClose, g }: { open: boolean; onClose: () => void; g: G }) {
+  const course = useCourse();
   const s = g.state;
   const lv = levelInfo(s.xp);
   const acc = s.stats.answered ? Math.round((s.stats.correct / s.stats.answered) * 100) : 0;
@@ -20,11 +22,11 @@ export function ProfilePanel({ open, onClose, g }: { open: boolean; onClose: () 
     <Modal open={open} onClose={() => { setPicking(false); onClose(); }} title="Your profile" wide>
       <div className="profile-head">
         <button className="avatar-opt on" style={{ width: 92, flex: 'none' }} onClick={() => setPicking((v) => !v)} title="Change avatar">
-          <Asset name={g.profile?.avatar ?? 'pig_face_3d.png'} size={72} />
+          <Asset name={g.profile?.avatar ?? course.mascot} size={72} />
         </button>
         <div style={{ flex: 1 }}>
           <h3>{g.profile?.name} · Level {lv.level}</h3>
-          <Bar value={lv.into / lv.span} color="var(--gold)" />
+          <Bar value={lv.into / lv.span} color="var(--yellow)" />
           <p className="muted small">{lv.span - lv.into} XP to level {lv.level + 1}</p>
         </div>
       </div>
@@ -53,9 +55,9 @@ export function ProfilePanel({ open, onClose, g }: { open: boolean; onClose: () 
           </div>
         ))}
       </div>
-      <h3 className="badges-title">Badges · {s.achievements.length}/{ACHIEVEMENTS.length}</h3>
+      <h3 className="badges-title">Badges · {g.achievements.filter((a) => s.achievements.includes(a.id)).length}/{g.achievements.length}</h3>
       <div className="badges">
-        {ACHIEVEMENTS.map((a) => {
+        {g.achievements.map((a) => {
           const has = s.achievements.includes(a.id);
           return (
             <div key={a.id} className={`badge ${has ? 'has' : ''}`} title={a.desc}>
@@ -85,14 +87,13 @@ function Toggle({ on, onChange, label, desc }: { on: boolean; onChange: (v: bool
 }
 
 export function SettingsPanel({ open, onClose, g }: { open: boolean; onClose: () => void; g: G }) {
+  const course = useCourse();
   const s = g.state.settings;
   const [confirm, setConfirm] = useState(false);
   const set = (patch: Partial<typeof s>) => g.update((st) => ({ ...st, settings: { ...st.settings, ...patch } }));
   return (
     <Modal open={open} onClose={() => { setConfirm(false); onClose(); }} title="Settings">
       <Toggle on={s.sound} onChange={(v) => set({ sound: v })} label="Sound effects" desc="Chimes, buzzes and fanfares" />
-      <Toggle on={s.freePlay} onChange={(v) => set({ freePlay: v })} label="Free play" desc="Unlock every lesson, e.g. to jump straight to Tough" />
-      <Toggle on={s.unlimitedHearts} onChange={(v) => set({ unlimitedHearts: v })} label="Unlimited hearts" desc="Exam-cram mode: mistakes never end a lesson" />
       <div className="toggle-row">
         <span><b>Daily goal</b><small>XP per day</small></span>
         <div className="seg">
@@ -106,14 +107,20 @@ export function SettingsPanel({ open, onClose, g }: { open: boolean; onClose: ()
           <Btn variant="ghost" block onClick={() => setConfirm(true)}>Reset all progress</Btn>
         ) : (
           <div className="center-col">
-            <p>This wipes your XP, gems, stars and badges (your name stays).</p>
+            <p>This wipes your XP, gems, stars, badges and mistake list (your name stays).</p>
             <Btn variant="danger" block onClick={() => { g.reset(); setConfirm(false); onClose(); }}>Yes, reset everything</Btn>
             <Btn variant="ghost" block onClick={() => setConfirm(false)}>Cancel</Btn>
           </div>
         )}
       </div>
+      {course.issues.length > 0 && (
+        <details className="issues">
+          <summary>{course.issues.length} content warning{course.issues.length === 1 ? '' : 's'}</summary>
+          <ul>{course.issues.map((x, i) => <li key={i}>{x}</li>)}</ul>
+        </details>
+      )}
       <p className="small muted credits">
-        3D icons: <a href="https://github.com/microsoft/fluentui-emoji" target="_blank" rel="noreferrer">Microsoft Fluent Emoji</a> (MIT). UI icons: <a href="https://lucide.dev" target="_blank" rel="noreferrer">Lucide</a> (ISC). Questions: Black Book, Time Value of Money chapter. Fonts: Lilita One &amp; Nunito (OFL).
+        {course.credits ? <>{course.credits} </> : null}3D icons: <a href="https://github.com/microsoft/fluentui-emoji" target="_blank" rel="noreferrer">Microsoft Fluent Emoji</a> (MIT). UI icons: <a href="https://lucide.dev" target="_blank" rel="noreferrer">Lucide</a> (ISC). Fonts: Lilita One &amp; Nunito (OFL).
       </p>
     </Modal>
   );
@@ -148,7 +155,7 @@ export function CalculatorPanel({ open, onClose }: { open: boolean; onClose: () 
   };
 
   return (
-    <Modal open={open} onClose={onClose} title="TVM calculator">
+    <Modal open={open} onClose={onClose} title="Calculator">
       <p className="muted small">Works like a BA II Plus. Use opposite signs for money paid and money received. Type the known values, then tap CPT next to the one you want.</p>
       <div className="calc">
         {KEYS.map(({ k, label }) => (

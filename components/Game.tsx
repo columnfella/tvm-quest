@@ -1,10 +1,11 @@
 'use client';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { LESSON_MAP, WORLDS } from '@/lib/data';
+import { CourseProvider, shuffle, useCourseIndex, type Course, type Lesson as L } from '@/lib/course';
 import { setSoundEnabled } from '@/lib/sound';
 import { useGame } from '@/lib/store';
-import Home from './Home';
+import ChapterView from './Chapter';
+import Home, { TopBar } from './Home';
 import Lesson, { type LessonResult } from './Lesson';
 import Match from './Match';
 import Onboarding from './Onboarding';
@@ -15,100 +16,95 @@ import { Asset } from './ui';
 
 type Screen =
   | { v: 'home' }
-  | { v: 'lesson'; id: string }
-  | { v: 'match'; id: string }
-  | { v: 'results'; id: string; r: LessonResult };
+  | { v: 'chapter'; id: string }
+  | { v: 'play'; lesson: L }
+  | { v: 'results'; lesson: L; r: LessonResult };
 
 export type PanelId = 'profile' | 'settings' | 'calc' | 'board';
 
-export default function Game() {
-  const g = useGame();
+export default function Game({ course: raw }: { course: Course }) {
+  const course = useCourseIndex(raw);
+  const g = useGame(course);
   const [screen, setScreen] = useState<Screen>({ v: 'home' });
-  const [world, setWorld] = useState<'theory' | 'math'>('theory');
   const [panel, setPanel] = useState<null | PanelId>(null);
 
   useEffect(() => setSoundEnabled(g.state.settings.sound), [g.state.settings.sound]);
   useEffect(() => { if (!g.profile) setScreen({ v: 'home' }); }, [g.profile]);
 
-  const start = (id: string) => {
-    const l = LESSON_MAP[id];
-    setScreen({ v: l.kind === 'match' ? 'match' : 'lesson', id });
-    window.scrollTo({ top: 0 });
-  };
+  const go = (s: Screen) => { setScreen(s); window.scrollTo({ top: 0 }); };
+  const play = (lesson: L) => go({ v: 'play', lesson });
+  const back = (lesson: L) => go({ v: 'chapter', id: lesson.chapterId });
 
-  const nextLessonId = (id: string) => {
-    for (const w of WORLDS) {
-      const seq = w.sections.flatMap((s) => s.lessons);
-      const i = seq.findIndex((l) => l.id === id);
-      if (i !== -1) return seq[i + 1]?.id ?? null;
-    }
-    return null;
+  /** Ad-hoc lessons built from a chapter: random mix or "review mistakes". */
+  const quick = (chapterId: string, mode: 'mix' | 'review') => {
+    const ch = course.chapterMap[chapterId];
+    const pool = mode === 'review' ? ch.questionKeys.filter((k) => g.state.missed.includes(k)) : ch.questionKeys;
+    const keys = shuffle(pool).slice(0, course.quickPracticeSize);
+    if (!keys.length) return;
+    play({ id: `${mode}:${chapterId}:${Date.now()}`, chapterId, title: mode === 'review' ? 'Review mistakes' : 'Quick practice', kind: 'quiz', questionKeys: keys, difficulty: Object.keys(course.difficulties)[1] ?? Object.keys(course.difficulties)[0] });
   };
 
   if (!g.ready || (g.auth === 'loading' && !g.profile)) {
     return (
       <div className="onboard">
         <motion.div animate={{ rotate: [0, -10, 10, 0], scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 1.2 }}>
-          <Asset name="pig_face_3d.png" size={96} alt="Loading" />
+          <Asset name={course.mascot} size={96} alt="Loading" />
         </motion.div>
       </div>
     );
   }
 
-  if (!g.profile) {
-    return (
-      <MotionConfig reducedMotion="user">
-        <Onboarding wiped={g.auth === 'wiped'} register={g.register} />
-      </MotionConfig>
-    );
-  }
-
   return (
-    <MotionConfig reducedMotion="user">
-      <div className="app">
-        <AnimatePresence mode="wait">
-          {screen.v === 'home' && (
-            <motion.div key="home" initial={{ opacity: 0, scale: 1.03 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.97 }} transition={{ duration: 0.2 }}>
-              <Home g={g} world={world} setWorld={setWorld} onStart={start} openPanel={setPanel} />
-            </motion.div>
-          )}
-          {screen.v === 'lesson' && (
-            <motion.div key={'l' + screen.id} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ type: 'spring', stiffness: 260, damping: 24 }}>
-              <Lesson
-                g={g}
-                lesson={LESSON_MAP[screen.id]}
-                onExit={() => setScreen({ v: 'home' })}
-                onFinish={(r) => setScreen({ v: 'results', id: screen.id, r })}
-                openCalc={() => setPanel('calc')}
-              />
-            </motion.div>
-          )}
-          {screen.v === 'match' && (
-            <motion.div key={'m' + screen.id} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ type: 'spring', stiffness: 260, damping: 24 }}>
-              <Match g={g} lesson={LESSON_MAP[screen.id]} onExit={() => setScreen({ v: 'home' })} onFinish={(r) => setScreen({ v: 'results', id: screen.id, r })} />
-            </motion.div>
-          )}
-          {screen.v === 'results' && (
-            <motion.div key="res" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <Results
-                g={g}
-                lesson={LESSON_MAP[screen.id]}
-                r={screen.r}
-                nextId={nextLessonId(screen.id)}
-                onHome={() => setScreen({ v: 'home' })}
-                onRetry={() => start(screen.id)}
-                onNext={(id) => start(id)}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+    <CourseProvider value={course}>
+      <MotionConfig reducedMotion="user">
+        {!g.profile ? (
+          <Onboarding wiped={g.auth === 'wiped'} register={g.register} />
+        ) : (
+          <div className="app">
+            {(screen.v === 'home' || screen.v === 'chapter') && <TopBar g={g} openPanel={setPanel} onHome={() => go({ v: 'home' })} />}
+            <AnimatePresence mode="wait">
+              {screen.v === 'home' && (
+                <motion.div key="home" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.18 }}>
+                  <Home g={g} onOpen={(id) => go({ v: 'chapter', id })} openPanel={setPanel} />
+                </motion.div>
+              )}
+              {screen.v === 'chapter' && (
+                <motion.div key={'c' + screen.id} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }} transition={{ duration: 0.18 }}>
+                  <ChapterView g={g} chapter={course.chapterMap[screen.id]} onBack={() => go({ v: 'home' })} onPlay={play} onQuick={(m) => quick(screen.id, m)} />
+                </motion.div>
+              )}
+              {screen.v === 'play' && (
+                <motion.div key={'p' + screen.lesson.id} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ type: 'spring', stiffness: 260, damping: 24 }}>
+                  {screen.lesson.kind === 'match' ? (
+                    <Match g={g} lesson={screen.lesson} onExit={() => back(screen.lesson)} onFinish={(r) => go({ v: 'results', lesson: screen.lesson, r })} />
+                  ) : (
+                    <Lesson g={g} lesson={screen.lesson} onExit={() => back(screen.lesson)} onFinish={(r) => go({ v: 'results', lesson: screen.lesson, r })} openCalc={() => setPanel('calc')} />
+                  )}
+                </motion.div>
+              )}
+              {screen.v === 'results' && (
+                <motion.div key="res" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                  <Results
+                    g={g}
+                    lesson={screen.lesson}
+                    r={screen.r}
+                    nextId={course.nextLessonId(screen.lesson.id)}
+                    onBack={() => back(screen.lesson)}
+                    onRetry={() => (course.lessonMap[screen.lesson.id] ? play(screen.lesson) : quick(screen.lesson.chapterId, screen.lesson.id.startsWith('review') ? 'review' : 'mix'))}
+                    onNext={(id) => play(course.lessonMap[id])}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-        <ProfilePanel open={panel === 'profile'} onClose={() => setPanel(null)} g={g} />
-        <SettingsPanel open={panel === 'settings'} onClose={() => setPanel(null)} g={g} />
-        <CalculatorPanel open={panel === 'calc'} onClose={() => setPanel(null)} />
-        <LeaderboardPanel open={panel === 'board'} onClose={() => setPanel(null)} me={g.profile.name} />
-        <BadgeToast badge={g.newBadges[0] ?? null} onDone={g.dismissBadge} />
-      </div>
-    </MotionConfig>
+            <ProfilePanel open={panel === 'profile'} onClose={() => setPanel(null)} g={g} />
+            <SettingsPanel open={panel === 'settings'} onClose={() => setPanel(null)} g={g} />
+            {course.calculator && <CalculatorPanel open={panel === 'calc'} onClose={() => setPanel(null)} />}
+            <LeaderboardPanel open={panel === 'board'} onClose={() => setPanel(null)} me={g.profile.name} />
+            <BadgeToast badge={g.newBadges[0] ?? null} onDone={g.dismissBadge} />
+          </div>
+        )}
+      </MotionConfig>
+    </CourseProvider>
   );
 }

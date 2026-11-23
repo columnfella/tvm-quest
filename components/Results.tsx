@@ -3,14 +3,14 @@ import confetti from 'canvas-confetti';
 import { animate, motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import type { Lesson } from '@/lib/data';
+import { useCourse, type Lesson } from '@/lib/course';
 import { sfx } from '@/lib/sound';
-import { completeDay, levelInfo, MAX_HEARTS, type useGame } from '@/lib/store';
+import { completeDay, levelInfo, type Game } from '@/lib/store';
 import type { LessonResult } from './Lesson';
-import Chest, { type ChestTier, type Loot } from './Chest';
+import Crate, { type CrateTier, type Loot } from './Crate';
 import { Asset, Bar, Btn } from './ui';
 
-type G = ReturnType<typeof useGame>;
+type G = Game;
 
 function Count({ to, suffix = '' }: { to: number; suffix?: string }) {
   const [v, setV] = useState(0);
@@ -21,18 +21,19 @@ function Count({ to, suffix = '' }: { to: number; suffix?: string }) {
   return <>{v}{suffix}</>;
 }
 
-export default function Results({ g, lesson, r, nextId, onHome, onRetry, onNext }: { g: G; lesson: Lesson; r: LessonResult; nextId: string | null; onHome: () => void; onRetry: () => void; onNext: (id: string) => void }) {
+export default function Results({ g, lesson, r, nextId, onBack, onRetry, onNext }: { g: G; lesson: Lesson; r: LessonResult; nextId: string | null; onBack: () => void; onRetry: () => void; onNext: (id: string) => void }) {
+  const course = useCourse();
+  const tracked = !!course.lessonMap[lesson.id]; // quick practice / review aren't saved as lesson progress
   const applied = useRef(false);
   const acc = r.total ? r.correctFirst / r.total : 1;
   const perfect = r.mistakes === 0;
   const stars = acc >= 0.9 ? 3 : acc >= 0.7 ? 2 : 1;
-  const tier: ChestTier = perfect && r.kind === 'quiz' ? 'magic' : stars === 3 ? 'gold' : stars === 2 ? 'silver' : 'wood';
-  const chestGems = { wood: 5, silver: 10, gold: 20, magic: 35 }[tier];
-  const chestXp = { wood: 5, silver: 10, gold: 15, magic: 30 }[tier];
+  const tier: CrateTier = perfect && r.kind === 'quiz' ? 'legendary' : stars === 3 ? 'epic' : stars === 2 ? 'rare' : 'common';
+  const chestGems = { common: 5, rare: 10, epic: 20, legendary: 35 }[tier];
+  const chestXp = { common: 5, rare: 10, epic: 15, legendary: 30 }[tier];
   const loot: Loot[] = [
     { icon: 'gem_stone_3d.png', amount: chestGems, label: 'Gems' },
-    { icon: 'high_voltage_3d.png', amount: chestXp, label: 'Bonus XP' },
-    ...(tier === 'magic' ? [{ icon: 'red_heart_3d.png', amount: MAX_HEARTS, label: 'Hearts', rare: true }] : []),
+    { icon: 'high_voltage_3d.png', amount: chestXp, label: 'Bonus XP', rare: tier === 'legendary' },
   ];
   const [opened, setOpened] = useState(false);
   const totalXp = r.xp + chestXp;
@@ -62,11 +63,9 @@ export default function Results({ g, lesson, r, nextId, onHome, onRetry, onNext 
         xp: s.xp + totalXp,
         todayXp: s.todayXp + totalXp,
         gems: s.gems + chestGems,
-        hearts: tier === 'magic' ? MAX_HEARTS : s.hearts,
-        lessons: {
-          ...s.lessons,
-          [lesson.id]: { done: true, stars: Math.max(prev?.stars ?? 0, stars), bestAcc: Math.max(prev?.bestAcc ?? 0, acc), plays: (prev?.plays ?? 0) + 1 },
-        },
+        lessons: tracked
+          ? { ...s.lessons, [lesson.id]: { done: true, stars: Math.max(prev?.stars ?? 0, stars), bestAcc: Math.max(prev?.bestAcc ?? 0, acc), plays: (prev?.plays ?? 0) + 1 } }
+          : s.lessons,
         stats: { ...s.stats, perfect: s.stats.perfect + (perfect && r.kind === 'quiz' ? 1 : 0) },
       });
     });
@@ -78,19 +77,19 @@ export default function Results({ g, lesson, r, nextId, onHome, onRetry, onNext 
     <div className="results">
       <div className="rays" />
       <motion.div className="victory" initial={{ scale: 3, opacity: 0, rotate: -6 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 320, damping: 16 }}>
-        <h1>{perfect ? 'FLAWLESS!' : 'VICTORY!'}</h1>
+        <h1>{perfect ? 'FLAWLESS!' : 'CLEARED!'}</h1>
       </motion.div>
       <p className="subtitle">{lesson.title}</p>
 
       <div className="stars" aria-label={`${stars} of 3 stars`}>
         {[1, 2, 3].map((i) => (
           <motion.span key={i} initial={{ scale: 0, rotate: -90 }} animate={{ scale: i <= stars ? 1 : 0.8, rotate: 0 }} transition={{ delay: 0.3 + i * 0.22, type: 'spring', stiffness: 300, damping: 12 }}>
-            <Star size={i === 2 ? 64 : 50} fill={i <= stars ? 'var(--gold)' : 'var(--line)'} stroke={i <= stars ? 'var(--gold-dark)' : 'var(--line)'} strokeWidth={2} />
+            <Star size={i === 2 ? 64 : 50} fill={i <= stars ? 'var(--yellow)' : 'var(--line)'} stroke={i <= stars ? 'var(--yellow-dark)' : 'var(--line)'} strokeWidth={2} />
           </motion.span>
         ))}
       </div>
 
-      <Chest tier={tier} loot={loot} onOpen={() => setOpened(true)} />
+      <Crate tier={tier} loot={loot} onOpen={() => setOpened(true)} />
 
       <div className="result-tiles">
         <motion.div className="tile-stat gold" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
@@ -117,15 +116,15 @@ export default function Results({ g, lesson, r, nextId, onHome, onRetry, onNext 
 
       <div className="goal-mini">
         <span>Daily goal</span>
-        <Bar value={goal} color="var(--gold)" />
+        <Bar value={goal} color="var(--yellow)" />
         <span>{Math.min(g.state.todayXp, g.state.dailyGoal)}/{g.state.dailyGoal}</span>
       </div>
 
       <div className="result-actions">
         <Btn variant="ghost" onClick={onRetry}>Practice again</Btn>
-        {nextId ? <Btn variant="primary" onClick={() => onNext(nextId)}>Next lesson</Btn> : <Btn variant="primary" onClick={onHome}>Continue</Btn>}
+        {nextId ? <Btn variant="primary" onClick={() => onNext(nextId)}>Next lesson</Btn> : <Btn variant="primary" onClick={onBack}>Continue</Btn>}
       </div>
-      <button className="link-btn" onClick={onHome}>Back to the map</button>
+      <button className="link-btn" onClick={onBack}>Back to the chapter</button>
 
       {levelUp && (
         <motion.div className="levelup" initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => setLevelUp(null)}>
@@ -136,7 +135,7 @@ export default function Results({ g, lesson, r, nextId, onHome, onRetry, onNext 
             </motion.div>
             <span className="chest-label">LEVEL UP!</span>
             <h2>{levelUp}</h2>
-            <p>Your knowledge is compounding nicely.</p>
+            <p>You&apos;re getting stronger. Keep the streak alive.</p>
             <Btn variant="gold" onClick={() => setLevelUp(null)}>Awesome</Btn>
           </motion.div>
         </motion.div>

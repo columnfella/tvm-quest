@@ -1,0 +1,16 @@
+{
+  "id": "fin3301",
+  "title": "Finance Quest",
+  "subtitle": "FIN 3301 · Principles of Finance",
+  "tagline": "Pick a chapter, clear lessons, top the weekly leaderboard.",
+  "mascot": "pig_face_3d.png",
+  "lessonSize": 5,
+  "quickPracticeSize": 10,
+  "calculator": true,
+  "difficulties": {
+    "easy": { "label": "Easy", "xp": 10, "color": "#3ddc4a" },
+    "medium": { "label": "Medium", "xp": 15, "color": "#2fb8ff" },
+    "hard": { "label": "Hard", "xp": 25, "color": "#ff5a3c" }
+  },
+  "credits": "Questions come from the course slides, cheat sheets, the Black Book (Ch. 5), the mock midterm and the bond practice set."
+}

@@ -2,12 +2,16 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { AVATARS } from '@/lib/avatars';
+import { useCourse } from '@/lib/course';
 import { sfx } from '@/lib/sound';
 import { NAME_MAX, validateName } from '@/lib/username';
 import { SeasonTimer } from './Season';
 import { Asset, Btn } from './ui';
 
 export default function Onboarding({ wiped, register }: { wiped: boolean; register: (name: string, avatar: string) => Promise<string | null> }) {
+  const course = useCourse();
+  const words = course.title.split(' ');
+  const last = words.length > 1 ? words.pop() : null;
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState<string>(AVATARS[Math.floor(Math.random() * AVATARS.length)]);
   const [serverErr, setServerErr] = useState<string | null>(null);
@@ -32,8 +36,9 @@ export default function Onboarding({ wiped, register }: { wiped: boolean; regist
           <motion.div animate={{ y: [0, -8, 0], rotate: [0, -4, 4, 0] }} transition={{ repeat: Infinity, duration: 2.6 }}>
             <Asset name={avatar} size={110} alt="" />
           </motion.div>
-          <h1 className="sc">TVM <em>QUEST</em></h1>
-          <p>Battle the Time Value of Money. New season every Monday.</p>
+          <h1 className="sc">{words.join(' ')}{last && <> <em>{last}</em></>}</h1>
+          {course.subtitle && <p className="logo-sub">{course.subtitle}</p>}
+          <p>{course.tagline || 'Practice, climb the board.'} New season every Monday.</p>
         </motion.div>
 
         {wiped && (
@@ -52,7 +57,7 @@ export default function Onboarding({ wiped, register }: { wiped: boolean; regist
             maxLength={NAME_MAX}
             autoComplete="off"
             spellCheck={false}
-            placeholder="e.g. CompoundKing"
+            placeholder="e.g. StudyBeast"
             onChange={(e) => { setName(e.target.value.replace(/\s/g, '_')); setServerErr(null); }}
             autoFocus
           />

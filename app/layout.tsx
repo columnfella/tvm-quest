@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from 'next';
+import { loadCourse } from '@/lib/content';
 import './globals.css';
 
-export const metadata: Metadata = {
-  title: 'TVM Quest',
-  description: 'A gamified Time Value of Money trainer built from the Chapter 5/6 Black Book question bank.',
-};
+export function generateMetadata(): Metadata {
+  const c = loadCourse();
+  return { title: c.title, description: c.tagline || c.subtitle || `Practice ${c.title}`, icons: { icon: `/assets/${c.mascot}` } };
+}
 
 export const viewport: Viewport = { width: 'device-width', initialScale: 1 };
 

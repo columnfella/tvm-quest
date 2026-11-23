@@ -25,6 +25,20 @@ export function Rich({ text }: { text: string }) {
   return <>{parts}</>;
 }
 
+/** Question text: blank lines split paragraphs; ``` fences mark preformatted blocks (tables, cash flows). */
+export function QText({ text }: { text: string }) {
+  const parts = text.split(/```\n?/);
+  return (
+    <>
+      {parts.flatMap((part, i) =>
+        i % 2 === 1
+          ? [<pre key={i} className="stem-pre">{part.replace(/\n$/, '')}</pre>]
+          : part.split(/\n\s*\n/).map((para) => para.trim()).filter(Boolean).map((para, j) => <p key={`${i}-${j}`}><Rich text={para} /></p>),
+      )}
+    </>
+  );
+}
+
 type BtnProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { ref?: React.Ref<HTMLButtonElement>; variant?: 'primary' | 'secondary' | 'danger' | 'gold' | 'ghost' | 'theory' | 'blue'; block?: boolean };
 export function Btn({ variant = 'primary', block, className = '', ...rest }: BtnProps) {
   return <button {...rest} className={`btn3d btn-${variant} ${block ? 'block' : ''} ${className}`} />;
@@ -60,7 +74,7 @@ export function Modal({ open, onClose, children, title, wide }: { open: boolean;
   );
 }
 
-export function Bar({ value, color = 'var(--gold)', height = 16 }: { value: number; color?: string; height?: number }) {
+export function Bar({ value, color = 'var(--yellow)', height = 16 }: { value: number; color?: string; height?: number }) {
   return (
     <div className="bar" style={{ height }}>
       <motion.div className="bar-fill" style={{ background: color }} initial={false} animate={{ width: `${Math.max(0, Math.min(1, value)) * 100}%` }} transition={{ type: 'spring', stiffness: 120, damping: 20 }}>
