@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { ACHIEVEMENTS, levelInfo, type Achievement, type useGame } from '@/lib/store';
 import { solve, type TvmKey } from '@/lib/tvm';
 import { sfx } from '@/lib/sound';
+import { AVATARS } from '@/lib/avatars';
 import { Asset, Bar, Btn, Modal } from './ui';
 
 type G = ReturnType<typeof useGame>;
@@ -14,16 +15,28 @@ export function ProfilePanel({ open, onClose, g }: { open: boolean; onClose: () 
   const acc = s.stats.answered ? Math.round((s.stats.correct / s.stats.answered) * 100) : 0;
   const lessonsDone = Object.values(s.lessons).filter((l) => l.done).length;
   const totalStars = Object.values(s.lessons).reduce((a, l) => a + l.stars, 0);
+  const [picking, setPicking] = useState(false);
   return (
-    <Modal open={open} onClose={onClose} title="Your profile" wide>
+    <Modal open={open} onClose={() => { setPicking(false); onClose(); }} title="Your profile" wide>
       <div className="profile-head">
-        <Asset name="pig_face_3d.png" size={80} />
+        <button className="avatar-opt on" style={{ width: 92, flex: 'none' }} onClick={() => setPicking((v) => !v)} title="Change avatar">
+          <Asset name={g.profile?.avatar ?? 'pig_face_3d.png'} size={72} />
+        </button>
         <div style={{ flex: 1 }}>
-          <h3>Level {lv.level}</h3>
+          <h3>{g.profile?.name} · Level {lv.level}</h3>
           <Bar value={lv.into / lv.span} color="var(--gold)" />
           <p className="muted small">{lv.span - lv.into} XP to level {lv.level + 1}</p>
         </div>
       </div>
+      {picking && (
+        <div className="avatar-grid" style={{ marginBottom: 16 }}>
+          {AVATARS.map((a) => (
+            <button key={a} className={`avatar-opt ${g.profile?.avatar === a ? 'on' : ''}`} onClick={() => { g.setAvatar(a); sfx.tap(); setPicking(false); }}>
+              <Asset name={a} size={44} />
+            </button>
+          ))}
+        </div>
+      )}
       <div className="profile-stats">
         {[
           ['high_voltage_3d.png', s.xp, 'Total XP'],
@@ -93,14 +106,14 @@ export function SettingsPanel({ open, onClose, g }: { open: boolean; onClose: ()
           <Btn variant="ghost" block onClick={() => setConfirm(true)}>Reset all progress</Btn>
         ) : (
           <div className="center-col">
-            <p>This wipes XP, gems, stars and badges on this device.</p>
+            <p>This wipes your XP, gems, stars and badges (your name stays).</p>
             <Btn variant="danger" block onClick={() => { g.reset(); setConfirm(false); onClose(); }}>Yes, reset everything</Btn>
             <Btn variant="ghost" block onClick={() => setConfirm(false)}>Cancel</Btn>
           </div>
         )}
       </div>
       <p className="small muted credits">
-        3D icons: <a href="https://github.com/microsoft/fluentui-emoji" target="_blank" rel="noreferrer">Microsoft Fluent Emoji</a> (MIT). UI icons: <a href="https://lucide.dev" target="_blank" rel="noreferrer">Lucide</a> (ISC). Questions: Black Book, Time Value of Money chapter.
+        3D icons: <a href="https://github.com/microsoft/fluentui-emoji" target="_blank" rel="noreferrer">Microsoft Fluent Emoji</a> (MIT). UI icons: <a href="https://lucide.dev" target="_blank" rel="noreferrer">Lucide</a> (ISC). Questions: Black Book, Time Value of Money chapter. Fonts: Lilita One &amp; Nunito (OFL).
       </p>
     </Modal>
   );
@@ -170,7 +183,7 @@ export function BadgeToast({ badge, onDone }: { badge: Achievement | null; onDon
   return (
     <AnimatePresence>
       {badge && (
-        <motion.div key={badge.id} className="toast" initial={{ y: -90, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -90, opacity: 0 }} onClick={onDone}>
+        <motion.div key={badge.id} className="toast" initial={{ y: 120, scale: 0.6, opacity: 0 }} animate={{ y: 0, scale: 1, opacity: 1 }} exit={{ y: 120, opacity: 0 }} transition={{ type: 'spring', stiffness: 340, damping: 16 }} onClick={onDone}>
           <motion.span animate={{ rotate: [0, -12, 12, 0], scale: [1, 1.2, 1] }} transition={{ duration: 0.8 }}>
             <Asset name={badge.icon} size={48} />
           </motion.span>

@@ -4,38 +4,44 @@ import { Calculator, Check, Crown, Lock, Settings, Star, Trophy, Zap } from 'luc
 import { DIFF_LABEL, QUESTIONS, WORLDS, type Lesson } from '@/lib/data';
 import { levelInfo, MAX_HEARTS, type useGame } from '@/lib/store';
 import { sfx } from '@/lib/sound';
+import type { PanelId } from './Game';
+import { MiniBoard, useCountdown } from './Season';
 import { Asset, Bar } from './ui';
 
 type G = ReturnType<typeof useGame>;
 
-export function TopBar({ g, openPanel }: { g: G; openPanel: (p: 'profile' | 'settings' | 'calc') => void }) {
+export function TopBar({ g, openPanel }: { g: G; openPanel: (p: PanelId) => void }) {
   const s = g.state;
   const lv = levelInfo(s.xp);
+  const left = useCountdown();
   return (
     <header className="topbar">
-      <div className="brand">
-        <Asset name="pig_face_3d.png" size={34} />
-        <span>TVM Quest</span>
-      </div>
+      <button className="me-chip" onClick={() => { sfx.tap(); openPanel('profile'); }} title="Profile & badges">
+        <span className="me-avatar">
+          <Asset name={g.profile?.avatar ?? 'pig_face_3d.png'} size={36} />
+          <span className="lv-badge">{lv.level}</span>
+        </span>
+        <span className="me-name">
+          <b>{g.profile?.name}</b>
+          <span className="lv-bar"><Bar value={lv.into / lv.span} height={10} color="linear-gradient(180deg, #d1a8ff, #a45cff)" /></span>
+        </span>
+      </button>
       <div className="stats">
+        <button className="season-pill" onClick={() => { sfx.tap(); openPanel('board'); }} title="Season leaderboard">
+          <Asset name="trophy_3d.png" size={22} /><span>{left}</span>
+        </button>
         <span className="stat" title={`${s.streak}-day streak`}>
-          <Asset name="fire_3d.png" size={24} />
-          <b style={{ color: s.lastDay ? 'var(--orange)' : 'var(--muted)' }}>{s.streak}</b>
+          <Asset name="fire_3d.png" size={30} />
+          <b>{s.streak}</b>
         </span>
         <span className="stat" title="Gems">
-          <Asset name="gem_stone_3d.png" size={24} />
-          <b style={{ color: 'var(--blue)' }}>{s.gems}</b>
+          <Asset name="gem_stone_3d.png" size={30} />
+          <b>{s.gems}</b>
         </span>
         <span className="stat" title="Hearts">
-          <Asset name="red_heart_3d.png" size={24} />
-          <b style={{ color: 'var(--red)' }}>{s.settings.unlimitedHearts ? '∞' : `${s.hearts}/${MAX_HEARTS}`}</b>
+          <Asset name="red_heart_3d.png" size={30} />
+          <b>{s.settings.unlimitedHearts ? '∞' : `${s.hearts}/${MAX_HEARTS}`}</b>
         </span>
-        <button className="stat level" onClick={() => openPanel('profile')} title="Profile & badges">
-          <span className="lv-badge">{lv.level}</span>
-          <span className="lv-bar">
-            <Bar value={lv.into / lv.span} height={8} color="var(--gold)" />
-          </span>
-        </button>
         <button className="icon-btn" onClick={() => openPanel('calc')} aria-label="TVM calculator" title="TVM calculator">
           <Calculator size={20} />
         </button>
@@ -47,13 +53,14 @@ export function TopBar({ g, openPanel }: { g: G; openPanel: (p: 'profile' | 'set
   );
 }
 
-function DailyCard({ g }: { g: G }) {
+function DailyCard({ g, openPanel }: { g: G; openPanel: (p: PanelId) => void }) {
   const s = g.state;
   const pct = s.todayXp / s.dailyGoal;
   const done = Object.values(s.lessons).filter((l) => l.done).length;
   const total = WORLDS.flatMap((w) => w.sections.flatMap((x) => x.lessons)).length;
   return (
     <aside className="side">
+      <MiniBoard me={g.profile?.name} onOpen={() => openPanel('board')} />
       <div className="card daily">
         <div className="card-row">
           <Asset name="chart_increasing_3d.png" size={44} />
@@ -79,6 +86,8 @@ function DailyCard({ g }: { g: G }) {
         <h3>How it works</h3>
         <ul>
           <li><Zap size={16} /> Easy +10 XP, Medium +15, Tough +25, plus combo bonus</li>
+          <li><Asset name="trophy_3d.png" size={16} /> Every win drops a chest. 3 stars = Golden, flawless = Magic</li>
+          <li><Asset name="hourglass_done_3d.png" size={16} /> Season XP ranks you. Everything resets each Monday</li>
           <li><Asset name="red_heart_3d.png" size={16} /> A wrong answer costs a heart and comes back later</li>
           <li><Asset name="light_bulb_3d.png" size={16} /> Hints cost 5 gems; book solutions are free after you answer</li>
           <li><Calculator size={16} /> A TVM calculator lives in the top bar</li>
@@ -91,20 +100,24 @@ function DailyCard({ g }: { g: G }) {
 
 const OFFSETS = [0, 52, 84, 52, 0, -52, -84, -52];
 
-function PathNode({ lesson, index, state, color, onStart }: { lesson: Lesson; index: number; state: 'locked' | 'open' | 'current' | 'done'; color: string; onStart: () => void }) {
+function PathNode({ lesson, index, state, color, stars, onStart }: { lesson: Lesson; index: number; state: 'locked' | 'open' | 'current' | 'done'; color: string; stars: number; onStart: () => void }) {
   const isMatch = lesson.kind === 'match';
   return (
     <div className="node-wrap" style={{ transform: `translateX(${OFFSETS[index % OFFSETS.length]}px)` }}>
       {state === 'current' && (
         <motion.div className="start-tip" animate={{ y: [0, -6, 0] }} transition={{ repeat: Infinity, duration: 1.6 }}>
-          START
+          PLAY!
         </motion.div>
       )}
       <motion.button
+        key={state}
         className={`node ${state} ${isMatch ? 'match' : ''}`}
-        style={{ ['--c' as string]: `var(${color})` }}
-        whileHover={state !== 'locked' ? { scale: 1.06 } : undefined}
-        whileTap={state !== 'locked' ? { scale: 0.94 } : undefined}
+        style={{ ['--c' as string]: `var(${color})`, rotate: isMatch ? 0 : 45 }}
+        initial={{ scale: 0 }}
+        animate={state === 'current' ? { scale: [1, 1.08, 1], y: [0, -4, 0] } : { scale: 1 }}
+        transition={state === 'current' ? { repeat: Infinity, duration: 1.4, ease: 'easeInOut' } : { type: 'spring', stiffness: 380, damping: 14, delay: Math.min(index, 10) * 0.03 }}
+        whileHover={state !== 'locked' ? { scale: 1.1 } : undefined}
+        whileTap={state !== 'locked' ? { scaleX: 1.15, scaleY: 0.85 } : { x: [0, -6, 6, 0] }}
         onClick={() => {
           if (state === 'locked') return;
           sfx.tap();
@@ -118,12 +131,17 @@ function PathNode({ lesson, index, state, color, onStart }: { lesson: Lesson; in
       <div className={`node-label ${state}`}>
         <b>{lesson.title}</b>
         <span>{isMatch ? 'Formula match' : `${lesson.questionIds.length} questions · ${DIFF_LABEL[lesson.diff]}`}</span>
+        {stars > 0 && (
+          <span className="node-stars" aria-label={`${stars} stars`}>
+            {[1, 2, 3].map((i) => <Star key={i} size={14} fill={i <= stars ? '#ffcc1f' : 'rgba(255,255,255,0.35)'} stroke="#16204a" strokeWidth={2.5} />)}
+          </span>
+        )}
       </div>
     </div>
   );
 }
 
-export default function Home({ g, world, setWorld, onStart, openPanel }: { g: G; world: 'theory' | 'math'; setWorld: (w: 'theory' | 'math') => void; onStart: (id: string) => void; openPanel: (p: 'profile' | 'settings' | 'calc') => void }) {
+export default function Home({ g, world, setWorld, onStart, openPanel }: { g: G; world: 'theory' | 'math'; setWorld: (w: 'theory' | 'math') => void; onStart: (id: string) => void; openPanel: (p: PanelId) => void }) {
   const w = WORLDS.find((x) => x.id === world)!;
   const seq = w.sections.flatMap((s) => s.lessons);
   const currentId = seq.find((l) => g.isUnlocked(l.id) && !g.state.lessons[l.id]?.done)?.id;
@@ -173,7 +191,7 @@ export default function Home({ g, world, setWorld, onStart, openPanel }: { g: G;
                     const st = g.state.lessons[l.id]?.done ? 'done' : l.id === currentId ? 'current' : g.isUnlocked(l.id) ? 'open' : 'locked';
                     return (
                       <div key={l.id} className="path-row">
-                        <PathNode lesson={l} index={i} state={st} color={sec.color} onStart={() => onStart(l.id)} />
+                        <PathNode lesson={l} index={i} state={st} color={sec.color} stars={g.state.lessons[l.id]?.stars ?? 0} onStart={() => onStart(l.id)} />
                         {l.id === currentId && (
                           <motion.div className="mascot-peek" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} style={{ [OFFSETS[i % OFFSETS.length] >= 0 ? 'left' : 'right']: '6%' }}>
                             <motion.div animate={{ rotate: [0, -6, 6, 0] }} transition={{ repeat: Infinity, duration: 3 }}>
@@ -197,7 +215,7 @@ export default function Home({ g, world, setWorld, onStart, openPanel }: { g: G;
             </button>
           </div>
         </div>
-        <DailyCard g={g} />
+        <DailyCard g={g} openPanel={openPanel} />
       </main>
     </>
   );

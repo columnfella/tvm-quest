@@ -6,7 +6,7 @@ import React from 'react';
 /** Free 3D emoji asset (Microsoft Fluent Emoji, MIT) served from /public/assets. */
 export function Asset({ name, size = 32, alt = '', className = '', style }: { name: string; size?: number; alt?: string; className?: string; style?: React.CSSProperties }) {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={`./assets/${name}`} width={size} height={size} alt={alt} className={className} style={style} draggable={false} />;
+  return <img src={`/assets/${name}`} width={size} height={size} alt={alt} className={className} style={style} draggable={false} />;
 }
 
 /** Renders ^{sup} and _{sub} markup used in formulas. */

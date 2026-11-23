@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ALL_LESSONS, WORLDS } from './data';
+import { seasonId } from './season';
 
 export const MAX_HEARTS = 5;
 export const HEART_REGEN_MS = 20 * 60 * 1000;
@@ -122,25 +123,127 @@ export function earned(s: GameState): string[] {
   return out;
 }
 
+// ---------- profile (server account) ----------
+export type Profile = { name: string; avatar: string; token: string; season: string };
+const PKEY = 'tvm-quest-profile';
+
+function loadProfile(): Profile | null {
+  try {
+    const p = JSON.parse(localStorage.getItem(PKEY) || 'null') as Profile | null;
+    return p && p.season === seasonId() ? p : null; // last week's account is gone
+  } catch {
+    return null;
+  }
+}
+
+function saveProfile(p: Profile | null) {
+  try {
+    if (p) localStorage.setItem(PKEY, JSON.stringify(p));
+    else { localStorage.removeItem(PKEY); localStorage.removeItem(KEY); }
+  } catch { /* storage unavailable */ }
+}
+
+async function post<T>(url: string, data: unknown): Promise<{ ok: boolean; status: number; data: T }> {
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+  return { ok: res.ok, status: res.status, data: (await res.json().catch(() => ({}))) as T };
+}
+
+/** 'loading' until we know whether the saved account still exists; 'wiped' = a new season started. */
+export type AuthStatus = 'loading' | 'guest' | 'wiped' | 'in';
+
 // ---------- hook ----------
 export function useGame() {
   const [state, setState] = useState<GameState>(initialState);
   const [ready, setReady] = useState(false);
   const [newBadges, setNewBadges] = useState<Achievement[]>([]);
+  const [profile, setProfileState] = useState<Profile | null>(null);
+  const [auth, setAuth] = useState<AuthStatus>('loading');
   const first = useRef(true);
+  const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    setState(rollDay(regen(load())));
-    setReady(true);
-    const id = setInterval(() => setState((s) => rollDay(regen(s))), 30_000);
-    return () => clearInterval(id);
+  const wipe = useCallback((why: AuthStatus) => {
+    saveProfile(null);
+    setProfileState(null);
+    setState(initialState());
+    setAuth(why);
   }, []);
 
   useEffect(() => {
-    if (!ready) return;
+    const hadProfile = !!localStorage.getItem(PKEY);
+    const p = loadProfile();
+    if (!p) {
+      if (hadProfile) wipe('wiped');
+      else setAuth('guest');
+      setReady(true);
+      return;
+    }
+    const local = rollDay(regen(load()));
+    setProfileState(p);
+    setState(local);
+    setReady(true);
+    // confirm the account still exists on the server and pick up progress from other devices/tabs
+    post<{ state?: GameState }>('/api/me', { name: p.name, token: p.token })
+      .then((r) => {
+        if (r.status === 404) return wipe('wiped');
+        if (r.ok && r.data.state && (r.data.state as GameState).xp > local.xp) {
+          const base = initialState();
+          const s = r.data.state;
+          setState(rollDay(regen({ ...base, ...s, stats: { ...base.stats, ...s.stats }, settings: { ...base.settings, ...s.settings } })));
+        }
+        setAuth('in');
+      })
+      .catch(() => setAuth('in')); // offline: keep playing locally
+  }, [wipe]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setState((s) => rollDay(regen(s)));
+      // the season rolled over while the app was open
+      const p = loadProfile();
+      if (!p && localStorage.getItem(PKEY)) wipe('wiped');
+    }, 30_000);
+    return () => clearInterval(id);
+  }, [wipe]);
+
+  useEffect(() => {
+    if (!ready || !profile) return;
     if (first.current) { first.current = false; return; }
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* storage unavailable */ }
-  }, [state, ready]);
+    // debounce a save to the server
+    if (syncTimer.current) clearTimeout(syncTimer.current);
+    syncTimer.current = setTimeout(() => {
+      post('/api/sync', { name: profile.name, token: profile.token, avatar: profile.avatar, xp: state.xp, level: levelInfo(state.xp).level, streak: state.streak, state })
+        .then((r) => { if (r.status === 404) wipe('wiped'); })
+        .catch(() => { /* offline: next change retries */ });
+    }, 1200);
+  }, [state, ready, profile, wipe]);
+
+  const register = useCallback(async (name: string, avatar: string): Promise<string | null> => {
+    try {
+      const r = await post<{ token?: string; error?: string }>('/api/register', { name, avatar });
+      if (!r.ok || !r.data.token) return r.data.error ?? 'Something went wrong';
+      const p: Profile = { name: name.trim(), avatar, token: r.data.token, season: seasonId() };
+      saveProfile(p);
+      try { localStorage.removeItem(KEY); } catch { /* noop */ }
+      first.current = true;
+      setState(initialState());
+      setProfileState(p);
+      setAuth('in');
+      return null;
+    } catch {
+      return 'Cannot reach the server';
+    }
+  }, []);
+
+  const setAvatar = useCallback((avatar: string) => {
+    setProfileState((p) => {
+      if (!p) return p;
+      const np = { ...p, avatar };
+      saveProfile(np);
+      return np;
+    });
+    setState((s) => ({ ...s })); // trigger a sync
+  }, []);
 
   const update = useCallback((fn: (s: GameState) => GameState) => {
     setState((prev) => {
@@ -172,7 +275,7 @@ export function useGame() {
   const dismissBadge = useCallback(() => setNewBadges((b) => b.slice(1)), []);
   const reset = useCallback(() => setState(initialState()), []);
 
-  return { state, ready, update, isUnlocked, newBadges, dismissBadge, reset };
+  return { state, ready, update, isUnlocked, newBadges, dismissBadge, reset, profile, auth, register, setAvatar };
 }
 
 export function completeDay(s: GameState): GameState {

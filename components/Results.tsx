@@ -5,8 +5,9 @@ import { Star } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { Lesson } from '@/lib/data';
 import { sfx } from '@/lib/sound';
-import { completeDay, levelInfo, type useGame } from '@/lib/store';
+import { completeDay, levelInfo, MAX_HEARTS, type useGame } from '@/lib/store';
 import type { LessonResult } from './Lesson';
+import Chest, { type ChestTier, type Loot } from './Chest';
 import { Asset, Bar, Btn } from './ui';
 
 type G = ReturnType<typeof useGame>;
@@ -25,7 +26,16 @@ export default function Results({ g, lesson, r, nextId, onHome, onRetry, onNext 
   const acc = r.total ? r.correctFirst / r.total : 1;
   const perfect = r.mistakes === 0;
   const stars = acc >= 0.9 ? 3 : acc >= 0.7 ? 2 : 1;
-  const gems = 5 + (perfect ? 10 : 0);
+  const tier: ChestTier = perfect && r.kind === 'quiz' ? 'magic' : stars === 3 ? 'gold' : stars === 2 ? 'silver' : 'wood';
+  const chestGems = { wood: 5, silver: 10, gold: 20, magic: 35 }[tier];
+  const chestXp = { wood: 5, silver: 10, gold: 15, magic: 30 }[tier];
+  const loot: Loot[] = [
+    { icon: 'gem_stone_3d.png', amount: chestGems, label: 'Gems' },
+    { icon: 'high_voltage_3d.png', amount: chestXp, label: 'Bonus XP' },
+    ...(tier === 'magic' ? [{ icon: 'red_heart_3d.png', amount: MAX_HEARTS, label: 'Hearts', rare: true }] : []),
+  ];
+  const [opened, setOpened] = useState(false);
+  const totalXp = r.xp + chestXp;
   const [levelUp, setLevelUp] = useState<number | null>(null);
   const secs = Math.round(r.ms / 1000);
 
@@ -43,15 +53,16 @@ export default function Results({ g, lesson, r, nextId, onHome, onRetry, onNext 
       frame();
     } catch { /* noop */ }
     const before = levelInfo(g.state.xp).level;
-    const after = levelInfo(g.state.xp + r.xp).level;
-    if (after > before) setTimeout(() => { setLevelUp(after); sfx.unlock(); }, 1300);
+    const after = levelInfo(g.state.xp + totalXp).level;
+    if (after > before) setTimeout(() => { setLevelUp(after); sfx.unlock(); }, 2600);
     g.update((s) => {
       const prev = s.lessons[lesson.id];
       return completeDay({
         ...s,
-        xp: s.xp + r.xp,
-        todayXp: s.todayXp + r.xp,
-        gems: s.gems + gems,
+        xp: s.xp + totalXp,
+        todayXp: s.todayXp + totalXp,
+        gems: s.gems + chestGems,
+        hearts: tier === 'magic' ? MAX_HEARTS : s.hearts,
         lessons: {
           ...s.lessons,
           [lesson.id]: { done: true, stars: Math.max(prev?.stars ?? 0, stars), bestAcc: Math.max(prev?.bestAcc ?? 0, acc), plays: (prev?.plays ?? 0) + 1 },
@@ -65,11 +76,11 @@ export default function Results({ g, lesson, r, nextId, onHome, onRetry, onNext 
 
   return (
     <div className="results">
-      <motion.div initial={{ scale: 0, rotate: -20 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 260, damping: 14 }}>
-        <Asset name={perfect ? 'smiling_face_with_sunglasses_3d.png' : 'pig_face_3d.png'} size={132} alt="" />
+      <div className="rays" />
+      <motion.div className="victory" initial={{ scale: 3, opacity: 0, rotate: -6 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 320, damping: 16 }}>
+        <h1>{perfect ? 'FLAWLESS!' : 'VICTORY!'}</h1>
       </motion.div>
-      <h1>{perfect ? 'Perfect lesson!' : 'Lesson complete!'}</h1>
-      <p className="muted">{lesson.title}</p>
+      <p className="subtitle">{lesson.title}</p>
 
       <div className="stars" aria-label={`${stars} of 3 stars`}>
         {[1, 2, 3].map((i) => (
@@ -79,10 +90,12 @@ export default function Results({ g, lesson, r, nextId, onHome, onRetry, onNext 
         ))}
       </div>
 
+      <Chest tier={tier} loot={loot} onOpen={() => setOpened(true)} />
+
       <div className="result-tiles">
         <motion.div className="tile-stat gold" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
           <small>Total XP</small>
-          <b><Asset name="high_voltage_3d.png" size={26} /> <Count to={r.xp} /></b>
+          <b><Asset name="high_voltage_3d.png" size={26} /> <Count to={opened ? totalXp : r.xp} /></b>
         </motion.div>
         <motion.div className="tile-stat green" initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.62 }}>
           <small>{r.kind === 'match' ? 'Accuracy' : 'First-try accuracy'}</small>
@@ -99,7 +112,6 @@ export default function Results({ g, lesson, r, nextId, onHome, onRetry, onNext 
       </div>
 
       <div className="reward-row">
-        <span className="reward"><Asset name="gem_stone_3d.png" size={22} /> +{gems} gems{perfect ? ' (perfect bonus)' : ''}</span>
         <span className="reward"><Asset name="fire_3d.png" size={22} /> {g.state.streak}-day streak</span>
       </div>
 
@@ -117,9 +129,13 @@ export default function Results({ g, lesson, r, nextId, onHome, onRetry, onNext 
 
       {levelUp && (
         <motion.div className="levelup" initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => setLevelUp(null)}>
-          <motion.div className="levelup-card" initial={{ scale: 0.5, y: 40 }} animate={{ scale: 1, y: 0 }} transition={{ type: 'spring', stiffness: 260, damping: 16 }}>
-            <Asset name="crown_3d.png" size={110} />
-            <h2>Level {levelUp}!</h2>
+          <div className="rays" />
+          <motion.div className="levelup-card" initial={{ scale: 0.2, rotate: -12 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 300, damping: 12 }}>
+            <motion.div animate={{ y: [0, -10, 0], rotate: [-6, 6, -6] }} transition={{ repeat: Infinity, duration: 2 }}>
+              <Asset name="crown_3d.png" size={120} />
+            </motion.div>
+            <span className="chest-label">LEVEL UP!</span>
+            <h2>{levelUp}</h2>
             <p>Your knowledge is compounding nicely.</p>
             <Btn variant="gold" onClick={() => setLevelUp(null)}>Awesome</Btn>
           </motion.div>

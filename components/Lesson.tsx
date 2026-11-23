@@ -154,7 +154,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
         <span className="stat"><Asset name="red_heart_3d.png" size={26} /><b style={{ color: 'var(--red)' }}>{unlimited ? '∞' : g.state.hearts}</b></span>
       </div>
 
-      <div className="lesson-body">
+      <motion.div className="lesson-body" key={'shake' + pos + status} animate={status === 'wrong' ? { x: [0, -14, 12, -8, 6, 0] } : { x: 0 }} transition={{ duration: 0.45 }}>
         <div className="q-meta">
           <span className="pill" style={{ ['--c' as string]: `var(${sec.color})` }}>{DIFF_LABEL[q.diff]}</span>
           <span className="pill ghost">{q.topic}</span>
@@ -203,7 +203,15 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
+
+      <AnimatePresence>
+        {status === 'correct' && !comboFlash && (
+          <motion.div key={'xp' + pos} className="xp-pop" initial={{ scale: 0.2, y: 40, opacity: 0 }} animate={{ scale: [0.2, 1.3, 1], y: -40, opacity: [0, 1, 1, 0] }} transition={{ duration: 1.1, times: [0, 0.3, 0.7, 1] }}>
+            +{gain} XP
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {comboFlash && (

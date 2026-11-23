@@ -50,4 +50,13 @@ export const sfx = {
   complete: () => [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, i * 0.09, 0.3, 'triangle', 0.14)),
   unlock: () => [1047, 1568].forEach((f, i) => tone(f, i * 0.08, 0.25, 'sine', 0.12)),
   match: () => tone(988, 0, 0.12, 'sine', 0.12),
+  chest: () => {
+    tone(130, 0, 0.25, 'square', 0.08);
+    [392, 523, 659, 784, 1047, 1319, 1568].forEach((f, i) => tone(f, 0.08 + i * 0.05, 0.25, 'triangle', 0.1));
+  },
+  coin: () => {
+    tone(1319, 0, 0.08, 'square', 0.05);
+    tone(1976, 0.06, 0.18, 'square', 0.05);
+  },
+  whoosh: () => [300, 500, 800].forEach((f, i) => tone(f, i * 0.03, 0.12, 'sine', 0.06)),
 };
