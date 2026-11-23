@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       await recordFailure(who, 600);
       return json({ error: 'That code is wrong or has expired. Make a new one.' }, 404);
     }
-    return json({ user: publicUser(u), token: u.token, state: u.state });
+    return json({ user: publicUser(u), key: name, token: u.token, state: u.state });
   } catch (e) {
     console.error(e);
     return json({ error: 'Server error' }, 500);

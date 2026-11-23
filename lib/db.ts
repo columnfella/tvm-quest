@@ -22,6 +22,8 @@ export type UserRecord = {
   state: unknown; // the player's game state blob
   joinedAt: number;
   updatedAt: number;
+  notice?: string; // one-time message from the site owner, shown as a browser alert, cleared once seen
+  mustRename?: boolean; // the site owner asked this player to pick a new name
 };
 
 interface Store {
@@ -30,6 +32,8 @@ interface Store {
   create(name: string, rec: UserRecord): Promise<boolean>;
   put(name: string, rec: UserRecord): Promise<void>;
   all(): Promise<UserRecord[]>;
+  /** Moves a record to a new key if that key is free (renames). Returns false when taken. */
+  move(from: string, to: string, rec: UserRecord): Promise<boolean>;
 }
 
 const COURSE = courseId();
@@ -65,6 +69,11 @@ const redisStore: Store = {
   },
   async put(name, rec) {
     await redis('HSET', key(), name, JSON.stringify(rec));
+  },
+  async move(from, to, rec) {
+    if ((await redis<number>('HSETNX', key(), to, JSON.stringify(rec))) !== 1) return false;
+    await redis('HDEL', key(), from);
+    return true;
   },
   async all() {
     const flat = await redis<string[]>('HGETALL', key());
@@ -120,6 +129,15 @@ const fileStore: Store = {
       await writeFile(db);
     }),
   all: async () => Object.values((await readFile()).users),
+  move: (from, to, rec) =>
+    locked(async () => {
+      const db = await readFile();
+      if (db.users[to]) return false;
+      db.users[to] = rec;
+      delete db.users[from];
+      await writeFile(db);
+      return true;
+    }),
 };
 
 if (!(REDIS_URL && REDIS_TOKEN) && process.env.VERCEL) {

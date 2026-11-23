@@ -13,7 +13,7 @@ import Lesson, { type LessonResult } from './Lesson';
 import Match from './Match';
 import Onboarding from './Onboarding';
 import Results from './Results';
-import { BadgeToast, CalculatorPanel, ProfilePanel, SettingsPanel } from './Panels';
+import { BadgeToast, CalculatorPanel, ProfilePanel, RenamePanel, SettingsPanel } from './Panels';
 import { cleanCode, formatCode } from './Link';
 import { LeaderboardPanel } from './Season';
 import { Asset, Btn, Modal } from './ui';
@@ -52,7 +52,7 @@ type Screen =
   | { v: 'learn'; lesson: LearnLesson }
   | { v: 'results'; lesson: L; r: LessonResult };
 
-export type PanelId = 'profile' | 'settings' | 'calc' | 'board';
+export type PanelId = 'profile' | 'settings' | 'calc' | 'board' | 'rename';
 
 export default function Game({ course: raw }: { course: Course }) {
   const course = useCourseIndex(raw);
@@ -81,6 +81,14 @@ export default function Game({ course: raw }: { course: Course }) {
   };
 
   useEffect(() => setSoundEnabled(g.state.settings.sound), [g.state.settings.sound]);
+  // a message from the site owner: show it as a browser alert once, then (if asked) offer a rename
+  const { notice, ackNotice, mustRename } = g;
+  useEffect(() => {
+    if (!notice) return;
+    const id = setTimeout(() => { window.alert(notice); ackNotice(); if (mustRename) setPanel('rename'); }, 400);
+    return () => clearTimeout(id);
+  }, [notice, ackNotice, mustRename]);
+  useEffect(() => { if (mustRename && !notice) setPanel((p) => p ?? 'rename'); }, [mustRename, notice]);
   useEffect(() => { if (!g.profile) setScreen({ v: 'home' }); }, [g.profile]);
 
   const go = (s: Screen) => { setScreen(s); window.scrollTo({ top: 0 }); };
@@ -182,7 +190,8 @@ export default function Game({ course: raw }: { course: Course }) {
               )}
             </AnimatePresence>
 
-            <ProfilePanel open={panel === 'profile'} onClose={() => setPanel(null)} g={g} />
+            <ProfilePanel open={panel === 'profile'} onClose={() => setPanel(null)} g={g} onRename={() => setPanel('rename')} />
+            <RenamePanel open={panel === 'rename'} onClose={() => setPanel(null)} g={g} required={g.mustRename} />
             <SettingsPanel open={panel === 'settings'} onClose={() => setPanel(null)} g={g} />
             {course.calculator && <CalculatorPanel open={panel === 'calc'} onClose={() => setPanel(null)} />}
             <LeaderboardPanel open={panel === 'board'} onClose={() => setPanel(null)} me={g.profile.name} />

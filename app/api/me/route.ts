@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   try {
     const u = await db.get(nameKey(b.name));
     if (!u || u.token !== b.token) return json({ error: 'Not found' }, 404);
-    return json({ user: publicUser(u), state: u.state });
+    return json({ user: publicUser(u), state: u.state, notice: u.notice ?? null, mustRename: !!u.mustRename });
   } catch (e) {
     console.error(e);
     return json({ error: 'Server error' }, 500);

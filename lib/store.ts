@@ -103,7 +103,10 @@ export function buildAchievements(course: CourseIndex): Achievement[] {
 }
 
 // ---------- profile (server account) ----------
-export type Profile = { name: string; avatar: string; token: string; season: string };
+export type Profile = { name: string; avatar: string; token: string; season: string; key?: string };
+/** Name the account is stored under on the server (differs from the shown name after a moderator rename). */
+const apiName = (p: Profile) => p.key ?? p.name;
+type MeReply = { state?: Partial<GameState>; user?: { name: string }; notice?: string | null; mustRename?: boolean };
 
 async function post<T>(url: string, data: unknown): Promise<{ ok: boolean; status: number; data: T }> {
   const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
@@ -124,6 +127,8 @@ export function useGame(course: CourseIndex) {
   const [newBadges, setNewBadges] = useState<Achievement[]>([]);
   const [profile, setProfileState] = useState<Profile | null>(null);
   const [auth, setAuth] = useState<AuthStatus>('loading');
+  const [notice, setNotice] = useState<string | null>(null); // message from the site owner
+  const [mustRename, setMustRename] = useState(false);
   const skipSave = useRef(true);
   const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -167,10 +172,20 @@ export function useGame(course: CourseIndex) {
     setState(local);
     setReady(true);
     // confirm the account still exists on the server and pick up progress from other tabs
-    post<{ state?: Partial<GameState> }>('/api/me', { name: p.name, token: p.token })
+    post<MeReply>('/api/me', { name: apiName(p), token: p.token })
       .then((r) => {
         if (r.status === 404) return wipe('wiped');
         if (r.ok && r.data.state && (r.data.state.xp ?? 0) > local.xp) setState(rollDay(hydrate(r.data.state)));
+        if (r.ok) {
+          // the shown name was changed on the server (moderation): show it, keep using the stored key
+          if (r.data.user && r.data.user.name !== p.name) {
+            const np: Profile = { ...p, name: r.data.user.name, key: apiName(p) };
+            store.saveProfile(np);
+            setProfileState(np);
+          }
+          setNotice(r.data.notice || null);
+          setMustRename(!!r.data.mustRename);
+        }
         setAuth('in');
       })
       .catch(() => setAuth('in')); // offline: keep playing locally
@@ -189,7 +204,7 @@ export function useGame(course: CourseIndex) {
     if (!profile) return;
     const onShow = () => {
       if (document.visibilityState !== 'visible') return;
-      post<{ state?: Partial<GameState> }>('/api/me', { name: profile.name, token: profile.token })
+      post<{ state?: Partial<GameState> }>('/api/me', { name: apiName(profile), token: profile.token })
         .then((r) => {
           if (r.status === 404) return wipe('wiped');
           const remote = r.data.state;
@@ -207,7 +222,7 @@ export function useGame(course: CourseIndex) {
     store.saveState(state);
     if (syncTimer.current) clearTimeout(syncTimer.current);
     syncTimer.current = setTimeout(() => {
-      post('/api/sync', { name: profile.name, token: profile.token, avatar: profile.avatar, xp: state.xp, level: levelInfo(state.xp).level, streak: state.streak, state })
+      post('/api/sync', { name: apiName(profile), token: profile.token, avatar: profile.avatar, xp: state.xp, level: levelInfo(state.xp).level, streak: state.streak, state })
         .then((r) => { if (r.status === 404) wipe('wiped'); })
         .catch(() => { /* offline: the next change retries */ });
     }, 1200);
@@ -232,9 +247,10 @@ export function useGame(course: CourseIndex) {
   /** Signs this device in to the account that created a link code (from another device). */
   const linkDevice = useCallback(async (code: string): Promise<string | null> => {
     try {
-      const r = await post<{ token?: string; user?: { name: string; avatar: string }; state?: Partial<GameState>; error?: string }>('/api/link/claim', { code });
+      const r = await post<{ token?: string; key?: string; user?: { name: string; avatar: string }; state?: Partial<GameState>; error?: string }>('/api/link/claim', { code });
       if (!r.ok || !r.data.token || !r.data.user) return r.data.error ?? 'Something went wrong';
       const p: Profile = { name: r.data.user.name, avatar: r.data.user.avatar, token: r.data.token, season: seasonId() };
+      if (r.data.key && r.data.key !== r.data.user.name.toLowerCase()) p.key = r.data.key;
       const st = rollDay(hydrate(r.data.state));
       store.saveProfile(p);
       store.saveState(st);
@@ -252,7 +268,7 @@ export function useGame(course: CourseIndex) {
   const createLink = useCallback(async (): Promise<{ code: string; expiresAt: number } | { error: string }> => {
     if (!profile) return { error: 'Not signed in' };
     try {
-      const r = await post<{ code?: string; expiresAt?: number; error?: string }>('/api/link', { name: profile.name, token: profile.token });
+      const r = await post<{ code?: string; expiresAt?: number; error?: string }>('/api/link', { name: apiName(profile), token: profile.token });
       if (r.status === 404) { wipe('wiped'); return { error: 'This season ended' }; }
       if (!r.ok || !r.data.code || !r.data.expiresAt) return { error: r.data.error ?? 'Something went wrong' };
       return { code: r.data.code, expiresAt: r.data.expiresAt };
@@ -260,6 +276,30 @@ export function useGame(course: CourseIndex) {
       return { error: 'Cannot reach the server' };
     }
   }, [profile, wipe]);
+
+  /** Renames the account; progress, token and rank stay the same. */
+  const rename = useCallback(async (newName: string): Promise<string | null> => {
+    if (!profile) return 'Not signed in';
+    if (syncTimer.current) clearTimeout(syncTimer.current); // a queued save would still use the old name
+    try {
+      const r = await post<{ user?: { name: string }; error?: string }>('/api/rename', { name: apiName(profile), token: profile.token, newName: newName.trim() });
+      if (r.status === 404) { wipe('wiped'); return 'This season ended'; }
+      if (!r.ok || !r.data.user) return r.data.error ?? 'Something went wrong';
+      const np: Profile = { name: r.data.user.name, avatar: profile.avatar, token: profile.token, season: profile.season };
+      store.saveProfile(np);
+      setProfileState(np);
+      setMustRename(false);
+      return null;
+    } catch {
+      return 'Cannot reach the server';
+    }
+  }, [profile, store, wipe]);
+
+  /** Marks the site owner's notice as seen. */
+  const ackNotice = useCallback(() => {
+    setNotice(null);
+    if (profile) post('/api/notice', { name: apiName(profile), token: profile.token }).catch(() => { /* retried next load */ });
+  }, [profile]);
 
   const setAvatar = useCallback((avatar: string) => {
     setProfileState((p) => {
@@ -284,7 +324,7 @@ export function useGame(course: CourseIndex) {
   const dismissBadge = useCallback(() => setNewBadges((b) => b.slice(1)), []);
   const reset = useCallback(() => setState((s) => ({ ...initialState(), settings: s.settings })), []);
 
-  return { state, ready, update, newBadges, dismissBadge, reset, profile, auth, register, linkDevice, createLink, setAvatar, achievements };
+  return { state, ready, update, newBadges, dismissBadge, reset, profile, auth, register, linkDevice, createLink, rename, notice, mustRename, ackNotice, setAvatar, achievements };
 }
 
 export type Game = ReturnType<typeof useGame>;

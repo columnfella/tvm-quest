@@ -2,6 +2,7 @@
 import { AnimatePresence, m } from 'framer-motion';
 import { X } from 'lucide-react';
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 /** Free 3D emoji asset (Microsoft Fluent Emoji, MIT) served from /public/assets. */
 export function Asset({ name, size = 32, alt = '', className = '', style, eager }: { name: string; size?: number; alt?: string; className?: string; style?: React.CSSProperties; eager?: boolean }) {
@@ -51,7 +52,9 @@ export function Modal({ open, onClose, children, title, wide }: { open: boolean;
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [open, onClose]);
-  return (
+  // rendered into <body> so no page container (sticky sidebar, animated screen) can trap it under the top bar
+  if (typeof document === 'undefined') return null;
+  return createPortal(
     <AnimatePresence>
       {open && (
         <m.div className="modal-back" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
@@ -76,7 +79,8 @@ export function Modal({ open, onClose, children, title, wide }: { open: boolean;
           </m.div>
         </m.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 

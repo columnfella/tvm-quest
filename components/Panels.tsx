@@ -6,12 +6,43 @@ import { levelInfo, type Achievement, type Game } from '@/lib/store';
 import { solve, type TvmKey } from '@/lib/tvm';
 import { sfx } from '@/lib/sound';
 import { AVATARS } from '@/lib/avatars';
+import { NAME_MAX, validateName } from '@/lib/username';
 import { LinkDevice } from './Link';
 import { Asset, Bar, Btn, Modal } from './ui';
 
 type G = Game;
 
-export function ProfilePanel({ open, onClose, g }: { open: boolean; onClose: () => void; g: G }) {
+/** Change your name; progress, rank and badges stay. `required`: the site owner asked for a new name. */
+export function RenamePanel({ open, onClose, g, required }: { open: boolean; onClose: () => void; g: G; required?: boolean }) {
+  const [name, setName] = useState('');
+  const [serverErr, setServerErr] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  useEffect(() => { if (open) { setName(''); setServerErr(null); } }, [open]);
+  const localErr = name.trim() ? validateName(name) : null;
+  const err = localErr ?? serverErr;
+  const save = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (busy || localErr || !name.trim()) return;
+    setBusy(true);
+    const r = await g.rename(name);
+    setBusy(false);
+    if (r) { setServerErr(r); sfx.wrong(); } else { sfx.complete(); onClose(); }
+  };
+  return (
+    <Modal open={open} onClose={onClose} title={required ? 'Pick a new name' : 'Change your name'}>
+      <form className="center-col" onSubmit={save} style={{ alignItems: 'stretch', textAlign: 'left' }}>
+        <p className="small">{required ? <>Your name was changed to <b>{g.profile?.name}</b> for now. Choose a proper one: your XP, stars and badges all stay.</> : <>Your XP, stars, badges and rank stay the same.</>}</p>
+        <input className={`name-input ${err ? 'bad' : ''}`} value={name} maxLength={NAME_MAX} autoComplete="off" spellCheck={false} placeholder="New name" aria-label="New name" autoFocus
+          onChange={(e) => { setName(e.target.value.replace(/s/g, '_')); setServerErr(null); }} />
+        <p className={`name-hint ${err ? 'bad' : ''}`}>{err ?? '3–16 letters, numbers or _.'}</p>
+        <Btn type="submit" variant="gold" block disabled={busy || !!localErr || !name.trim()}>{busy ? 'Saving…' : 'Save name'}</Btn>
+        <Btn type="button" variant="ghost" block onClick={onClose}>{required ? 'Later' : 'Cancel'}</Btn>
+      </form>
+    </Modal>
+  );
+}
+
+export function ProfilePanel({ open, onClose, g, onRename }: { open: boolean; onClose: () => void; g: G; onRename: () => void }) {
   const course = useCourse();
   const s = g.state;
   const lv = levelInfo(s.xp);
@@ -26,7 +57,7 @@ export function ProfilePanel({ open, onClose, g }: { open: boolean; onClose: () 
           <Asset name={g.profile?.avatar ?? course.mascot} size={72} />
         </button>
         <div style={{ flex: 1 }}>
-          <h3>{g.profile?.name} · Level {lv.level}</h3>
+          <h3>{g.profile?.name} · Level {lv.level} <button className="link-btn dark rename-link" onClick={onRename}>Change name</button></h3>
           <Bar value={lv.into / lv.span} color="var(--yellow)" />
           <p className="muted small">{lv.span - lv.into} XP to level {lv.level + 1}</p>
         </div>
