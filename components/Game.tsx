@@ -1,6 +1,9 @@
 'use client';
 import { AnimatePresence, LazyMotion, MotionConfig, domAnimation, m } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import { learnLessons } from '@/lessons';
+import type { LearnLesson } from '@/lib/learn';
 import { CourseProvider, shuffle, useChapterQuestions, useCourseIndex, type Course, type Lesson as L } from '@/lib/course';
 import { setSoundEnabled } from '@/lib/sound';
 import { useGame } from '@/lib/store';
@@ -11,8 +14,15 @@ import Match from './Match';
 import Onboarding from './Onboarding';
 import Results from './Results';
 import { BadgeToast, CalculatorPanel, ProfilePanel, SettingsPanel } from './Panels';
+import { cleanCode, formatCode } from './Link';
 import { LeaderboardPanel } from './Season';
-import { Asset } from './ui';
+import { Asset, Btn, Modal } from './ui';
+
+// interactive lessons (template + visuals) load only when one is opened, keeping the home page light
+const LearnScreen = dynamic(() => import('./learn/LessonShell'), {
+  ssr: false,
+  loading: () => <div className="onboard"><span className="spinner" aria-label="Loading lesson" /></div>,
+});
 
 /** Loads the chapter's full questions (usually already prefetched by the chapter screen), then shows the lesson. */
 function LessonLoader(props: Omit<React.ComponentProps<typeof Lesson>, 'questions'>) {
@@ -39,6 +49,7 @@ type Screen =
   | { v: 'home' }
   | { v: 'chapter'; id: string }
   | { v: 'play'; lesson: L }
+  | { v: 'learn'; lesson: LearnLesson }
   | { v: 'results'; lesson: L; r: LessonResult };
 
 export type PanelId = 'profile' | 'settings' | 'calc' | 'board';
@@ -48,6 +59,26 @@ export default function Game({ course: raw }: { course: Course }) {
   const g = useGame(course);
   const [screen, setScreen] = useState<Screen>({ v: 'home' });
   const [panel, setPanel] = useState<null | PanelId>(null);
+
+  // /?link=CODE comes from scanning another device's QR code
+  const [linkCode, setLinkCode] = useState<string | null>(null);
+  const [linkErr, setLinkErr] = useState<string | null>(null);
+  const [linking, setLinking] = useState(false);
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const c = cleanCode(url.searchParams.get('link') ?? '');
+    if (!url.searchParams.has('link')) return;
+    url.searchParams.delete('link');
+    window.history.replaceState(null, '', url.pathname + url.search + url.hash);
+    if (c.length === 6) setLinkCode(c);
+  }, []);
+  const confirmSwitch = async () => {
+    if (!linkCode) return;
+    setLinking(true);
+    const err = await g.linkDevice(linkCode);
+    setLinking(false);
+    if (err) setLinkErr(err); else { setLinkCode(null); setScreen({ v: 'home' }); }
+  };
 
   useEffect(() => setSoundEnabled(g.state.settings.sound), [g.state.settings.sound]);
   useEffect(() => { if (!g.profile) setScreen({ v: 'home' }); }, [g.profile]);
@@ -89,7 +120,13 @@ export default function Game({ course: raw }: { course: Course }) {
       <LazyMotion features={domAnimation} strict>
       <MotionConfig reducedMotion="user">
         {!g.profile ? (
-          <Onboarding wiped={g.auth === 'wiped'} register={g.register} />
+          <Onboarding
+            wiped={g.auth === 'wiped'}
+            initialCode={linkCode}
+            // once signed in here, the scanned code is used up: don't offer it again as an account switch
+            register={async (n, av) => { const e = await g.register(n, av); if (!e) setLinkCode(null); return e; }}
+            linkDevice={async (c) => { const e = await g.linkDevice(c); if (!e) setLinkCode(null); return e; }}
+          />
         ) : (
           <div className="app">
             {(screen.v === 'home' || screen.v === 'chapter') && (
@@ -106,7 +143,7 @@ export default function Game({ course: raw }: { course: Course }) {
               )}
               {screen.v === 'chapter' && (
                 <m.div key={'c' + screen.id} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }} transition={{ duration: 0.18 }}>
-                  <ChapterView g={g} chapter={course.chapterMap[screen.id]} onBack={() => go({ v: 'home' })} onPlay={play} onQuick={(m, part) => quick(screen.id, m, part)} />
+                  <ChapterView g={g} chapter={course.chapterMap[screen.id]} onBack={() => go({ v: 'home' })} onPlay={play} onQuick={(m, part) => quick(screen.id, m, part)} onLearn={(lesson) => go({ v: 'learn', lesson })} />
                 </m.div>
               )}
               {screen.v === 'play' && (
@@ -116,6 +153,18 @@ export default function Game({ course: raw }: { course: Course }) {
                   ) : (
                     <LessonLoader g={g} lesson={screen.lesson} onExit={() => back(screen.lesson)} onFinish={(r) => go({ v: 'results', lesson: screen.lesson, r })} openCalc={() => setPanel('calc')} />
                   )}
+                </m.div>
+              )}
+              {screen.v === 'learn' && course.chapterMap[screen.lesson.chapterId] && (
+                <m.div key={'l' + screen.lesson.id} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ type: 'spring', stiffness: 260, damping: 24 }}>
+                  <LearnScreen
+                    g={g}
+                    chapter={course.chapterMap[screen.lesson.chapterId]}
+                    lesson={screen.lesson}
+                    lessons={learnLessons(screen.lesson.chapterId)}
+                    onExit={() => go({ v: 'chapter', id: screen.lesson.chapterId })}
+                    onOpen={(lesson) => go({ v: 'learn', lesson })}
+                  />
                 </m.div>
               )}
               {screen.v === 'results' && (
@@ -138,6 +187,15 @@ export default function Game({ course: raw }: { course: Course }) {
             {course.calculator && <CalculatorPanel open={panel === 'calc'} onClose={() => setPanel(null)} />}
             <LeaderboardPanel open={panel === 'board'} onClose={() => setPanel(null)} me={g.profile.name} />
             <BadgeToast badge={g.newBadges[0] ?? null} onDone={g.dismissBadge} />
+            <Modal open={!!linkCode} onClose={() => { setLinkCode(null); setLinkErr(null); }} title="Switch account?">
+              <div className="center-col">
+                <p>You scanned a link code ({linkCode ? formatCode(linkCode) : ''}). This device is signed in as <b>{g.profile.name}</b>. Switch it to the account that made the code?</p>
+                <p className="muted small">{g.profile.name}’s progress stays saved, but this device will only get back into it with a code from a device still signed in as {g.profile.name}.</p>
+                {linkErr && <p className="small bad-text">{linkErr}</p>}
+                <Btn variant="gold" block onClick={confirmSwitch} disabled={linking}>{linking ? 'Switching…' : 'Switch account'}</Btn>
+                <Btn variant="ghost" block onClick={() => { setLinkCode(null); setLinkErr(null); }}>Keep {g.profile.name}</Btn>
+              </div>
+            </Modal>
           </div>
         )}
       </MotionConfig>

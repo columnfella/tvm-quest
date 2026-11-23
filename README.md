@@ -24,7 +24,9 @@ See **[DEPLOY.md](DEPLOY.md)** for the step-by-step guide. In short: import the 
 - **Database:** one Redis hash per week: `<course id>:<monday-date>` → `{ lowercase username: JSON record }`.
 - **Weekly wipe:** a season runs from Monday 00:00 UTC to the next Monday. A new week reads a new key, so everyone starts fresh,
   and old keys expire one day after their season ends. Locally the JSON file resets itself the same way. The app shows a live countdown.
-- **API** (`app/api/*`): `POST /register`, `POST /me`, `POST /sync`, `GET /leaderboard`.
+- **API** (`app/api/*`): `POST /register`, `POST /me`, `POST /sync`, `GET /leaderboard`, `POST /link`, `POST /link/claim`.
+- **Play on another device:** Profile → *Play on another device* shows a one-time code and a QR code (valid 10 minutes, single use).
+  The other device scans the QR or picks *I have a code* on the start screen. Codes avoid look-alike characters, and wrong guesses are rate-limited per IP.
 
 ## Content
 
@@ -34,6 +36,9 @@ Mistakes in the files are skipped and listed in **Settings → content warnings*
 
 ## What's inside
 
+- **Interactive lessons (Learn tab):** Ch. 7 has 7 hand-built lessons (share value and holding period, zero growth and preferred stock, Gordon growth, CAPM and equilibrium,
+  nonconstant growth, SGR and PVGO, FCF model). Each one goes concept → interactive visual → formula → practice with instant feedback → completion.
+  To add your own, see [`lessons/README.md`](lessons/README.md). The maths is checked with `npm run test:math`.
 - **Chapters:** pick any chapter, then the **Theory** (memorize) or **Math** (solve) tab. Every lesson is open, and there are no hearts or lives.
 - **Cheat sheet:** every chapter has a free page with all of its formulas and key terms.
 - **Quick practice:** 10 random questions from the chapter. **Review mistakes:** only the ones you got wrong.

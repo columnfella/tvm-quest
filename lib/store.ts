@@ -184,6 +184,23 @@ export function useGame(course: CourseIndex) {
     return () => clearInterval(id);
   }, [store, wipe]);
 
+  // a linked device may have played meanwhile: when this tab comes back into view, adopt newer server progress
+  useEffect(() => {
+    if (!profile) return;
+    const onShow = () => {
+      if (document.visibilityState !== 'visible') return;
+      post<{ state?: Partial<GameState> }>('/api/me', { name: profile.name, token: profile.token })
+        .then((r) => {
+          if (r.status === 404) return wipe('wiped');
+          const remote = r.data.state;
+          if (r.ok && remote && (remote.xp ?? 0) > 0) setState((cur) => ((remote.xp ?? 0) > cur.xp ? rollDay(hydrate(remote)) : cur));
+        })
+        .catch(() => { /* offline */ });
+    };
+    document.addEventListener('visibilitychange', onShow);
+    return () => document.removeEventListener('visibilitychange', onShow);
+  }, [profile, wipe]);
+
   useEffect(() => {
     if (!ready || !profile) return;
     if (skipSave.current) { skipSave.current = false; return; }
@@ -212,6 +229,38 @@ export function useGame(course: CourseIndex) {
     }
   }, [store]);
 
+  /** Signs this device in to the account that created a link code (from another device). */
+  const linkDevice = useCallback(async (code: string): Promise<string | null> => {
+    try {
+      const r = await post<{ token?: string; user?: { name: string; avatar: string }; state?: Partial<GameState>; error?: string }>('/api/link/claim', { code });
+      if (!r.ok || !r.data.token || !r.data.user) return r.data.error ?? 'Something went wrong';
+      const p: Profile = { name: r.data.user.name, avatar: r.data.user.avatar, token: r.data.token, season: seasonId() };
+      const st = rollDay(hydrate(r.data.state));
+      store.saveProfile(p);
+      store.saveState(st);
+      skipSave.current = true;
+      setState(st);
+      setProfileState(p);
+      setAuth('in');
+      return null;
+    } catch {
+      return 'Cannot reach the server';
+    }
+  }, [store]);
+
+  /** Creates a one-time code (valid 10 minutes) that lets another device sign in to this account. */
+  const createLink = useCallback(async (): Promise<{ code: string; expiresAt: number } | { error: string }> => {
+    if (!profile) return { error: 'Not signed in' };
+    try {
+      const r = await post<{ code?: string; expiresAt?: number; error?: string }>('/api/link', { name: profile.name, token: profile.token });
+      if (r.status === 404) { wipe('wiped'); return { error: 'This season ended' }; }
+      if (!r.ok || !r.data.code || !r.data.expiresAt) return { error: r.data.error ?? 'Something went wrong' };
+      return { code: r.data.code, expiresAt: r.data.expiresAt };
+    } catch {
+      return { error: 'Cannot reach the server' };
+    }
+  }, [profile, wipe]);
+
   const setAvatar = useCallback((avatar: string) => {
     setProfileState((p) => {
       if (!p) return p;
@@ -235,7 +284,7 @@ export function useGame(course: CourseIndex) {
   const dismissBadge = useCallback(() => setNewBadges((b) => b.slice(1)), []);
   const reset = useCallback(() => setState((s) => ({ ...initialState(), settings: s.settings })), []);
 
-  return { state, ready, update, newBadges, dismissBadge, reset, profile, auth, register, setAvatar, achievements };
+  return { state, ready, update, newBadges, dismissBadge, reset, profile, auth, register, linkDevice, createLink, setAvatar, achievements };
 }
 
 export type Game = ReturnType<typeof useGame>;

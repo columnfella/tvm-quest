@@ -127,3 +127,49 @@ if (!(REDIS_URL && REDIS_TOKEN) && process.env.VERCEL) {
 }
 export const db: Store = REDIS_URL && REDIS_TOKEN ? redisStore : fileStore;
 export const dbKind = REDIS_URL && REDIS_TOKEN ? 'redis' : 'file';
+
+// ---------- device link codes (short-lived, single use) ----------
+// key <courseId>:link:<CODE> → lowercase username, expires after LINK_TTL seconds.
+// Claims are rate-limited per IP so codes can't be guessed by brute force.
+export const LINK_TTL = 600;
+const linkKey = (code: string) => `${COURSE}:link:${code}`;
+const memLinks = new Map<string, { name: string; exp: number }>(); // file-store mode (dev)
+const memHits = new Map<string, { n: number; exp: number }>();
+
+/** Stores a code for `name`. Returns false if the code already exists (caller picks another). */
+export async function putLink(code: string, name: string): Promise<boolean> {
+  if (dbKind === 'redis') return (await redis<string | null>('SET', linkKey(code), name, 'NX', 'EX', LINK_TTL)) === 'OK';
+  if (memLinks.has(code) && memLinks.get(code)!.exp > Date.now()) return false;
+  memLinks.set(code, { name, exp: Date.now() + LINK_TTL * 1000 });
+  return true;
+}
+
+/** Reads and deletes a code in one step (a code works once). */
+export async function takeLink(code: string): Promise<string | null> {
+  if (dbKind === 'redis') return redis<string | null>('GETDEL', linkKey(code));
+  const v = memLinks.get(code);
+  memLinks.delete(code);
+  return v && v.exp > Date.now() ? v.name : null;
+}
+
+// Only FAILED attempts count, so many students behind one campus IP can all link their devices.
+/** True when `who` already has `limit` or more failed attempts in the current window. */
+export async function tooManyFailures(who: string, limit: number): Promise<boolean> {
+  const k = `${COURSE}:rl:${who}`;
+  if (dbKind === 'redis') return Number((await redis<string | null>('GET', k)) ?? 0) >= limit;
+  const h = memHits.get(k);
+  return !!h && h.exp > Date.now() && h.n >= limit;
+}
+
+/** Records one failed attempt; the window starts at the first failure. */
+export async function recordFailure(who: string, windowSec: number): Promise<void> {
+  const k = `${COURSE}:rl:${who}`;
+  if (dbKind === 'redis') {
+    if ((await redis<number>('INCR', k)) === 1) await redis('EXPIRE', k, windowSec);
+    return;
+  }
+  const now = Date.now();
+  const h = memHits.get(k);
+  if (!h || h.exp < now) memHits.set(k, { n: 1, exp: now + windowSec * 1000 });
+  else h.n++;
+}

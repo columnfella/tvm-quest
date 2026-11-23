@@ -2,6 +2,7 @@
 import { m } from 'framer-motion';
 import { Calculator, Settings, Star } from 'lucide-react';
 import { useCourse, type Chapter } from '@/lib/course';
+import { learnLessons } from '@/lessons';
 import { sfx } from '@/lib/sound';
 import { levelInfo, type Game } from '@/lib/store';
 import type { PanelId } from './Game';
@@ -107,17 +108,19 @@ function Sparkline({ seed, progress }: { seed: string; progress: number }) {
   );
 }
 
+/** Chapter progress counts interactive lessons (Learn tab) and exercise sets alike. */
 export function chapterProgress(g: Game, ch: Chapter) {
-  const lessons = ch.sections.flatMap((s) => s.lessons);
-  const done = lessons.filter((l) => g.state.lessons[l.id]?.done).length;
-  const stars = lessons.reduce((a, l) => a + (g.state.lessons[l.id]?.stars ?? 0), 0);
-  return { done, total: lessons.length, stars, maxStars: lessons.length * 3 };
+  const ids = [...learnLessons(ch.id).map((l) => l.id), ...ch.sections.flatMap((s) => s.lessons.map((l) => l.id))];
+  const done = ids.filter((id) => g.state.lessons[id]?.done).length;
+  const stars = ids.reduce((a, id) => a + (g.state.lessons[id]?.stars ?? 0), 0);
+  return { done, total: ids.length, stars, maxStars: ids.length * 3 };
 }
 
 function ChapterCard({ ch, i, g, onOpen }: { ch: Chapter; i: number; g: Game; onOpen: () => void }) {
   const course = useCourse();
   const p = chapterProgress(g, ch);
   const missed = ch.questionKeys.filter((k) => g.state.missed.includes(k)).length;
+  const learn = learnLessons(ch.id).length;
   return (
     <m.button
       className="ch-card"
@@ -138,6 +141,7 @@ function ChapterCard({ ch, i, g, onOpen }: { ch: Chapter; i: number; g: Game; on
       </span>
       <span className="ch-foot">
         <span className="ch-meta">
+          {learn > 0 && <span className="ch-learn">{learn} interactive lessons</span>}
           {course.parts.length > 1
             ? course.parts.map((pt) => {
                 const n = ch.questionKeys.filter((k) => course.questions[k].part === pt.id).length;

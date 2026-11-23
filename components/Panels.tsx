@@ -6,6 +6,7 @@ import { levelInfo, type Achievement, type Game } from '@/lib/store';
 import { solve, type TvmKey } from '@/lib/tvm';
 import { sfx } from '@/lib/sound';
 import { AVATARS } from '@/lib/avatars';
+import { LinkDevice } from './Link';
 import { Asset, Bar, Btn, Modal } from './ui';
 
 type G = Game;
@@ -55,6 +56,7 @@ export function ProfilePanel({ open, onClose, g }: { open: boolean; onClose: () 
           </div>
         ))}
       </div>
+      <LinkDevice g={g} />
       <h3 className="badges-title">Badges · {g.achievements.filter((a) => s.achievements.includes(a.id)).length}/{g.achievements.length}</h3>
       <div className="badges">
         {g.achievements.map((a) => {

@@ -1,10 +1,12 @@
 'use client';
 import { m } from 'framer-motion';
-import { ArrowLeft, BookOpen, Check, Shuffle, Star, Undo2 } from 'lucide-react';
+import { ArrowLeft, BookOpen, Check, Clock, Shuffle, Star, Undo2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { loadChapter, useCourse, type Chapter, type Lesson } from '@/lib/course';
 import { sfx } from '@/lib/sound';
+import type { LearnLesson } from '@/lib/learn';
 import type { Game } from '@/lib/store';
+import { learnLessons } from '@/lessons';
 import { chapterProgress } from './Home';
 import { Asset, Bar, Btn, Modal, Rich } from './ui';
 
@@ -31,6 +33,51 @@ function LessonTile({ lesson, n, g, onPlay, delay }: { lesson: Lesson; n: number
         {[1, 2, 3].map((i) => <Star key={i} size={15} fill={i <= (prog?.stars ?? 0) ? '#facc15' : 'rgba(11,18,32,0.18)'} stroke="#0b1220" strokeWidth={2.5} />)}
       </span>
     </m.button>
+  );
+}
+
+/** Interactive lessons of the chapter (the Learn tab). */
+function LearnList({ lessons, g, onLearn }: { lessons: LearnLesson[]; g: Game; onLearn: (l: LearnLesson) => void }) {
+  const done = lessons.filter((l) => g.state.lessons[l.id]?.done).length;
+  return (
+    <section className="sec">
+      <div className="sec-head">
+        <h2>Interactive lessons</h2>
+        <p>Explore each model with live visuals, see the maths, then check yourself. {done}/{lessons.length} completed.</p>
+      </div>
+      <ol className="learn-list">
+        {lessons.map((l, i) => {
+          const prog = g.state.lessons[l.id];
+          return (
+            <li key={l.id}>
+              <m.button
+                className={`learn-card ${prog?.done ? 'done' : ''}`}
+                onClick={() => { sfx.tap(); onLearn(l); }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: 'spring', stiffness: 320, damping: 22, delay: Math.min(i * 0.04, 0.4) }}
+                whileHover={{ y: -3 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <span className="lc-num">{prog?.done ? <Check size={18} strokeWidth={4} /> : i + 1}</span>
+                <Asset name={l.icon} size={48} className="lc-icon" />
+                <span className="lc-body">
+                  <b>{l.title}</b>
+                  <span>{l.summary}</span>
+                  <span className="lc-meta">
+                    <span><Clock size={13} strokeWidth={3} /> {l.minutes} min</span>
+                    <span className="tl-stars" aria-label={`${prog?.stars ?? 0} of 3 stars`}>
+                      {[1, 2, 3].map((s) => <Star key={s} size={14} fill={s <= (prog?.stars ?? 0) ? '#facc15' : 'rgba(11,18,32,0.18)'} stroke="#0b1220" strokeWidth={2.5} />)}
+                    </span>
+                    <span className="lc-go">{prog?.done ? 'Review' : 'Start'}</span>
+                  </span>
+                </span>
+              </m.button>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
   );
 }
 
@@ -63,10 +110,17 @@ function CheatSheet({ chapter, open, onClose }: { chapter: Chapter; open: boolea
   );
 }
 
-export default function ChapterView({ g, chapter, onBack, onPlay, onQuick }: { g: Game; chapter: Chapter; onBack: () => void; onPlay: (l: Lesson) => void; onQuick: (mode: 'mix' | 'review', part: string) => void }) {
+const LEARN = 'learn'; // tab id of the interactive lessons
+
+export default function ChapterView({ g, chapter, onBack, onPlay, onQuick, onLearn }: { g: Game; chapter: Chapter; onBack: () => void; onPlay: (l: Lesson) => void; onQuick: (mode: 'mix' | 'review', part: string) => void; onLearn: (l: LearnLesson) => void }) {
   const course = useCourse();
   const p = chapterProgress(g, chapter);
-  const parts = course.parts.filter((pt) => chapter.sections.some((s) => s.part === pt.id));
+  const learn = learnLessons(chapter.id);
+  const exerciseParts = course.parts.filter((pt) => chapter.sections.some((s) => s.part === pt.id));
+  // the Learn tab comes first when the chapter has interactive lessons; the exercise parts follow unchanged
+  const parts = learn.length
+    ? [{ id: LEARN, label: 'Learn', tagline: 'Interactive lessons', icon: 'graduation_cap_3d.png' }, ...exerciseParts]
+    : exerciseParts;
   const tabKey = `quest-tab-${chapter.id}`;
   const [part, setPart] = useState(parts[0]?.id ?? '');
   const [sheet, setSheet] = useState(false);
@@ -113,13 +167,13 @@ export default function ChapterView({ g, chapter, onBack, onPlay, onQuick }: { g
       {parts.length > 1 && (
         <div className="part-tabs" role="tablist">
           {parts.map((pt) => {
-            const count = chapter.questionKeys.filter((k) => course.questions[k].part === pt.id).length;
+            const count = pt.id === LEARN ? learn.length : chapter.questionKeys.filter((k) => course.questions[k].part === pt.id).length;
             return (
               <button key={pt.id} role="tab" aria-selected={part === pt.id} className={`part-tab ${part === pt.id ? 'on' : ''}`} onClick={() => choose(pt.id)}>
                 <Asset name={pt.icon} size={40} />
                 <span>
                   <b>{pt.label}</b>
-                  <small>{count} questions{pt.tagline ? ` · ${pt.tagline}` : ''}</small>
+                  <small>{count} {pt.id === LEARN ? 'lessons' : 'questions'}{pt.tagline ? ` · ${pt.tagline}` : ''}</small>
                 </span>
               </button>
             );
@@ -127,7 +181,9 @@ export default function ChapterView({ g, chapter, onBack, onPlay, onQuick }: { g
         </div>
       )}
 
-      {keys.length > 0 && (
+      {part === LEARN && <LearnList lessons={learn} g={g} onLearn={onLearn} />}
+
+      {part !== LEARN && keys.length > 0 && (
         <div className="quick-row">
           <Btn variant="gold" onClick={() => onQuick('mix', part)}><Shuffle size={20} /> Quick {cur && parts.length > 1 ? cur.label.toLowerCase() : 'practice'}</Btn>
           <Btn variant="blue" onClick={() => onQuick('review', part)} disabled={missed === 0} title={missed ? '' : 'No mistakes to review yet'}>
