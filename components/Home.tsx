@@ -107,6 +107,7 @@ export function chapterProgress(g: Game, ch: Chapter) {
 }
 
 function ChapterCard({ ch, i, g, onOpen }: { ch: Chapter; i: number; g: Game; onOpen: () => void }) {
+  const course = useCourse();
   const p = chapterProgress(g, ch);
   const missed = ch.questionKeys.filter((k) => g.state.missed.includes(k)).length;
   return (
@@ -129,7 +130,12 @@ function ChapterCard({ ch, i, g, onOpen }: { ch: Chapter; i: number; g: Game; on
       </span>
       <span className="ch-foot">
         <span className="ch-meta">
-          <span>{ch.questionKeys.length} questions</span>
+          {course.parts.length > 1
+            ? course.parts.map((pt) => {
+                const n = ch.questionKeys.filter((k) => course.questions[k].part === pt.id).length;
+                return n ? <span key={pt.id}>{n} {pt.label.toLowerCase()}</span> : null;
+              })
+            : <span>{ch.questionKeys.length} questions</span>}
           <span className="ch-stars"><Star size={14} fill="#facc15" stroke="#0b1220" strokeWidth={2.5} /> {p.stars}/{p.maxStars}</span>
           {missed > 0 && <span className="ch-missed">{missed} to review</span>}
           <Sparkline seed={ch.id} progress={p.total ? p.done / p.total : 0} />

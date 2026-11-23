@@ -7,15 +7,18 @@
   "sections": [
     {
       "name": "Markets",
-      "blurb": "What markets do, direct vs indirect finance, money and capital markets."
+      "blurb": "What markets do, direct vs indirect finance, money and capital markets.",
+      "part": "theory"
     },
     {
       "name": "Intermediaries & Institutions",
-      "blurb": "Mutual, hedge and pension funds, banks and insurers."
+      "blurb": "Mutual, hedge and pension funds, banks and insurers.",
+      "part": "theory"
     },
     {
       "name": "Mock Midterm",
-      "blurb": "Chapter 2 questions from the FIN 3301 mock midterm."
+      "blurb": "Chapter 2 questions from the FIN 3301 mock midterm.",
+      "part": "theory"
     }
   ],
   "pairsTitle": "Term Match",

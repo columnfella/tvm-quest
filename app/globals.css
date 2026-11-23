@@ -474,3 +474,24 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
   .coach-bubble { font-size: 13px; }
 }
 @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
+
+/* ---------- theory / math tabs, cheat sheet ---------- */
+.chapter-top { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.sheet-btn { background: linear-gradient(180deg, var(--yellow-hi), var(--yellow)); color: var(--k); }
+.part-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 20px; }
+.part-tab { display: flex; align-items: center; gap: 12px; text-align: left; padding: 10px 14px; border-radius: 14px; border: 3px solid var(--k); background: var(--card); color: var(--ink); box-shadow: 0 5px 0 var(--k); transform: skewX(var(--skew)); transition: transform 0.1s; }
+.part-tab > * { transform: skewX(4deg); }
+.part-tab b { display: block; font-family: var(--display); font-weight: 400; font-size: 22px; letter-spacing: 0.02em; }
+.part-tab small { display: block; color: var(--muted); font-size: 12px; line-height: 1.25; }
+.part-tab.on { background: linear-gradient(180deg, color-mix(in srgb, var(--c) 70%, #fff), var(--c) 55%, color-mix(in srgb, var(--c) 65%, #000)); color: #fff; }
+.part-tab.on b { -webkit-text-stroke: 4px var(--k); paint-order: stroke fill; }
+.part-tab.on small { color: rgba(255,255,255,0.92); }
+.part-tab:active { transform: skewX(var(--skew)) translateY(4px); box-shadow: 0 1px 0 var(--k); }
+.sheet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.sheet-card { border: 3px solid var(--k); border-radius: 12px; padding: 10px 12px; background: var(--card-2); display: flex; flex-direction: column; gap: 2px; }
+.sheet-card b { font-weight: 900; margin-bottom: 2px; }
+.sheet-card .formula { font-size: 13px; }
+.sheet-title { font-size: 20px; margin: 16px 0 8px; }
+.sheet-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.sheet-table th, .sheet-table td { text-align: left; padding: 6px 8px; border-bottom: 2px solid var(--line); vertical-align: top; }
+.sheet-table th { font-weight: 900; width: 42%; }

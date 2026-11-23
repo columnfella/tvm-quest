@@ -42,5 +42,19 @@
       "Keep this up and the dividends never stop.",
       "Now THAT is a premium performance."
     ]
-  }
+  },
+  "parts": [
+    {
+      "id": "theory",
+      "label": "Theory",
+      "tagline": "Definitions and concepts to memorize",
+      "icon": "books_3d.png"
+    },
+    {
+      "id": "math",
+      "label": "Math",
+      "tagline": "Problems to solve with formulas and the calculator",
+      "icon": "abacus_3d.png"
+    }
+  ]
 }

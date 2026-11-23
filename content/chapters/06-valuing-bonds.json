@@ -8,15 +8,28 @@
   "sections": [
     {
       "name": "Bond Basics",
-      "blurb": "Features, issuers, ratings and what drives YTM."
+      "blurb": "Features, issuers, ratings and what drives YTM.",
+      "part": "theory"
+    },
+    {
+      "name": "Practice Set: Concepts",
+      "blurb": "True/false and concept questions from the Valuing Bonds practice set.",
+      "part": "theory"
     },
     {
       "name": "Pricing",
-      "blurb": "Price = PV of coupons + PV of face value; zeros, semiannual bonds, current yield."
+      "blurb": "Price = PV of coupons + PV of face value; zeros, semiannual bonds, current yield.",
+      "part": "math"
     },
     {
-      "name": "Practice Set",
-      "blurb": "The 20 questions from the Valuing Bonds practice exercises."
+      "name": "Practice Set: Problems",
+      "blurb": "The pricing and YTM problems from the practice set.",
+      "part": "math"
+    },
+    {
+      "name": "Black Book Homework",
+      "blurb": "Black Book Ch. 6 exercises 62–92, rebuilt from the homework solutions.",
+      "part": "math"
     }
   ],
   "pairsTitle": "Bond Match",
@@ -72,6 +85,27 @@
   ],
   "hints": [
     {
+      "title": "Equal-risk bonds",
+      "topics": [
+        "equal risk"
+      ],
+      "lines": [
+        "Equal risk → same EAR, not the same nominal rate",
+        "Semiannual → annual: EAR = (1 + YTM/2)^{2} − 1",
+        "Annual → semiannual: i = (1 + EAR)^{1/2} − 1"
+      ]
+    },
+    {
+      "title": "Raising money with bonds",
+      "topics": [
+        "number of bonds"
+      ],
+      "lines": [
+        "Price one bond with the required return",
+        "Bonds needed = amount to raise ÷ price per bond (round up)"
+      ]
+    },
+    {
       "title": "Pricing a bond",
       "topics": [
         "price",
@@ -80,11 +114,13 @@
         "zero",
         "semiannual",
         "coupon rate",
-        "quarterly"
+        "quarterly",
+        "par, discount"
       ],
       "lines": [
         "P = PMT · [1 − (1 + i)^{−N}] / i + FV / (1 + i)^{N}",
-        "Semiannual: N = years × 2, i = YTM / 2, PMT = annual coupon / 2",
+        "Semiannual: N = years × 2, i = YTM / 2, PMT = coupon / 2",
+        "Quarterly: N = years × 4, i = YTM / 4, PMT = coupon / 4",
         "Zero-coupon: P = FV / (1 + i)^{N}",
         "Calculator: N, I/Y, PMT, FV → CPT PV"
       ]
@@ -98,7 +134,30 @@
       "lines": [
         "YTM: enter PV as negative, CPT I/Y (× 2 if semiannual)",
         "Current yield = annual coupon ÷ price",
-        "Equal risk → equal EAR: EAR = (1 + YTM/2)^{2} − 1"
+        "Coupon rate = annual coupon ÷ face value"
+      ]
+    },
+    {
+      "title": "Bond features & risks",
+      "topics": [
+        "definition",
+        "issuer",
+        "rating",
+        "emerging",
+        "liquidity",
+        "risk-free",
+        "inflation",
+        "features",
+        "components",
+        "interest rate risk",
+        "convex"
+      ],
+      "lines": [
+        "Bond = loan to the issuer (debt), not ownership",
+        "YTM = risk-free + default + liquidity + maturity premiums",
+        "Better rating → lower yield → higher price",
+        "Longer maturity → more sensitive to rate changes",
+        "Higher expected inflation → higher yields → lower prices"
       ]
     },
     {
@@ -109,8 +168,7 @@
       "lines": [
         "Rates up → prices down (inverse relationship)",
         "Coupon > YTM → premium; coupon < YTM → discount; equal → par",
-        "Price pulls toward par as maturity approaches",
-        "YTM = risk-free + default + liquidity + maturity premiums"
+        "Price pulls toward par as maturity approaches"
       ]
     }
   ],
@@ -465,7 +523,7 @@
     },
     {
       "id": "q1",
-      "section": "Practice Set",
+      "section": "Practice Set: Concepts",
       "difficulty": "easy",
       "topic": "Bond definition",
       "source": "Practice Q1",
@@ -479,7 +537,7 @@
     },
     {
       "id": "q2",
-      "section": "Practice Set",
+      "section": "Practice Set: Concepts",
       "difficulty": "easy",
       "topic": "Discount bond",
       "source": "Practice Q2",
@@ -493,7 +551,7 @@
     },
     {
       "id": "q3",
-      "section": "Practice Set",
+      "section": "Practice Set: Concepts",
       "difficulty": "easy",
       "topic": "Bond features",
       "source": "Practice Q3",
@@ -509,7 +567,7 @@
     },
     {
       "id": "q4",
-      "section": "Practice Set",
+      "section": "Practice Set: Concepts",
       "difficulty": "easy",
       "topic": "Risk-free rate",
       "source": "Practice Q4",
@@ -525,7 +583,7 @@
     },
     {
       "id": "q5",
-      "section": "Practice Set",
+      "section": "Practice Set: Concepts",
       "difficulty": "medium",
       "topic": "Yield components",
       "source": "Practice Q5",
@@ -540,7 +598,7 @@
     },
     {
       "id": "q6",
-      "section": "Practice Set",
+      "section": "Practice Set: Concepts",
       "difficulty": "medium",
       "topic": "Premium bond",
       "source": "Practice Q6",
@@ -557,7 +615,7 @@
     },
     {
       "id": "q7",
-      "section": "Practice Set",
+      "section": "Practice Set: Concepts",
       "difficulty": "medium",
       "topic": "Par bond",
       "source": "Practice Q7",
@@ -574,7 +632,7 @@
     },
     {
       "id": "q8",
-      "section": "Practice Set",
+      "section": "Practice Set: Concepts",
       "difficulty": "easy",
       "topic": "Inflation",
       "source": "Practice Q8",
@@ -590,10 +648,10 @@
     },
     {
       "id": "q9",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "easy",
       "topic": "Bond pricing",
-      "source": "Practice Q9",
+      "source": "Practice Q9 · Black Book Ex 63",
       "question": "A 12-year bond has a 9 percent annual coupon, a yield to maturity of 8 percent, and a face value of $1,000. What is the price of the bond?",
       "choices": [
         "$1,469",
@@ -607,7 +665,7 @@
     },
     {
       "id": "q10",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "medium",
       "topic": "Yield to maturity",
       "source": "Practice Q10",
@@ -624,10 +682,10 @@
     },
     {
       "id": "q11",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "medium",
       "topic": "Semiannual bond pricing",
-      "source": "Practice Q11",
+      "source": "Practice Q11 · Black Book Ex 66",
       "question": "A bond that matures in 12 years has a 9 percent semiannual coupon and a face value of $1,000. The bond has a nominal yield to maturity of 8 percent. What is the price of the bond today?",
       "choices": [
         "$927.52",
@@ -641,7 +699,7 @@
     },
     {
       "id": "q12",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "medium",
       "topic": "Quarterly bond pricing",
       "source": "Practice Q12",
@@ -658,7 +716,7 @@
     },
     {
       "id": "q13",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "hard",
       "topic": "Future bond price",
       "source": "Practice Q13",
@@ -675,7 +733,7 @@
     },
     {
       "id": "q14",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "hard",
       "topic": "Future bond price",
       "source": "Practice Q14",
@@ -692,7 +750,7 @@
     },
     {
       "id": "q15",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "hard",
       "topic": "Coupon rate",
       "source": "Practice Q15",
@@ -709,7 +767,7 @@
     },
     {
       "id": "q16",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "hard",
       "topic": "Coupon rate",
       "source": "Practice Q16",
@@ -726,7 +784,7 @@
     },
     {
       "id": "q17",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "hard",
       "topic": "Yield to maturity",
       "source": "Practice Q17",
@@ -743,7 +801,7 @@
     },
     {
       "id": "q18",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "hard",
       "topic": "Equal risk bonds",
       "source": "Practice Q18",
@@ -760,10 +818,10 @@
     },
     {
       "id": "q19",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "hard",
       "topic": "Holding period price",
-      "source": "Practice Q19",
+      "source": "Practice Q19 · Black Book Ex 89",
       "question": "Assume that you are considering the purchase of a $1,000 par value bond that pays interest of $70 each six months and has 10 years to go before it matures. If you buy this bond, you expect to hold it for 5 years and then to sell it in the market. You (and other investors) currently require a nominal annual rate of 16 percent, but you expect the market to require a nominal rate of only 12 percent when you sell the bond due to a general decline in interest rates. How much should you be willing to pay for this bond?",
       "choices": [
         "$842.00",
@@ -777,10 +835,10 @@
     },
     {
       "id": "q20",
-      "section": "Practice Set",
+      "section": "Practice Set: Problems",
       "difficulty": "hard",
       "topic": "Equal risk bonds",
-      "source": "Practice Q20",
+      "source": "Practice Q20 · Black Book Ex 90",
       "question": "An 8 percent annual coupon, noncallable bond has 10 years until it matures and a yield to maturity of 9.1 percent. What should be the price of a 10-year noncallable bond of equal risk that pays an 8 percent semiannual coupon? Assume both bonds have a par value of $1,000.",
       "choices": [
         "$898.64",
@@ -791,6 +849,261 @@
       ],
       "answer": "D",
       "explanation": "Same EAR (9.1%) → semiannual rate = √1.091 − 1 = 4.4501%. N = 20, I/Y = 4.4501, PMT = 40, FV = 1,000 → $941.09."
+    },
+    {
+      "id": "bb62",
+      "section": "Black Book Homework",
+      "difficulty": "medium",
+      "topic": "Coupon rate",
+      "source": "Black Book Ch. 6 Ex 62",
+      "question": "A 10-year, $1,000 par value bond pays interest annually. It sells for $903.73 and has a yield to maturity of 9%. What is its coupon rate?",
+      "choices": [
+        "7.50%",
+        "9.00%",
+        "8.25%",
+        "6.75%",
+        "10.50%"
+      ],
+      "answer": "A",
+      "explanation": "N = 10, I/Y = 9, PV = −903.73, FV = 1,000 → PMT = $75. Coupon rate = PMT / FV = 75 / 1,000 = 7.5%."
+    },
+    {
+      "id": "bb64",
+      "section": "Black Book Homework",
+      "difficulty": "medium",
+      "topic": "Semiannual bond pricing",
+      "source": "Black Book Ch. 6 Ex 64",
+      "question": "A 10-year, $1,000 par bond has a 12% coupon rate paid semiannually. Its nominal yield to maturity is 10%. What is the bond's price?",
+      "choices": [
+        "$1,124.62",
+        "$1,122.89",
+        "$885.30",
+        "$1,000.00",
+        "$1,271.81"
+      ],
+      "answer": "A",
+      "explanation": "N = 10 × 2 = 20, I/Y = 10 / 2 = 5, PMT = 120 / 2 = 60, FV = 1,000 → PV = $1,124.62."
+    },
+    {
+      "id": "bb65",
+      "section": "Black Book Homework",
+      "difficulty": "medium",
+      "topic": "Semiannual bond pricing",
+      "source": "Black Book Ch. 6 Ex 65",
+      "question": "A 20-year, $1,000 par bond pays an 8% coupon semiannually. The nominal yield to maturity is 10%. What is the bond worth today?",
+      "choices": [
+        "$828.41",
+        "$829.73",
+        "$1,197.93",
+        "$1,514.77",
+        "$800.00"
+      ],
+      "answer": "A",
+      "explanation": "N = 20 × 2 = 40, I/Y = 10 / 2 = 5, PMT = 80 / 2 = 40, FV = 1,000 → PV = $828.41."
+    },
+    {
+      "id": "bb67",
+      "section": "Black Book Homework",
+      "difficulty": "medium",
+      "topic": "Semiannual bond pricing",
+      "source": "Black Book Ch. 6 Ex 67",
+      "question": "A 10-year bond has an 8% annual coupon rate paid semiannually and a $1,000 face value. If the nominal yield to maturity is 9%, what is its price?",
+      "choices": [
+        "$934.96",
+        "$935.82",
+        "$1,067.95",
+        "$1,000.00",
+        "$543.57"
+      ],
+      "answer": "A",
+      "explanation": "N = 20, I/Y = 9 / 2 = 4.5, PMT = 80 / 2 = 40, FV = 1,000 → PV = $934.96."
+    },
+    {
+      "id": "bb68",
+      "section": "Black Book Homework",
+      "difficulty": "medium",
+      "topic": "Semiannual bond pricing",
+      "source": "Black Book Ch. 6 Ex 68",
+      "question": "A 10-year, $1,000 par bond pays $50 every six months. The nominal yield to maturity is 9%. What is the bond's price?",
+      "choices": [
+        "$1,065.04",
+        "$1,064.18",
+        "$937.69",
+        "$1,100.00",
+        "$1,715.44"
+      ],
+      "answer": "A",
+      "explanation": "N = 20, I/Y = 9 / 2 = 4.5, PMT = 50, FV = 1,000 → PV = $1,065.04."
+    },
+    {
+      "id": "bb69",
+      "section": "Black Book Homework",
+      "difficulty": "medium",
+      "topic": "Semiannual bond pricing",
+      "source": "Black Book Ch. 6 Ex 69",
+      "question": "A 15-year, $1,000 par bond has an 8% coupon paid semiannually. Investors require a nominal return of 11%. What should the bond sell for?",
+      "choices": [
+        "$781.99",
+        "$784.27",
+        "$1,259.38",
+        "$1,363.34",
+        "$727.27"
+      ],
+      "answer": "A",
+      "explanation": "N = 15 × 2 = 30, I/Y = 11 / 2 = 5.5, PMT = 80 / 2 = 40, FV = 1,000 → PV = $781.99."
+    },
+    {
+      "id": "bb70",
+      "section": "Black Book Homework",
+      "difficulty": "medium",
+      "topic": "Semiannual bond pricing",
+      "source": "Black Book Ch. 6 Ex 70",
+      "question": "A 12-year, $1,000 par bond pays an 8% coupon semiannually and has a nominal yield to maturity of 7%. What is its price?",
+      "choices": [
+        "$1,080.29",
+        "$1,079.43",
+        "$923.77",
+        "$1,000.00",
+        "$1,722.63"
+      ],
+      "answer": "A",
+      "explanation": "N = 12 × 2 = 24, I/Y = 7 / 2 = 3.5, PMT = 80 / 2 = 40, FV = 1,000 → PV = $1,080.29."
+    },
+    {
+      "id": "bb71",
+      "section": "Black Book Homework",
+      "difficulty": "hard",
+      "topic": "Quarterly bond pricing",
+      "source": "Black Book Ch. 6 Ex 71",
+      "question": "A 10-year, $1,000 par bond has a 14% coupon rate paid quarterly. If the nominal yield to maturity is 12%, compounded quarterly, what is the bond's price?",
+      "choices": [
+        "$1,115.57",
+        "$1,113.00",
+        "$1,114.70",
+        "$893.22",
+        "$1,166.67"
+      ],
+      "answer": "A",
+      "explanation": "N = 10 × 4 = 40, I/Y = 12 / 4 = 3, PMT = 140 / 4 = 35, FV = 1,000 → PV = $1,115.57."
+    },
+    {
+      "id": "bb72",
+      "section": "Black Book Homework",
+      "difficulty": "hard",
+      "topic": "Yield to maturity",
+      "source": "Black Book Ch. 6 Ex 72",
+      "question": "An 11-year, $1,000 par bond pays an 8% annual coupon and currently sells for $865. What is its yield to maturity?",
+      "choices": [
+        "10.09%",
+        "8.00%",
+        "9.25%",
+        "5.04%",
+        "11.35%"
+      ],
+      "answer": "A",
+      "explanation": "N = 11, PV = −865, PMT = 80, FV = 1,000 → I/Y = 10.09%. (80 / 865 = 9.25% is only the current yield.)"
+    },
+    {
+      "id": "bb83",
+      "section": "Black Book Homework",
+      "difficulty": "hard",
+      "topic": "Equal risk bonds",
+      "source": "Black Book Ch. 6 Ex 83",
+      "question": "A bond of equal risk pays interest semiannually and has a nominal yield to maturity of 8%. What is the price of a 6-year, $1,000 par bond that pays an 8% coupon ANNUALLY?",
+      "choices": [
+        "$992.64",
+        "$1,000.00",
+        "$1,007.36",
+        "$1,007.43",
+        "$956.19"
+      ],
+      "answer": "A",
+      "explanation": "Equal risk → same EAR. EAR = (1 + 0.08/2)² − 1 = 8.16%. Then N = 6, I/Y = 8.16, PMT = 80, FV = 1,000 → PV = $992.64. (Using 8% directly would wrongly give $1,000.)"
+    },
+    {
+      "id": "bb84",
+      "section": "Black Book Homework",
+      "difficulty": "hard",
+      "topic": "Equal risk bonds",
+      "source": "Black Book Ch. 6 Ex 84",
+      "question": "Equal-risk bonds pay semiannually with a nominal yield to maturity of 9%. What is the price of a 10-year, $1,000 par bond that pays a 9% coupon once a year?",
+      "choices": [
+        "$987.12",
+        "$1,000.00",
+        "$1,012.95",
+        "$990.50",
+        "$980.13"
+      ],
+      "answer": "A",
+      "explanation": "EAR = (1 + 0.09/2)² − 1 = 9.2025%. N = 10, I/Y = 9.2025, PMT = 90, FV = 1,000 → PV = $987.12."
+    },
+    {
+      "id": "bb87",
+      "section": "Black Book Homework",
+      "difficulty": "medium",
+      "topic": "Semiannual bond pricing",
+      "source": "Black Book Ch. 6 Ex 87",
+      "question": "A 15-year, $1,000 par bond pays an 8% coupon semiannually. Market rates have jumped and investors now require a nominal 16% return. What is the bond worth?",
+      "choices": [
+        "$549.69",
+        "$553.96",
+        "$1,691.68",
+        "$500.00",
+        "$1,000.00"
+      ],
+      "answer": "A",
+      "explanation": "N = 15 × 2 = 30, I/Y = 16 / 2 = 8, PMT = 80 / 2 = 40, FV = 1,000 → PV = $549.69. A deep discount: the coupon is half the required return."
+    },
+    {
+      "id": "bb88",
+      "section": "Black Book Homework",
+      "difficulty": "hard",
+      "topic": "Number of bonds to issue",
+      "source": "Black Book Ch. 6 Ex 88",
+      "question": "A company needs to raise $2,000,000 by selling 10-year, $1,000 par bonds with an 8% coupon paid semiannually ($40 every six months). Equal-risk bonds pay $60 every six months and sell at par, so investors require 6% per half-year. How many bonds must it sell?",
+      "choices": [
+        "2,596 bonds",
+        "2,000 bonds",
+        "2,466 bonds",
+        "3,333 bonds",
+        "2,165 bonds"
+      ],
+      "answer": "A",
+      "explanation": "Required return = 60 / 1,000 = 6% per period. N = 20, I/Y = 6, PMT = 40, FV = 1,000 → PV = $770.60. Bonds = 2,000,000 / 770.60 = 2,595.4, so round up to 2,596."
+    },
+    {
+      "id": "bb91",
+      "section": "Black Book Homework",
+      "difficulty": "hard",
+      "topic": "Equal risk bonds",
+      "source": "Black Book Ch. 6 Ex 91",
+      "question": "Equal-risk bonds pay semiannually and have a nominal yield to maturity of 7%. What is the price of a 12-year, $1,000 par bond with a 7% annual coupon paid once a year?",
+      "choices": [
+        "$990.33",
+        "$1,000.00",
+        "$1,009.59",
+        "$993.80",
+        "$961.32"
+      ],
+      "answer": "A",
+      "explanation": "EAR = (1 + 0.07/2)² − 1 = 7.1225%. N = 12, I/Y = 7.1225, PMT = 70, FV = 1,000 → PV = $990.33."
+    },
+    {
+      "id": "bb92",
+      "section": "Black Book Homework",
+      "difficulty": "hard",
+      "topic": "Quarterly bond pricing",
+      "source": "Black Book Ch. 6 Ex 92",
+      "question": "A 15-year, $1,000 par bond has a 15% coupon rate paid quarterly. The nominal yield to maturity is 12%, compounded quarterly. What is the bond's price?",
+      "choices": [
+        "$1,207.57",
+        "$1,204.33",
+        "$821.97",
+        "$1,250.00",
+        "$1,206.47"
+      ],
+      "answer": "A",
+      "explanation": "N = 15 × 4 = 60, I/Y = 12 / 4 = 3, PMT = 150 / 4 = 37.50, FV = 1,000 → PV = $1,207.57."
     }
   ]
 }

@@ -7,19 +7,23 @@
   "sections": [
     {
       "name": "Finance & Decisions",
-      "blurb": "What finance is, real vs financial assets, investment vs financing decisions."
+      "blurb": "What finance is, real vs financial assets, investment vs financing decisions.",
+      "part": "theory"
     },
     {
       "name": "Business Forms",
-      "blurb": "Sole proprietorships, partnerships and corporations."
+      "blurb": "Sole proprietorships, partnerships and corporations.",
+      "part": "theory"
     },
     {
       "name": "Goals & Agency",
-      "blurb": "Maximizing value, cost of capital, agency problems and governance."
+      "blurb": "Maximizing value, cost of capital, agency problems and governance.",
+      "part": "theory"
     },
     {
       "name": "Mock Midterm",
-      "blurb": "Chapter 1 questions from the FIN 3301 mock midterm."
+      "blurb": "Chapter 1 questions from the FIN 3301 mock midterm.",
+      "part": "theory"
     }
   ],
   "pairsTitle": "Term Match",

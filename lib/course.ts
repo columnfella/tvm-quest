@@ -6,6 +6,7 @@ import { createContext, useContext, useMemo } from 'react';
 export type Difficulty = { label: string; xp: number; color: string };
 export type Hint = { title: string; lines: string[]; topics: string[] };
 export type Pair = { left: string; right: string };
+export type Part = { id: string; label: string; tagline: string; icon: string }; // e.g. Theory / Math
 export type Coach = { name: string; image: string; lines: string[]; photo: boolean }; // photo: show the image in a round frame instead of the drawn suit
 
 export type Question = {
@@ -21,7 +22,8 @@ export type Question = {
   explanation: string;
   source: string;
   hint: Hint | null;
-  shuffle: boolean; // shuffle choice order when shown (auto-skipped for "a and c"/"all of the above" style choices)
+  shuffle: boolean;
+  part: string; // id of the part (from its section) // shuffle choice order when shown (auto-skipped for "a and c"/"all of the above" style choices)
 };
 
 export type Lesson = {
@@ -34,7 +36,7 @@ export type Lesson = {
   pairCount?: number; // match lessons
 };
 
-export type Section = { id: string; name: string; blurb: string; lessons: Lesson[] };
+export type Section = { id: string; name: string; blurb: string; part: string; lessons: Lesson[] };
 
 export type Chapter = {
   id: string;
@@ -62,6 +64,7 @@ export type Course = {
   quickPracticeSize: number;
   calculator: boolean;
   difficulties: Record<string, Difficulty>;
+  parts: Part[]; // always at least one
   credits: string;
   coach: Coach | null; // optional pop-up character with encouragement lines
   chapters: Chapter[];

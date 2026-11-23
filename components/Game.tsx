@@ -35,13 +35,22 @@ export default function Game({ course: raw }: { course: Course }) {
   const play = (lesson: L) => go({ v: 'play', lesson });
   const back = (lesson: L) => go({ v: 'chapter', id: lesson.chapterId });
 
-  /** Ad-hoc lessons built from a chapter: random mix or "review mistakes". */
-  const quick = (chapterId: string, mode: 'mix' | 'review') => {
+  /** Ad-hoc lessons built from one part of a chapter: random mix or "review mistakes". */
+  const quick = (chapterId: string, mode: 'mix' | 'review', part: string) => {
     const ch = course.chapterMap[chapterId];
-    const pool = mode === 'review' ? ch.questionKeys.filter((k) => g.state.missed.includes(k)) : ch.questionKeys;
+    const inPart = ch.questionKeys.filter((k) => !part || course.questions[k].part === part);
+    const pool = mode === 'review' ? inPart.filter((k) => g.state.missed.includes(k)) : inPart;
     const keys = shuffle(pool).slice(0, course.quickPracticeSize);
     if (!keys.length) return;
-    play({ id: `${mode}:${chapterId}:${Date.now()}`, chapterId, title: mode === 'review' ? 'Review mistakes' : 'Quick practice', kind: 'quiz', questionKeys: keys, difficulty: Object.keys(course.difficulties)[1] ?? Object.keys(course.difficulties)[0] });
+    const label = course.parts.length > 1 ? course.parts.find((p) => p.id === part)?.label : '';
+    play({
+      id: `${mode}:${chapterId}:${part}:${Date.now()}`,
+      chapterId,
+      title: `${mode === 'review' ? 'Review mistakes' : 'Quick practice'}${label ? ` · ${label}` : ''}`,
+      kind: 'quiz',
+      questionKeys: keys,
+      difficulty: Object.keys(course.difficulties)[1] ?? Object.keys(course.difficulties)[0],
+    });
   };
 
   if (!g.ready || (g.auth === 'loading' && !g.profile)) {
@@ -75,7 +84,7 @@ export default function Game({ course: raw }: { course: Course }) {
               )}
               {screen.v === 'chapter' && (
                 <motion.div key={'c' + screen.id} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 40 }} transition={{ duration: 0.18 }}>
-                  <ChapterView g={g} chapter={course.chapterMap[screen.id]} onBack={() => go({ v: 'home' })} onPlay={play} onQuick={(m) => quick(screen.id, m)} />
+                  <ChapterView g={g} chapter={course.chapterMap[screen.id]} onBack={() => go({ v: 'home' })} onPlay={play} onQuick={(m, part) => quick(screen.id, m, part)} />
                 </motion.div>
               )}
               {screen.v === 'play' && (
@@ -95,7 +104,7 @@ export default function Game({ course: raw }: { course: Course }) {
                     r={screen.r}
                     nextId={course.nextLessonId(screen.lesson.id)}
                     onBack={() => back(screen.lesson)}
-                    onRetry={() => (course.lessonMap[screen.lesson.id] ? play(screen.lesson) : quick(screen.lesson.chapterId, screen.lesson.id.startsWith('review') ? 'review' : 'mix'))}
+                    onRetry={() => (course.lessonMap[screen.lesson.id] ? play(screen.lesson) : quick(screen.lesson.chapterId, screen.lesson.id.startsWith('review') ? 'review' : 'mix', screen.lesson.id.split(':')[2] ?? ''))}
                     onNext={(id) => play(course.lessonMap[id])}
                   />
                 </motion.div>

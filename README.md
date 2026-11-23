@@ -1,6 +1,6 @@
 # Finance Quest
 
-An arcade-style practice app for any multiple-choice course. It ships with FIN 3301 (Ch. 1, 2, 5, 6, 7). It's built with Next.js 15, React 19, TypeScript and Framer Motion, and has a tiny backend for weekly leaderboards.
+An arcade-style practice app for any multiple-choice course. It ships with FIN 3301 (Ch. 1, 2, 5, 6, 7): 336 questions, including the full Black Book Ch. 5 bank and Black Book Ch. 6 homework exercises. It's built with Next.js 15, React 19, TypeScript and Framer Motion, and has a tiny backend for weekly leaderboards.
 
 ## Run it locally
 
@@ -35,7 +35,8 @@ Mistakes in the files are skipped and listed in **Settings → content warnings*
 
 ## What's inside
 
-- **Chapters:** pick any chapter. Every lesson is open, and there are no hearts or lives.
+- **Chapters:** pick any chapter, then the **Theory** (memorize) or **Math** (solve) tab. Every lesson is open, and there are no hearts or lives.
+- **Cheat sheet:** every chapter has a free page with all of its formulas and key terms.
 - **Quick practice:** 10 random questions from the chapter. **Review mistakes:** only the ones you got wrong.
 - **Match games:** generated from each chapter's term/formula pairs.
 - **Seasons:** weekly leaderboard with a podium; everything resets Monday 00:00 UTC.

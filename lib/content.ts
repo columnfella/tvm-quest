@@ -4,7 +4,7 @@
 // See content/README.md for the file format.
 import fs from 'fs';
 import path from 'path';
-import type { Chapter, Coach, Course, Difficulty, Hint, Lesson, Pair, Question, Section } from './course';
+import type { Chapter, Coach, Course, Part, Difficulty, Hint, Lesson, Pair, Question, Section } from './course';
 
 const ROOT = path.join(process.cwd(), 'content');
 const ASSETS = path.join(process.cwd(), 'public', 'assets');
@@ -113,6 +113,18 @@ export function loadCourse(): Course {
   };
 
   const lessonSize = Math.round(num(c.lessonSize, 5));
+  const parts: Part[] = (Array.isArray(c.parts) ? c.parts : [])
+    .map((p) => (isObj(p) ? { id: slug(str(p.id ?? p.label)), label: str(p.label ?? p.id), tagline: str(p.tagline), icon: asset(str(p.icon), 'books_3d.png', 'course.json parts', issues) } : null))
+    .filter((p): p is Part => !!p && !!p.label);
+  if (!parts.length) parts.push({ id: 'all', label: 'Lessons', tagline: '', icon: 'books_3d.png' });
+  const partIds = new Set(parts.map((p) => p.id));
+  const normPart = (v: unknown, where: string) => {
+    const s = slug(str(v));
+    if (!str(v)) return parts[0].id;
+    if (partIds.has(s)) return s;
+    issues.push(`${where}: unknown part "${str(v)}", using "${parts[0].id}"`);
+    return parts[0].id;
+  };
   let coach: Coach | null = null;
   if (isObj(c.coach)) {
     const lines = Array.isArray(c.coach.lines) ? c.coach.lines.map((l) => str(l)).filter(Boolean) : [];
@@ -175,16 +187,17 @@ export function loadCourse(): Course {
         source: str(rq.source),
         hint: parseHint(rq.hint),
         shuffle: rq.shuffle !== false && c.shuffleChoices !== false,
+        part: str(rq.part) ? normPart(rq.part, qWhere) : '',
       };
       qs.push(q);
       questions[q.key] = q;
     });
 
     // sections: listed ones first (in order), then any named in questions, then difficulty groups
-    const meta = new Map<string, string>();
+    const meta = new Map<string, { blurb: string; part: string }>();
     for (const s of Array.isArray(ch.sections) ? ch.sections : []) {
       const name = isObj(s) ? str(s.name) : str(s);
-      if (name) meta.set(name, isObj(s) ? str(s.blurb) : '');
+      if (name) meta.set(name, { blurb: isObj(s) ? str(s.blurb) : '', part: isObj(s) && str(s.part) ? normPart(s.part, `${where} section "${name}"`) : '' });
     }
     const groups = new Map<string, Question[]>([...meta.keys()].map((n) => [n, []]));
     for (const q of qs) {
@@ -196,10 +209,14 @@ export function loadCourse(): Course {
     for (const [name, list] of groups) {
       if (!list.length) continue;
       const sid = slug(name);
+      // a section's part: from "sections", else from its first question that names one, else the first part
+      const part = meta.get(name)?.part || list.find((q) => q.part)?.part || parts[0].id;
+      for (const q of list) q.part = part;
       sections.push({
         id: sid,
         name,
-        blurb: meta.get(name) ?? '',
+        blurb: meta.get(name)?.blurb ?? '',
+        part,
         lessons: chunk(list, chSize).map((group, n) => ({
           id: `${id}/${sid}-${n + 1}`,
           chapterId: id,
@@ -214,7 +231,7 @@ export function loadCourse(): Course {
     if (pairs.length >= 4) {
       const lessons: Lesson[] = [{ id: `${id}/match-1`, chapterId: id, title: pairsTitle, kind: 'match', questionKeys: [], difficulty: diffKeys[0], pairCount: Math.min(6, pairs.length) }];
       if (pairs.length >= 7) lessons.push({ id: `${id}/match-2`, chapterId: id, title: `${pairsTitle}: Speed Run`, kind: 'match', questionKeys: [], difficulty: diffKeys[diffKeys.length - 1], pairCount: Math.min(8, pairs.length) });
-      sections.push({ id: 'match', name: 'Match Games', blurb: 'Pair each item with its match, fast. Under 30 seconds earns a speed bonus.', lessons });
+      sections.push({ id: 'match', name: 'Match Games', blurb: 'Pair each item with its match, fast. Under 30 seconds earns a speed bonus.', part: normPart(ch.pairsPart, where), lessons });
     } else if (pairs.length) {
       issues.push(`${where}: "pairs" needs at least 4 entries for a match game`);
     }
@@ -253,6 +270,7 @@ export function loadCourse(): Course {
     quickPracticeSize: Math.round(num(c.quickPracticeSize, 10)),
     calculator: c.calculator === true,
     difficulties,
+    parts,
     credits: str(c.credits),
     coach,
     chapters,

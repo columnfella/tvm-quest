@@ -8,19 +8,28 @@
   "sections": [
     {
       "name": "Debt vs Equity",
-      "blurb": "Claims, voting, tax treatment and cost of capital."
+      "blurb": "Claims, voting, tax treatment and cost of capital.",
+      "part": "theory"
     },
     {
       "name": "Common & Preferred Stock",
-      "blurb": "Rights, share counts, voting classes, preferred features, IPOs."
+      "blurb": "Rights, share counts, voting classes, preferred features, IPOs.",
+      "part": "theory"
+    },
+    {
+      "name": "Valuation & Dividend Policy",
+      "blurb": "Market vs intrinsic value, PVGO meaning, dividend signals and policy.",
+      "part": "theory"
     },
     {
       "name": "Dividend Discount Models",
-      "blurb": "Zero growth, constant growth, multi-stage growth."
+      "blurb": "Zero growth, constant growth, multi-stage growth.",
+      "part": "math"
     },
     {
-      "name": "Growth & Dividend Policy",
-      "blurb": "Sustainable growth, PVGO, dividend signals."
+      "name": "Growth & PVGO",
+      "blurb": "Sustainable growth rate and present value of growth opportunities.",
+      "part": "math"
     }
   ],
   "pairsTitle": "Stock Match",
@@ -73,6 +82,66 @@
   ],
   "hints": [
     {
+      "title": "Share counts",
+      "topics": [
+        "share counts"
+      ],
+      "lines": [
+        "Outstanding = issued − treasury",
+        "Can still issue (no vote needed) = authorized − issued"
+      ]
+    },
+    {
+      "title": "Stock features",
+      "topics": [
+        "par value",
+        "preemptive",
+        "voting",
+        "proxy",
+        "stock dividend",
+        "preferred",
+        "cumulative",
+        "venture",
+        "ipo"
+      ],
+      "lines": [
+        "Par value is symbolic, unrelated to market price",
+        "Preemptive rights protect against dilution",
+        "Preferred: fixed dividend, priority over common, usually no vote",
+        "Cumulative preferred: missed dividends must be paid first",
+        "IPO underwriter buys the shares and bears the resale risk"
+      ]
+    },
+    {
+      "title": "Debt vs equity",
+      "topics": [
+        "debt vs equity",
+        "liquidation",
+        "tax treatment",
+        "cost of capital"
+      ],
+      "lines": [
+        "Debt: contractual, priority, tax-deductible interest, no vote",
+        "Equity: owners, vote, residual claim, dividends not deductible",
+        "Liquidation: secured → unsecured creditors → equity",
+        "Cost of equity > cost of debt"
+      ]
+    },
+    {
+      "title": "Dividend policy & signals",
+      "topics": [
+        "dividend policy",
+        "dividend signals",
+        "market vs intrinsic"
+      ],
+      "lines": [
+        "Market < intrinsic → underpriced → buy",
+        "Dividend increase = confidence; cut = possible trouble",
+        "Young, high-growth firms retain earnings",
+        "Special dividend = excess cash or unusual profit"
+      ]
+    },
+    {
       "title": "Dividend discount models",
       "topics": [
         "ddm",
@@ -109,10 +178,8 @@
         "*"
       ],
       "lines": [
-        "Debt: contractual, priority, tax-deductible interest, no vote",
-        "Equity: owners, vote, residual claim, dividends not deductible",
-        "Liquidation order: secured creditors → unsecured creditors → equity",
-        "Outstanding = issued − treasury"
+        "P_{0} = PV of all expected future dividends",
+        "Constant growth: P_{0} = D_{1} / (r − g), r > g"
       ]
     }
   ],
@@ -367,7 +434,7 @@
     },
     {
       "id": "17",
-      "section": "Dividend Discount Models",
+      "section": "Valuation & Dividend Policy",
       "difficulty": "easy",
       "topic": "Market vs intrinsic value",
       "question": "A stock trades at $40, but your valuation says its intrinsic value is $50. The stock is:",
@@ -558,7 +625,7 @@
     },
     {
       "id": "29",
-      "section": "Growth & Dividend Policy",
+      "section": "Growth & PVGO",
       "difficulty": "medium",
       "topic": "Sustainable growth",
       "question": "DTE Energy had an ROE of 10%, EPS of $4.05 and a dividend of $2.35. What is its sustainable growth rate?",
@@ -574,7 +641,7 @@
     },
     {
       "id": "30",
-      "section": "Growth & Dividend Policy",
+      "section": "Growth & PVGO",
       "difficulty": "medium",
       "topic": "Sustainable growth",
       "question": "A firm has an ROE of 15% and pays out 40% of its earnings as dividends. What is its sustainable growth rate?",
@@ -590,7 +657,7 @@
     },
     {
       "id": "31",
-      "section": "Growth & Dividend Policy",
+      "section": "Growth & PVGO",
       "difficulty": "hard",
       "topic": "PVGO",
       "question": "Alpha Manufacturing pays $4 per share (all earnings), r = 12%, and the market price is $30. What is its PVGO?",
@@ -606,7 +673,7 @@
     },
     {
       "id": "32",
-      "section": "Growth & Dividend Policy",
+      "section": "Growth & PVGO",
       "difficulty": "hard",
       "topic": "PVGO",
       "question": "A stock trades at $70, its EPS is $5, and the required return is 10%. What is the present value of its growth opportunities?",
@@ -622,7 +689,7 @@
     },
     {
       "id": "33",
-      "section": "Growth & Dividend Policy",
+      "section": "Valuation & Dividend Policy",
       "difficulty": "medium",
       "topic": "PVGO",
       "question": "A negative PVGO suggests:",
@@ -637,7 +704,7 @@
     },
     {
       "id": "34",
-      "section": "Growth & Dividend Policy",
+      "section": "Valuation & Dividend Policy",
       "difficulty": "easy",
       "topic": "Dividend signals",
       "question": "A firm announces a dividend INCREASE. The market usually reads this as:",
@@ -652,7 +719,7 @@
     },
     {
       "id": "35",
-      "section": "Growth & Dividend Policy",
+      "section": "Valuation & Dividend Policy",
       "difficulty": "medium",
       "topic": "Dividend policy",
       "question": "Which firm is MOST likely to pay a low dividend?",
@@ -668,7 +735,7 @@
     },
     {
       "id": "36",
-      "section": "Growth & Dividend Policy",
+      "section": "Valuation & Dividend Policy",
       "difficulty": "medium",
       "topic": "Dividend signals",
       "question": "A one-time special dividend most likely signals that the firm:",

@@ -27,6 +27,7 @@ broken bit and keeps working**. Every problem is listed in **Settings → conten
 | `shuffleChoices` | Shuffle answer order each time a question is shown | `true` |
 | `calculator` | `true` shows the financial calculator (chapters opt in too) | `false` |
 | `difficulties` | Levels as `{ "key": { "label", "xp", "color" } }` | easy / medium / hard |
+| `parts` | Tabs inside every chapter, e.g. Theory / Math: `[{ "id", "label", "tagline", "icon" }]`. Each section picks one with `"part"` | one tab |
 | `credits` | Shown in Settings | — |
 | `coach` | Optional pop-up character: `{ "name", "image", "lines": [...] }`. Appears after every 3 correct answers in a row and on good results. Add `"photo": true` to show `image` as a round photo (any .png/.jpg/.webp in `public/assets/`) instead of the drawn suit | none |
 
@@ -44,7 +45,7 @@ The file name sets the order when chapters have no `number`. Only `questions` is
   "calculator": true,
   "lessonSize": 5,
   "sections": [
-    { "name": "Basics", "blurb": "Optional description shown above the lessons." }
+    { "name": "Basics", "blurb": "Optional description shown above the lessons.", "part": "theory" }
   ],
   "pairsTitle": "Term Match",
   "pairsMono": false,
@@ -86,6 +87,12 @@ The file name sets the order when chapters have no `number`. Only `questions` is
 
 Lessons are built automatically: each section's questions are cut into lessons of `lessonSize`.
 Progress is stored per lesson, so re-ordering questions can reset a few lessons' stars. Nothing breaks.
+
+### Parts and the cheat sheet
+
+- Each section belongs to one **part** (a tab such as Theory or Math). Set it with `"part"` in `sections`; a question can also carry `"part"`. Sections without one go to the first part. Match games use `"pairsPart"` (default: first part).
+- Quick practice and Review mistakes work per part.
+- Every chapter gets a free **Cheat sheet** listing all its hints and match pairs.
 
 ### Hints, match games, icons
 
