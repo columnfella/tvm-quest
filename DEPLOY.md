@@ -28,6 +28,9 @@ The site now works, **but the leaderboard won't save yet**. That needs the datab
 
 ## 3. Check it works
 
+Open `https://<your-site>/api/health`. You want to see `"database":"redis"` and `"persistent":true`.
+If it says `"file"`, the database isn't connected yet (see below).
+
 1. Open your site's URL (shown on the project page, like `https://tvm-quest-xxxx.vercel.app`).
 2. Sign up with a test name, finish one lesson, then refresh the page: you should still be logged in,
    and your name should appear on the **Season Ranking** card.
