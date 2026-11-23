@@ -36,8 +36,8 @@ export function TopBar({ g, openPanel, onHome }: { g: Game; openPanel: (p: Panel
           <Asset name="fire_3d.png" size={30} />
           <b>{s.streak}</b>
         </span>
-        <span className="stat" title="Gems (spend on hints)">
-          <Asset name="gem_stone_3d.png" size={30} />
+        <span className="stat" title="Coins (spend on hints)">
+          <Asset name="coin_3d.png" size={30} />
           <b>{s.gems}</b>
         </span>
         {course.calculator && (
@@ -50,6 +50,52 @@ export function TopBar({ g, openPanel, onHome }: { g: Game; openPanel: (p: Panel
         </button>
       </div>
     </header>
+  );
+}
+
+/** Ticker symbol from a chapter: number + initials, e.g. "CH6·VB". */
+const symbol = (ch: Chapter) => `${ch.number !== null ? 'CH' + ch.number : 'CH'}·${ch.title.split(/[\s&]+/).filter((w) => w.length > 2).map((w) => w[0]).join('').toUpperCase().slice(0, 3)}`;
+
+/** Scrolling market ticker of the player's own progress per chapter. */
+export function Ticker({ g }: { g: Game }) {
+  const course = useCourse();
+  const items = [
+    { sym: 'XP', val: String(g.state.xp), up: g.state.todayXp > 0, chg: `+${g.state.todayXp} today` },
+    ...course.chapters.map((ch) => {
+      const p = chapterProgress(g, ch);
+      const pct = p.total ? Math.round((p.done / p.total) * 100) : 0;
+      return { sym: symbol(ch), val: `${pct}%`, up: pct > 0, chg: `${p.stars}★` };
+    }),
+    { sym: 'STREAK', val: `${g.state.streak}d`, up: g.state.streak > 0, chg: g.state.streak ? 'hot' : 'start today' },
+  ];
+  const row = items.map((it, i) => (
+    <span key={i} className="tick">
+      <b>{it.sym}</b> {it.val} <em className={it.up ? 'up' : 'flat'}>{it.up ? '▲' : '■'} {it.chg}</em>
+    </span>
+  ));
+  return (
+    <div className="ticker" aria-label="Your progress ticker">
+      <div className="ticker-track">{row}{row}</div>
+    </div>
+  );
+}
+
+/** Decorative sparkline: a deterministic wiggle per chapter that trends up with progress. */
+function Sparkline({ seed, progress }: { seed: string; progress: number }) {
+  let h = 0;
+  for (const c of seed) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const rand = () => ((h = (h * 1103515245 + 12345) >>> 0) / 2 ** 32);
+  const n = 14;
+  const pts = Array.from({ length: n }, (_, i) => {
+    const trend = (i / (n - 1)) * (0.35 + progress * 0.6);
+    const y = 1 - Math.min(0.95, Math.max(0.05, 0.25 + trend + (rand() - 0.5) * 0.28));
+    return `${(i / (n - 1)) * 100},${(y * 40).toFixed(1)}`;
+  });
+  return (
+    <svg className="spark" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden>
+      <polygon points={`0,40 ${pts.join(' ')} 100,40`} fill="rgba(255,255,255,0.18)" />
+      <polyline points={pts.join(' ')} fill="none" stroke="#fff" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+    </svg>
   );
 }
 
@@ -75,6 +121,7 @@ function ChapterCard({ ch, i, g, onOpen }: { ch: Chapter; i: number; g: Game; on
       whileTap={{ scale: 0.96 }}
     >
       <span className="ch-num">{ch.number ?? i + 1}</span>
+      <Sparkline seed={ch.id} progress={p.total ? p.done / p.total : 0} />
       <Asset name={ch.icon} size={72} className="ch-icon" />
       <span className="ch-body">
         <small>{ch.number !== null ? `Chapter ${ch.number}` : 'Chapter'}</small>
@@ -101,7 +148,7 @@ export default function Home({ g, onOpen, openPanel }: { g: Game; onOpen: (chapt
     <main className="home">
       <div className="col-main">
         <div className="home-head">
-          <h1 className="sc">Pick a chapter</h1>
+          <h1 className="sc">Pick a chapter <Asset name="dollar_banknote_3d.png" size={48} className="head-icon" /></h1>
           <p>{course.subtitle || course.tagline}</p>
         </div>
         <div className="ch-grid">

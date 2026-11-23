@@ -3,7 +3,7 @@
   "title": "Valuing Bonds",
   "tagline": "Bond pricing, YTM, premium vs discount, interest rate risk",
   "icon": "money_bag_3d.png",
-  "color": "#3b82f6",
+  "color": "#2563eb",
   "calculator": true,
   "sections": [
     { "name": "Bond Basics", "blurb": "Features, issuers, ratings and what drives YTM." },

@@ -3,14 +3,44 @@
   "title": "Finance Quest",
   "subtitle": "FIN 3301 · Principles of Finance",
   "tagline": "Pick a chapter, clear lessons, top the weekly leaderboard.",
-  "mascot": "pig_face_3d.png",
+  "mascot": "money_bag_3d.png",
   "lessonSize": 5,
   "quickPracticeSize": 10,
   "calculator": true,
   "difficulties": {
-    "easy": { "label": "Easy", "xp": 10, "color": "#3ddc4a" },
-    "medium": { "label": "Medium", "xp": 15, "color": "#2fb8ff" },
-    "hard": { "label": "Hard", "xp": 25, "color": "#ff5a3c" }
+    "easy": {
+      "label": "Easy",
+      "xp": 10,
+      "color": "#3ddc4a"
+    },
+    "medium": {
+      "label": "Medium",
+      "xp": 15,
+      "color": "#2fb8ff"
+    },
+    "hard": {
+      "label": "Hard",
+      "xp": 25,
+      "color": "#ff5a3c"
+    }
   },
-  "credits": "Questions come from the course slides, cheat sheets, the Black Book (Ch. 5), the mock midterm and the bond practice set."
+  "credits": "Questions come from the course slides, cheat sheets, the Black Book (Ch. 5), the mock midterm and the bond practice set.",
+  "coach": {
+    "name": "The Wolf",
+    "image": "wolf_3d.png",
+    "lines": [
+      "Sell me this pen? You just sold me on your answers.",
+      "That's how you close a deal. Next!",
+      "Compound interest called. It wants you on the team.",
+      "Your portfolio of correct answers is up big today.",
+      "Bull market in your brain right now.",
+      "Act as if you already passed the exam. Then pass it.",
+      "Buy low, answer high. Textbook.",
+      "The market rewards preparation. You're getting paid.",
+      "Outstanding. Your stock just split.",
+      "That's a blue-chip answer.",
+      "Keep this up and the dividends never stop.",
+      "Now THAT is a premium performance."
+    ]
+  }
 }

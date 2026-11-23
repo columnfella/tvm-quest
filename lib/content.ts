@@ -4,7 +4,7 @@
 // See content/README.md for the file format.
 import fs from 'fs';
 import path from 'path';
-import type { Chapter, Course, Difficulty, Hint, Lesson, Pair, Question, Section } from './course';
+import type { Chapter, Coach, Course, Difficulty, Hint, Lesson, Pair, Question, Section } from './course';
 
 const ROOT = path.join(process.cwd(), 'content');
 const ASSETS = path.join(process.cwd(), 'public', 'assets');
@@ -113,6 +113,12 @@ export function loadCourse(): Course {
   };
 
   const lessonSize = Math.round(num(c.lessonSize, 5));
+  let coach: Coach | null = null;
+  if (isObj(c.coach)) {
+    const lines = Array.isArray(c.coach.lines) ? c.coach.lines.map((l) => str(l)).filter(Boolean) : [];
+    if (lines.length) coach = { name: str(c.coach.name, 'Coach'), image: asset(str(c.coach.image), 'star-struck_3d.png', 'course.json coach', issues), lines };
+    else issues.push('course.json: coach needs at least one line');
+  }
   const mascot = asset(str(c.mascot), 'pig_face_3d.png', 'course.json', issues);
   const questions: Record<string, Question> = {};
   const chapters: Chapter[] = [];
@@ -247,6 +253,7 @@ export function loadCourse(): Course {
     calculator: c.calculator === true,
     difficulties,
     credits: str(c.credits),
+    coach,
     chapters,
     questions,
     issues,

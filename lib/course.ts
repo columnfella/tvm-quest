@@ -6,6 +6,7 @@ import { createContext, useContext, useMemo } from 'react';
 export type Difficulty = { label: string; xp: number; color: string };
 export type Hint = { title: string; lines: string[]; topics: string[] };
 export type Pair = { left: string; right: string };
+export type Coach = { name: string; image: string; lines: string[] };
 
 export type Question = {
   key: string; // globally unique: `${chapterId}/${id}`
@@ -61,6 +62,7 @@ export type Course = {
   calculator: boolean;
   difficulties: Record<string, Difficulty>;
   credits: string;
+  coach: Coach | null; // optional pop-up character with encouragement lines
   chapters: Chapter[];
   questions: Record<string, Question>;
   issues: string[]; // content problems found while loading (shown in Settings)

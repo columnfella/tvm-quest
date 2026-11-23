@@ -39,8 +39,10 @@ Mistakes in the files are skipped and listed in **Settings → content warnings*
 - **Quick practice:** 10 random questions from the chapter. **Review mistakes:** only the ones you got wrong.
 - **Match games:** generated from each chapter's term/formula pairs.
 - **Seasons:** weekly leaderboard with a podium; everything resets Monday 00:00 UTC.
-- **Rewards:** XP, combos, reward drops (Common → Legendary) with an opening animation, levels, streaks, badges (one per chapter).
-- **Learning aids:** explanations after each answer, hints (cost gems), wrong answers come back at the end of the lesson, and an optional financial calculator.
+- **Coach:** "The Wolf", a cartoon banker that pops in with clean Wall Street-style hype lines (edit them in `content/course.json`).
+- **Finance touches:** a scrolling progress ticker, chart-grid background, sparklines on chapter cards, coins.
+- **Rewards:** XP, combos, vaults (Silver → Gold) with an opening animation, levels, streaks, badges (one per chapter).
+- **Learning aids:** explanations after each answer, hints (cost coins), wrong answers come back at the end of the lesson, and an optional financial calculator.
 
 ## Project map
 

@@ -3,7 +3,7 @@
  "title": "Time Value of Money",
  "tagline": "Lump sums, annuities, EAR, amortization, retirement",
  "icon": "hourglass_done_3d.png",
- "color": "#f59e0b",
+ "color": "#d97706",
  "calculator": true,
  "sections": [
   {

@@ -3,7 +3,7 @@
   "title": "Valuing Stocks",
   "tagline": "Debt vs equity, common & preferred stock, DDM, PVGO, dividends",
   "icon": "rocket_3d.png",
-  "color": "#ec4899",
+  "color": "#059669",
   "calculator": true,
   "sections": [
     { "name": "Debt vs Equity", "blurb": "Claims, voting, tax treatment and cost of capital." },

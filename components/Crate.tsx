@@ -8,13 +8,13 @@ import { Asset } from './ui';
 export type CrateTier = 'common' | 'rare' | 'epic' | 'legendary';
 export type Loot = { icon: string; amount: number; label: string; rare?: boolean };
 
-export const TIER_NAME: Record<CrateTier, string> = { common: 'Common Drop', rare: 'Rare Drop', epic: 'Epic Drop', legendary: 'Legendary Drop' };
+export const TIER_NAME: Record<CrateTier, string> = { common: 'Silver Vault', rare: 'Emerald Vault', epic: 'Sapphire Vault', legendary: 'Gold Vault' };
 // face, side/top shade, emblem
 const TIER_COL: Record<CrateTier, [string, string, string]> = {
-  common: ['#40c4ff', '#1e88e5', '#ffffff'],
-  rare: ['#43e97b', '#16a34a', '#fff27a'],
-  epic: ['#c084fc', '#7c3aed', '#ffd60a'],
-  legendary: ['#ffd60a', '#f59e0b', '#ff4fa3'],
+  common: ['#94a3b8', '#64748b', '#ffffff'],
+  rare: ['#34d399', '#059669', '#fff27a'],
+  epic: ['#60a5fa', '#2563eb', '#ffd60a'],
+  legendary: ['#fcd34d', '#d97706', '#16a34a'],
 };
 
 function CrateArt({ tier, open }: { tier: CrateTier; open: boolean }) {
@@ -32,8 +32,8 @@ function CrateArt({ tier, open }: { tier: CrateTier; open: boolean }) {
       <path d="M130 80 L156 64 L156 150 L130 168 Z" fill={shade} stroke={K} strokeWidth="6" strokeLinejoin="round" />
       <path d="M38 88 L122 88" stroke="rgba(255,255,255,0.55)" strokeWidth="6" strokeLinecap="round" />
       <path d="M30 150 L130 150" stroke="rgba(0,0,0,0.18)" strokeWidth="10" />
-      {/* emblem: bolt */}
-      <path d="M86 96 L66 130 L80 130 L72 158 L98 120 L84 120 L92 96 Z" fill={emblem} stroke={K} strokeWidth="5" strokeLinejoin="round" />
+      {/* emblem: dollar sign */}
+      <text x="80" y="152" textAnchor="middle" fontFamily="'Lilita One', sans-serif" fontSize="62" fill={emblem} stroke={K} strokeWidth="5" paintOrder="stroke" style={{ letterSpacing: 0 }}>$</text>
       {/* lid */}
       <motion.g
         style={{ transformBox: 'fill-box', transformOrigin: '0% 100%' }}
@@ -64,7 +64,7 @@ export default function Crate({ tier, loot, onOpen }: { tier: CrateTier; loot: L
     setOpen(true);
     sfx.chest();
     try {
-      confetti({ particleCount: tier === 'legendary' ? 170 : 90, spread: 85, startVelocity: 40, origin: { y: 0.45 }, colors: ['#ffd60a', '#ffffff', '#ff4fa3', '#22c3ee', '#a855f7'], disableForReducedMotion: true });
+      confetti({ particleCount: tier === 'legendary' ? 170 : 90, spread: 85, startVelocity: 40, origin: { y: 0.45 }, colors: ['#facc15', '#ffffff', '#22c55e', '#16a34a', '#fde68a'], disableForReducedMotion: true });
     } catch { /* noop */ }
     onOpen?.();
   };

@@ -7,6 +7,7 @@ import { useCourse, type Lesson } from '@/lib/course';
 import { sfx } from '@/lib/sound';
 import { completeDay, levelInfo, type Game } from '@/lib/store';
 import type { LessonResult } from './Lesson';
+import Coach from './Coach';
 import Crate, { type CrateTier, type Loot } from './Crate';
 import { Asset, Bar, Btn } from './ui';
 
@@ -32,10 +33,16 @@ export default function Results({ g, lesson, r, nextId, onBack, onRetry, onNext 
   const chestGems = { common: 5, rare: 10, epic: 20, legendary: 35 }[tier];
   const chestXp = { common: 5, rare: 10, epic: 15, legendary: 30 }[tier];
   const loot: Loot[] = [
-    { icon: 'gem_stone_3d.png', amount: chestGems, label: 'Gems' },
+    { icon: 'coin_3d.png', amount: chestGems, label: 'Coins' },
     { icon: 'high_voltage_3d.png', amount: chestXp, label: 'Bonus XP', rare: tier === 'legendary' },
   ];
   const [opened, setOpened] = useState(false);
+  const [coachTick, setCoachTick] = useState(0);
+  useEffect(() => {
+    if (stars < 2) return;
+    const id = setTimeout(() => setCoachTick(1), 1400);
+    return () => clearTimeout(id);
+  }, [stars]);
   const totalXp = r.xp + chestXp;
   const [levelUp, setLevelUp] = useState<number | null>(null);
   const secs = Math.round(r.ms / 1000);
@@ -125,6 +132,8 @@ export default function Results({ g, lesson, r, nextId, onBack, onRetry, onNext 
         {nextId ? <Btn variant="primary" onClick={() => onNext(nextId)}>Next lesson</Btn> : <Btn variant="primary" onClick={onBack}>Continue</Btn>}
       </div>
       <button className="link-btn" onClick={onBack}>Back to the chapter</button>
+
+      <Coach trigger={coachTick} placement="results" />
 
       {levelUp && (
         <motion.div className="levelup" initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => setLevelUp(null)}>

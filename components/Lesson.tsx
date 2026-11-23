@@ -6,13 +6,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useCourse, type Lesson as L } from '@/lib/course';
 import { sfx } from '@/lib/sound';
 import { HINT_COST, type Game } from '@/lib/store';
+import Coach from './Coach';
 import { Asset, Bar, Btn, Modal, QText, Rich } from './ui';
 
 type G = Game;
 export type LessonResult = { xp: number; correctFirst: number; total: number; bestCombo: number; ms: number; mistakes: number; kind: 'quiz' | 'match' };
 
-const PRAISE = ['Excellent!', 'Nicely done!', 'Spot on!', 'You nailed it!', 'Big brain!', 'Boom!', 'Brilliant!', 'Correct!'];
-const OOPS = ['Not quite.', 'So close!', 'Almost there.', 'Keep going!'];
+const PRAISE = ['Profit!', 'Bullish!', 'Cha-ching!', 'In the money!', 'Blue-chip answer!', 'Spot on!', 'Excellent!', 'Nicely done!'];
+const OOPS = ['Market correction.', 'Not quite.', 'Small dip. Recover!', 'Almost there.'];
 const LETTERS = 'ABCDEFGHIJ'.split('');
 
 function burst(el: HTMLElement | null, big = false) {
@@ -20,7 +21,7 @@ function burst(el: HTMLElement | null, big = false) {
     const r = el?.getBoundingClientRect();
     const x = r ? (r.left + r.width / 2) / window.innerWidth : 0.5;
     const y = r ? (r.top + r.height / 2) / window.innerHeight : 0.7;
-    confetti({ particleCount: big ? 140 : 50, spread: big ? 100 : 65, startVelocity: big ? 45 : 32, origin: { x, y }, colors: ['#ffc800', '#58cc02', '#1cb0f6', '#ff4b4b', '#a560ff'], scalar: 0.9, disableForReducedMotion: true });
+    confetti({ particleCount: big ? 140 : 50, spread: big ? 100 : 65, startVelocity: big ? 45 : 32, origin: { x, y }, colors: ['#facc15', '#22c55e', '#16a34a', '#ffffff', '#38bdf8'], scalar: 0.9, disableForReducedMotion: true });
   } catch { /* noop */ }
 }
 
@@ -42,6 +43,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
   const [hinted, setHinted] = useState<Set<string>>(new Set());
   const [comboFlash, setComboFlash] = useState<number | null>(null);
   const [quitAsk, setQuitAsk] = useState(false);
+  const [coachTick, setCoachTick] = useState(0);
   const t0 = useRef(Date.now());
   const checkRef = useRef<HTMLButtonElement>(null);
 
@@ -67,6 +69,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
       setGain(earned);
       setStatus('correct');
       setSolved((s) => new Set(s).add(qid));
+      if (c % 3 === 0) setCoachTick((t) => t + 1);
       if (c > 0 && c % 5 === 0) {
         sfx.combo();
         setComboFlash(c);
@@ -221,7 +224,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
               <div className="foot-tools">
                 {hint && <Btn variant="secondary" onClick={buyHint} disabled={!hinted.has(qid) && g.state.gems < HINT_COST} title="Show a hint">
                   <Lightbulb size={18} /> {hinted.has(qid) ? 'Hint' : `Hint · ${HINT_COST}`}
-                  {!hinted.has(qid) && <Asset name="gem_stone_3d.png" size={16} />}
+                  {!hinted.has(qid) && <Asset name="coin_3d.png" size={16} />}
                 </Btn>}
                 {course.calculator && chapter?.calculator && (
                   <Btn variant="secondary" onClick={openCalc} title="Open the financial calculator"><Calculator size={18} /> Calculator</Btn>
@@ -264,6 +267,8 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
           )}
         </div>
       </footer>
+
+      <Coach trigger={coachTick} />
 
       <Modal open={quitAsk} onClose={() => setQuitAsk(false)} title="Quit this lesson?">
         <div className="center-col">

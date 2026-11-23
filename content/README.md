@@ -27,6 +27,7 @@ broken bit and keeps working**. Every problem is listed in **Settings → conten
 | `calculator` | `true` shows the financial calculator (chapters opt in too) | `false` |
 | `difficulties` | Levels as `{ "key": { "label", "xp", "color" } }` | easy / medium / hard |
 | `credits` | Shown in Settings | — |
+| `coach` | Optional pop-up character: `{ "name", "image", "lines": [...] }`. Appears after every 3 correct answers in a row and on good results | none |
 
 ## A chapter file
 

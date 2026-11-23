@@ -3,7 +3,7 @@
   "title": "Goals & Governance of the Firm",
   "tagline": "Investment vs financing, business forms, agency problems",
   "icon": "bank_3d.png",
-  "color": "#a855f7",
+  "color": "#4f46e5",
   "sections": [
     { "name": "Finance & Decisions", "blurb": "What finance is, real vs financial assets, investment vs financing decisions." },
     { "name": "Business Forms", "blurb": "Sole proprietorships, partnerships and corporations." },

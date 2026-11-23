@@ -3,7 +3,7 @@
   "title": "Financial Markets & Institutions",
   "tagline": "Money vs capital markets, primary vs secondary, intermediaries",
   "icon": "chart_increasing_3d.png",
-  "color": "#14b8a6",
+  "color": "#0d9488",
   "sections": [
     { "name": "Markets", "blurb": "What markets do, direct vs indirect finance, money and capital markets." },
     { "name": "Intermediaries & Institutions", "blurb": "Mutual, hedge and pension funds, banks and insurers." },

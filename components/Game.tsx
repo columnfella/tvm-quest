@@ -5,7 +5,7 @@ import { CourseProvider, shuffle, useCourseIndex, type Course, type Lesson as L 
 import { setSoundEnabled } from '@/lib/sound';
 import { useGame } from '@/lib/store';
 import ChapterView from './Chapter';
-import Home, { TopBar } from './Home';
+import Home, { Ticker, TopBar } from './Home';
 import Lesson, { type LessonResult } from './Lesson';
 import Match from './Match';
 import Onboarding from './Onboarding';
@@ -61,7 +61,12 @@ export default function Game({ course: raw }: { course: Course }) {
           <Onboarding wiped={g.auth === 'wiped'} register={g.register} />
         ) : (
           <div className="app">
-            {(screen.v === 'home' || screen.v === 'chapter') && <TopBar g={g} openPanel={setPanel} onHome={() => go({ v: 'home' })} />}
+            {(screen.v === 'home' || screen.v === 'chapter') && (
+              <>
+                <TopBar g={g} openPanel={setPanel} onHome={() => go({ v: 'home' })} />
+                <Ticker g={g} />
+              </>
+            )}
             <AnimatePresence mode="wait">
               {screen.v === 'home' && (
                 <motion.div key="home" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.18 }}>
