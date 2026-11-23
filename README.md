@@ -2,6 +2,8 @@
 
 An arcade-style practice app for any multiple-choice course. It ships with FIN 3301 (Ch. 1, 2, 5, 6, 7): 464 questions, including the full Black Book banks for Ch. 5 (TVM) and Ch. 7 (stock valuation) plus Black Book Ch. 6 homework exercises. It's built with Next.js 15, React 19, TypeScript and Framer Motion, and has a tiny backend for weekly leaderboards.
 
+**Live:** https://tvm-quest.vercel.app (database status: https://tvm-quest.vercel.app/api/health)
+
 ## Run it locally
 
 ```bash
