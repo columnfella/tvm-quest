@@ -5,29 +5,81 @@
   "icon": "chart_increasing_3d.png",
   "color": "#0d9488",
   "sections": [
-    { "name": "Markets", "blurb": "What markets do, direct vs indirect finance, money and capital markets." },
-    { "name": "Intermediaries & Institutions", "blurb": "Mutual, hedge and pension funds, banks and insurers." },
-    { "name": "Mock Midterm", "blurb": "Chapter 2 questions from the FIN 3301 mock midterm." }
+    {
+      "name": "Markets",
+      "blurb": "What markets do, direct vs indirect finance, money and capital markets."
+    },
+    {
+      "name": "Intermediaries & Institutions",
+      "blurb": "Mutual, hedge and pension funds, banks and insurers."
+    },
+    {
+      "name": "Mock Midterm",
+      "blurb": "Chapter 2 questions from the FIN 3301 mock midterm."
+    }
   ],
   "pairsTitle": "Term Match",
   "pairs": [
-    { "left": "Treasury bill", "right": "Government debt, under 1 year, sold at a discount" },
-    { "left": "Commercial paper", "right": "Short-term corporate debt from highly rated firms" },
-    { "left": "Certificate of deposit", "right": "Bank time deposit with an early-withdrawal penalty" },
-    { "left": "Primary market", "right": "Securities sold for the first time (IPO)" },
-    { "left": "Secondary market", "right": "Existing securities traded between investors" },
-    { "left": "Money market", "right": "Short-term borrowing and lending" },
-    { "left": "Capital market", "right": "Long-term stocks and bonds" },
-    { "left": "Mutual fund", "right": "Pooled, diversified, open to small investors" },
-    { "left": "Hedge fund", "right": "High-risk strategies, sophisticated investors only" },
-    { "left": "Pension fund", "right": "Employer plan for employees' retirement" },
-    { "left": "Investment bank", "right": "Advises firms raising capital; no deposits" },
-    { "left": "Commercial bank", "right": "Takes deposits and makes loans" }
+    {
+      "left": "Treasury bill",
+      "right": "Government debt, under 1 year, sold at a discount"
+    },
+    {
+      "left": "Commercial paper",
+      "right": "Short-term corporate debt from highly rated firms"
+    },
+    {
+      "left": "Certificate of deposit",
+      "right": "Bank time deposit with an early-withdrawal penalty"
+    },
+    {
+      "left": "Primary market",
+      "right": "Securities sold for the first time (IPO)"
+    },
+    {
+      "left": "Secondary market",
+      "right": "Existing securities traded between investors"
+    },
+    {
+      "left": "Money market",
+      "right": "Short-term borrowing and lending"
+    },
+    {
+      "left": "Capital market",
+      "right": "Long-term stocks and bonds"
+    },
+    {
+      "left": "Mutual fund",
+      "right": "Pooled, diversified, open to small investors"
+    },
+    {
+      "left": "Hedge fund",
+      "right": "High-risk strategies, sophisticated investors only"
+    },
+    {
+      "left": "Pension fund",
+      "right": "Employer plan for employees' retirement"
+    },
+    {
+      "left": "Investment bank",
+      "right": "Advises firms raising capital; no deposits"
+    },
+    {
+      "left": "Commercial bank",
+      "right": "Takes deposits and makes loans"
+    }
   ],
   "hints": [
     {
       "title": "Market map",
-      "topics": ["market", "bill", "paper", "deposit", "ipo", "finance"],
+      "topics": [
+        "market",
+        "bill",
+        "paper",
+        "deposit",
+        "ipo",
+        "finance"
+      ],
       "lines": [
         "Money market = short-term (< 1 year); capital market = long-term",
         "Primary = new issues, company gets the cash, price set by management",
@@ -37,7 +89,9 @@
     },
     {
       "title": "Who's who",
-      "topics": ["*"],
+      "topics": [
+        "*"
+      ],
       "lines": [
         "Mutual fund: diversified, professional, liquid, open to all",
         "Hedge fund: complex/high-risk, restricted access, high minimums",
@@ -48,28 +102,372 @@
     }
   ],
   "questions": [
-    { "id": "1", "section": "Markets", "difficulty": "easy", "topic": "Function of markets", "question": "The main function of financial markets is to:", "choices": ["Set tax rates", "Channel funds from savers with surplus funds to borrowers who need them", "Print money", "Guarantee every investment's return", "Replace banks entirely"], "answer": "B", "explanation": "Markets move money from surplus units (savers/lenders) to deficit units (borrowers), which promotes efficient capital allocation and growth." },
-    { "id": "2", "section": "Markets", "difficulty": "easy", "topic": "Direct finance", "question": "Which of the following is an example of DIRECT finance?", "choices": ["Depositing money in a bank that then lends it out", "Buying shares in a mutual fund", "A firm selling bonds directly to investors", "Paying an insurance premium", "Contributing to a pension fund"], "answer": "C", "explanation": "Direct finance: funds go straight from lenders to borrowers (stocks, bonds). The others go through intermediaries (indirect finance)." },
-    { "id": "3", "section": "Markets", "difficulty": "easy", "topic": "Money market", "question": "The money market is where:", "choices": ["Long-term stocks are traded", "Short-term borrowing and lending take place", "Only foreign currencies are exchanged", "Real estate is sold", "Companies issue IPOs"], "answer": "B", "explanation": "Money market = short-term (< 1 year), high-quality, fixed-income instruments such as T-bills, commercial paper and CDs." },
-    { "id": "4", "section": "Markets", "difficulty": "medium", "topic": "Treasury bills", "question": "You buy a 91-day $1,000 T-bill for $900 and receive $1,000 at maturity. The $100 difference is:", "choices": ["A dividend", "A coupon payment", "The interest you earn (the bill is sold at a discount)", "A capital loss", "A penalty"], "answer": "C", "explanation": "T-bills pay no coupon; they're sold at a discount and the gap to face value is the interest." },
-    { "id": "5", "section": "Markets", "difficulty": "medium", "topic": "Commercial paper", "question": "Which statement about commercial paper is correct?", "choices": ["It is issued by governments for 10+ years", "Any firm can issue it regardless of credit rating", "It is short-term corporate debt issued by firms with good credit ratings, sold in large denominations", "It is a bank time deposit", "It gives ownership in the company"], "answer": "C", "explanation": "CP: days to a year, issued by corporations/financial institutions with low default risk, sold to institutional investors (often $100,000+), highly liquid, used for working capital." },
-    { "id": "6", "section": "Markets", "difficulty": "easy", "topic": "Certificates of deposit", "question": "What usually happens if you withdraw a certificate of deposit (CD) before it matures?", "choices": ["You earn a bonus", "You pay a penalty", "Nothing changes", "The bank doubles the interest", "It converts into stock"], "answer": "B", "explanation": "CDs are bank time deposits with a fixed maturity and rate, higher than savings accounts, with a penalty for early withdrawal." },
-    { "id": "7", "section": "Markets", "difficulty": "easy", "topic": "Capital market", "question": "Which of the following trades in the capital market?", "choices": ["A 91-day T-bill", "Commercial paper maturing in 30 days", "A 20-year corporate bond", "A 6-month CD", "A 3-month bank deposit"], "answer": "C", "explanation": "The capital market handles long-term securities: equity (stocks) and debt (bonds, debentures)." },
-    { "id": "8", "section": "Markets", "difficulty": "medium", "topic": "Primary vs secondary market", "question": "In the secondary market:", "choices": ["The issuing company receives the money from each trade", "Prices are set by company management", "Existing securities are traded between investors, providing liquidity", "Only buying takes place", "Only IPOs happen"], "answer": "C", "explanation": "Secondary market: existing securities change hands between investors; the company isn't involved; prices come from supply and demand; it provides liquidity." },
-    { "id": "9", "section": "Markets", "difficulty": "medium", "topic": "Primary vs secondary market", "question": "Which market DIRECTLY promotes capital formation for companies?", "choices": ["The secondary market", "The primary market", "The foreign exchange market", "The derivatives market", "Neither"], "answer": "B", "explanation": "In the primary market funds flow from savers to the company, directly funding it. The secondary market supports capital formation only indirectly, through liquidity." },
-    { "id": "10", "section": "Markets", "difficulty": "medium", "topic": "IPO", "question": "Apple went public in 1980 by selling shares to investors for the first time. That transaction took place in the:", "choices": ["Secondary market", "Money market", "Primary market", "Commercial paper market", "Insurance market"], "answer": "C", "explanation": "An IPO is a new issue, so it's a primary market transaction." },
-    { "id": "11", "section": "Intermediaries & Institutions", "difficulty": "easy", "topic": "Mutual funds", "question": "A mutual fund investor owns:", "choices": ["The underlying stocks directly", "Shares of the fund", "A bank deposit", "A bond issued by the fund manager", "Nothing until the fund closes"], "answer": "B", "explanation": "Investors own shares of the fund, which holds the diversified portfolio on their behalf." },
-    { "id": "12", "section": "Intermediaries & Institutions", "difficulty": "easy", "topic": "Mutual funds", "question": "Which is NOT a typical feature of mutual funds?", "choices": ["Diversification", "Professional management", "Liquidity (buy/sell usually daily)", "Minimum investments of $1 million or more", "Accessibility for small investors"], "answer": "D", "explanation": "High minimums ($1M+) describe hedge funds, not mutual funds." },
-    { "id": "13", "section": "Intermediaries & Institutions", "difficulty": "medium", "topic": "Hedge funds", "question": "Which strategy is typical of a hedge fund rather than a mutual fund?", "choices": ["Buying a broad index of blue-chip stocks", "Short selling overvalued stocks and speculating with derivatives", "Holding only T-bills", "Taking customer deposits", "Selling insurance policies"], "answer": "B", "explanation": "Hedge funds use complex, high-risk strategies: short selling, distressed debt, options and futures, global macro bets." },
-    { "id": "14", "section": "Intermediaries & Institutions", "difficulty": "easy", "topic": "Pension funds", "question": "A pension fund is:", "choices": ["A short-term trading fund", "An investment plan set up by an employer for employees' retirement", "A type of bank deposit", "A government T-bill", "A hedge fund for wealthy individuals"], "answer": "B", "explanation": "Pension funds are employer retirement plans designed for long-run investment." },
-    { "id": "15", "section": "Intermediaries & Institutions", "difficulty": "medium", "topic": "Financial institutions", "question": "What makes banks and insurance companies 'financial institutions' rather than just intermediaries?", "choices": ["They only invest in stocks", "They raise financing in special ways, such as accepting deposits or selling insurance policies", "They are owned by the government", "They never lend money", "They only operate in the secondary market"], "answer": "B" },
-    { "id": "16", "section": "Intermediaries & Institutions", "difficulty": "easy", "topic": "Commercial banks", "question": "A commercial bank mainly:", "choices": ["Takes deposits and lends to individuals and corporations", "Advises on mergers without taking deposits", "Sells insurance", "Runs hedge fund strategies", "Issues T-bills"], "answer": "A", "explanation": "Commercial banks (e.g. Banque Populaire du Maroc, Bank of America): savers → bank → loans to companies." },
-    { "id": "17", "section": "Intermediaries & Institutions", "difficulty": "easy", "topic": "Insurance companies", "question": "How do insurance companies get the funds they invest?", "choices": ["Customer deposits", "Premiums paid by many policyholders", "Selling T-bills", "IPOs", "Government grants"], "answer": "B", "explanation": "Insurers pool premiums from many policyholders and use them to pay claims." },
-    { "id": "18", "section": "Intermediaries & Institutions", "difficulty": "hard", "topic": "Mixed concepts", "question": "Which pairing is INCORRECT?", "choices": ["IPO → primary market", "T-bill → money market", "Hedge fund → restricted to sophisticated investors", "Commercial paper → issued by governments", "Pension fund → long-run retirement investing"], "answer": "D", "explanation": "Commercial paper is issued by corporations and financial institutions. Governments issue T-bills." },
-    { "id": "m1", "section": "Mock Midterm", "difficulty": "easy", "topic": "Money market", "source": "Mock Midterm Q9", "question": "Which of the following is a money market instrument?", "choices": ["Common stock", "A 10-year corporate bond", "Commercial paper", "A debenture", "A mortgage"], "answer": "C" },
-    { "id": "m2", "section": "Mock Midterm", "difficulty": "easy", "topic": "Treasury bills", "source": "Mock Midterm Q10", "question": "Which of the following best describes a Treasury bill (T-bill)?", "choices": ["A long-term bond issued by corporations", "A share of ownership in a government", "A time deposit offered by banks with a fixed maturity", "A short-term bond issued by large companies with good credit ratings", "A short-term debt issued by the government, with a maturity of less than one year"], "answer": "E" },
-    { "id": "m3", "section": "Mock Midterm", "difficulty": "easy", "topic": "Primary market", "source": "Mock Midterm Q11", "question": "Which statement about the primary market is correct?", "choices": ["Existing shares are traded between investors", "Prices are set by supply and demand", "The company is not involved in the transaction", "Securities are issued for the first time, such as in an IPO", "Both buying and selling of securities take place there"], "answer": "D" },
-    { "id": "m4", "section": "Mock Midterm", "difficulty": "medium", "topic": "Hedge funds", "source": "Mock Midterm Q12", "question": "How do hedge funds differ from mutual funds?", "choices": ["Hedge funds only invest in Treasury bills", "Hedge funds use complex, high-risk strategies and are limited to sophisticated investors", "Hedge funds are open to all small investors with low minimum investments", "Hedge funds do not pool money from investors", "Hedge funds are run by banks that take deposits"], "answer": "B" },
-    { "id": "m5", "section": "Mock Midterm", "difficulty": "medium", "topic": "Investment banks", "source": "Mock Midterm Q13", "question": "Which institution advises and assists companies in raising financing but does NOT usually take deposits or make loans?", "choices": ["A commercial bank", "An insurance company", "A pension fund", "An investment bank", "A mutual fund"], "answer": "D" }
+    {
+      "id": "1",
+      "section": "Markets",
+      "difficulty": "easy",
+      "topic": "Function of markets",
+      "question": "The main function of financial markets is to:",
+      "choices": [
+        "Set the interest rates that banks must charge",
+        "Move funds from savers to those who need them",
+        "Create new money for the economy to spend",
+        "Guarantee that every investment earns a return",
+        "Replace banks as the only source of lending"
+      ],
+      "answer": "B",
+      "explanation": "Markets move money from surplus units (savers/lenders) to deficit units (borrowers), which promotes efficient capital allocation and growth."
+    },
+    {
+      "id": "2",
+      "section": "Markets",
+      "difficulty": "easy",
+      "topic": "Direct finance",
+      "question": "Which of the following is an example of DIRECT finance?",
+      "choices": [
+        "Depositing money in a bank that then lends it out",
+        "Buying shares in a mutual fund",
+        "A firm selling bonds directly to investors",
+        "Paying an insurance premium",
+        "Contributing to a pension fund"
+      ],
+      "answer": "C",
+      "explanation": "Direct finance: funds go straight from lenders to borrowers (stocks, bonds). The others go through intermediaries (indirect finance)."
+    },
+    {
+      "id": "3",
+      "section": "Markets",
+      "difficulty": "easy",
+      "topic": "Money market",
+      "question": "The money market is where:",
+      "choices": [
+        "Long-term stocks and bonds are traded",
+        "Short-term borrowing and lending happen",
+        "Only foreign currencies are exchanged",
+        "Real estate and property are sold",
+        "Companies list shares through IPOs"
+      ],
+      "answer": "B",
+      "explanation": "Money market = short-term (< 1 year), high-quality, fixed-income instruments such as T-bills, commercial paper and CDs."
+    },
+    {
+      "id": "4",
+      "section": "Markets",
+      "difficulty": "medium",
+      "topic": "Treasury bills",
+      "question": "You buy a 91-day $1,000 T-bill for $900 and receive $1,000 at maturity. The $100 difference is:",
+      "choices": [
+        "A dividend paid by the Treasury",
+        "A coupon paid at maturity",
+        "The interest you earn on the bill",
+        "A capital loss on the investment",
+        "A fee charged for early redemption"
+      ],
+      "answer": "C",
+      "explanation": "T-bills pay no coupon; they're sold at a discount and the gap to face value is the interest."
+    },
+    {
+      "id": "5",
+      "section": "Markets",
+      "difficulty": "medium",
+      "topic": "Commercial paper",
+      "question": "Which statement about commercial paper is correct?",
+      "choices": [
+        "It is issued by governments for ten years or more",
+        "Any firm can issue it, whatever its credit rating",
+        "It is short-term debt from highly rated companies",
+        "It is a time deposit offered by commercial banks",
+        "It gives the holder an ownership stake in the firm"
+      ],
+      "answer": "C",
+      "explanation": "CP: days to a year, issued by corporations/financial institutions with low default risk, sold to institutional investors (often $100,000+), highly liquid, used for working capital."
+    },
+    {
+      "id": "6",
+      "section": "Markets",
+      "difficulty": "easy",
+      "topic": "Certificates of deposit",
+      "question": "What usually happens if you withdraw a certificate of deposit (CD) before it matures?",
+      "choices": [
+        "You earn a bonus",
+        "You pay a penalty",
+        "Nothing changes",
+        "The bank doubles the interest",
+        "It converts into stock"
+      ],
+      "answer": "B",
+      "explanation": "CDs are bank time deposits with a fixed maturity and rate, higher than savings accounts, with a penalty for early withdrawal."
+    },
+    {
+      "id": "7",
+      "section": "Markets",
+      "difficulty": "easy",
+      "topic": "Capital market",
+      "question": "Which of the following trades in the capital market?",
+      "choices": [
+        "A 91-day T-bill",
+        "Commercial paper maturing in 30 days",
+        "A 20-year corporate bond",
+        "A 6-month CD",
+        "A 3-month bank deposit"
+      ],
+      "answer": "C",
+      "explanation": "The capital market handles long-term securities: equity (stocks) and debt (bonds, debentures)."
+    },
+    {
+      "id": "8",
+      "section": "Markets",
+      "difficulty": "medium",
+      "topic": "Primary vs secondary market",
+      "question": "In the secondary market:",
+      "choices": [
+        "The issuing company receives the money from each trade",
+        "Prices are set by the issuing company's management",
+        "Investors trade existing securities with each other",
+        "Only buying takes place, never any selling",
+        "New shares are created for every transaction"
+      ],
+      "answer": "C",
+      "explanation": "Secondary market: existing securities change hands between investors; the company isn't involved; prices come from supply and demand; it provides liquidity."
+    },
+    {
+      "id": "9",
+      "section": "Markets",
+      "difficulty": "medium",
+      "topic": "Primary vs secondary market",
+      "question": "Which market DIRECTLY promotes capital formation for companies?",
+      "choices": [
+        "The secondary market",
+        "The primary market",
+        "The foreign exchange market",
+        "The derivatives market",
+        "Neither"
+      ],
+      "answer": "B",
+      "explanation": "In the primary market funds flow from savers to the company, directly funding it. The secondary market supports capital formation only indirectly, through liquidity."
+    },
+    {
+      "id": "10",
+      "section": "Markets",
+      "difficulty": "medium",
+      "topic": "IPO",
+      "question": "Apple went public in 1980 by selling shares to investors for the first time. That transaction took place in the:",
+      "choices": [
+        "Secondary market",
+        "Money market",
+        "Primary market",
+        "Commercial paper market",
+        "Insurance market"
+      ],
+      "answer": "C",
+      "explanation": "An IPO is a new issue, so it's a primary market transaction."
+    },
+    {
+      "id": "11",
+      "section": "Intermediaries & Institutions",
+      "difficulty": "easy",
+      "topic": "Mutual funds",
+      "question": "A mutual fund investor owns:",
+      "choices": [
+        "The underlying stocks directly",
+        "Shares of the fund",
+        "A bank deposit",
+        "A bond issued by the fund manager",
+        "Nothing until the fund closes"
+      ],
+      "answer": "B",
+      "explanation": "Investors own shares of the fund, which holds the diversified portfolio on their behalf."
+    },
+    {
+      "id": "12",
+      "section": "Intermediaries & Institutions",
+      "difficulty": "easy",
+      "topic": "Mutual funds",
+      "question": "Which is NOT a typical feature of mutual funds?",
+      "choices": [
+        "Diversification across many securities",
+        "Professional management of the portfolio",
+        "Liquidity, usually with daily buying and selling",
+        "Minimum investments of $1 million or more",
+        "Access for small investors with little money"
+      ],
+      "answer": "D",
+      "explanation": "High minimums ($1M+) describe hedge funds, not mutual funds."
+    },
+    {
+      "id": "13",
+      "section": "Intermediaries & Institutions",
+      "difficulty": "medium",
+      "topic": "Hedge funds",
+      "question": "Which strategy is typical of a hedge fund rather than a mutual fund?",
+      "choices": [
+        "Buying a broad index of blue-chip stocks",
+        "Short selling and speculating with derivatives",
+        "Holding a portfolio made up only of T-bills",
+        "Taking deposits from retail customers",
+        "Selling life and property insurance policies"
+      ],
+      "answer": "B",
+      "explanation": "Hedge funds use complex, high-risk strategies: short selling, distressed debt, options and futures, global macro bets."
+    },
+    {
+      "id": "14",
+      "section": "Intermediaries & Institutions",
+      "difficulty": "easy",
+      "topic": "Pension funds",
+      "question": "A pension fund is:",
+      "choices": [
+        "A short-term fund that trades stocks daily",
+        "An employer plan that invests for employees' retirement",
+        "A type of savings deposit offered by banks",
+        "A government security maturing within a year",
+        "A private investment fund that is open only to wealthy individuals"
+      ],
+      "answer": "B",
+      "explanation": "Pension funds are employer retirement plans designed for long-run investment."
+    },
+    {
+      "id": "15",
+      "section": "Intermediaries & Institutions",
+      "difficulty": "medium",
+      "topic": "Financial institutions",
+      "question": "What makes banks and insurance companies 'financial institutions' rather than just intermediaries?",
+      "choices": [
+        "They invest only in common stocks",
+        "They raise funds through deposits or insurance policies",
+        "They are owned, funded and run directly by the government",
+        "They never lend money to businesses",
+        "They operate only in the secondary market, trading existing securities"
+      ],
+      "answer": "B"
+    },
+    {
+      "id": "16",
+      "section": "Intermediaries & Institutions",
+      "difficulty": "easy",
+      "topic": "Commercial banks",
+      "question": "A commercial bank mainly:",
+      "choices": [
+        "Takes deposits and makes loans",
+        "Advises on mergers without taking deposits",
+        "Sells insurance in exchange for premiums",
+        "Runs complex hedge fund strategies",
+        "Issues bills on behalf of the government"
+      ],
+      "answer": "A",
+      "explanation": "Commercial banks (e.g. Banque Populaire du Maroc, Bank of America): savers → bank → loans to companies."
+    },
+    {
+      "id": "17",
+      "section": "Intermediaries & Institutions",
+      "difficulty": "easy",
+      "topic": "Insurance companies",
+      "question": "How do insurance companies get the funds they invest?",
+      "choices": [
+        "Customer savings deposits",
+        "Premiums from policyholders",
+        "Selling Treasury bills",
+        "Issuing shares in IPOs",
+        "Grants from the government"
+      ],
+      "answer": "B",
+      "explanation": "Insurers pool premiums from many policyholders and use them to pay claims."
+    },
+    {
+      "id": "18",
+      "section": "Intermediaries & Institutions",
+      "difficulty": "hard",
+      "topic": "Mixed concepts",
+      "question": "Which pairing is INCORRECT?",
+      "choices": [
+        "IPO → primary market",
+        "T-bill → money market",
+        "Hedge fund → restricted to sophisticated investors",
+        "Commercial paper → issued by governments",
+        "Pension fund → long-run retirement investing"
+      ],
+      "answer": "D",
+      "explanation": "Commercial paper is issued by corporations and financial institutions. Governments issue T-bills."
+    },
+    {
+      "id": "m1",
+      "section": "Mock Midterm",
+      "difficulty": "easy",
+      "topic": "Money market",
+      "source": "Mock Midterm Q9",
+      "question": "Which of the following is a money market instrument?",
+      "choices": [
+        "Common stock",
+        "A 10-year corporate bond",
+        "Commercial paper",
+        "A debenture",
+        "A mortgage"
+      ],
+      "answer": "C"
+    },
+    {
+      "id": "m2",
+      "section": "Mock Midterm",
+      "difficulty": "easy",
+      "topic": "Treasury bills",
+      "source": "Mock Midterm Q10",
+      "question": "Which of the following best describes a Treasury bill (T-bill)?",
+      "choices": [
+        "A long-term bond issued by corporations",
+        "A share of ownership in a government",
+        "A time deposit offered by banks with a fixed maturity",
+        "A short-term bond issued by large companies with good credit ratings",
+        "A short-term debt issued by the government, with a maturity of less than one year"
+      ],
+      "answer": "E"
+    },
+    {
+      "id": "m3",
+      "section": "Mock Midterm",
+      "difficulty": "easy",
+      "topic": "Primary market",
+      "source": "Mock Midterm Q11",
+      "question": "Which statement about the primary market is correct?",
+      "choices": [
+        "Existing shares are traded between investors",
+        "Prices are set by supply and demand",
+        "The company is not involved in the transaction",
+        "Securities are issued for the first time, such as in an IPO",
+        "Both buying and selling of securities take place there"
+      ],
+      "answer": "D"
+    },
+    {
+      "id": "m4",
+      "section": "Mock Midterm",
+      "difficulty": "medium",
+      "topic": "Hedge funds",
+      "source": "Mock Midterm Q12",
+      "question": "How do hedge funds differ from mutual funds?",
+      "choices": [
+        "Hedge funds only invest in Treasury bills",
+        "Hedge funds use complex, high-risk strategies and are limited to sophisticated investors",
+        "Hedge funds are open to all small investors with low minimum investments",
+        "Hedge funds do not pool money from investors",
+        "Hedge funds are run by banks that take deposits"
+      ],
+      "answer": "B"
+    },
+    {
+      "id": "m5",
+      "section": "Mock Midterm",
+      "difficulty": "medium",
+      "topic": "Investment banks",
+      "source": "Mock Midterm Q13",
+      "question": "Which institution advises and assists companies in raising financing but does NOT usually take deposits or make loans?",
+      "choices": [
+        "A commercial bank",
+        "An insurance company",
+        "A pension fund",
+        "An investment bank",
+        "A mutual fund"
+      ],
+      "answer": "D"
+    }
   ]
 }

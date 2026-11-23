@@ -116,7 +116,7 @@ export function loadCourse(): Course {
   let coach: Coach | null = null;
   if (isObj(c.coach)) {
     const lines = Array.isArray(c.coach.lines) ? c.coach.lines.map((l) => str(l)).filter(Boolean) : [];
-    if (lines.length) coach = { name: str(c.coach.name, 'Coach'), image: asset(str(c.coach.image), 'star-struck_3d.png', 'course.json coach', issues), lines };
+    if (lines.length) coach = { name: str(c.coach.name, 'Coach'), image: asset(str(c.coach.image), 'star-struck_3d.png', 'course.json coach', issues), lines, photo: c.coach.photo === true };
     else issues.push('course.json: coach needs at least one line');
   }
   const mascot = asset(str(c.mascot), 'pig_face_3d.png', 'course.json', issues);
@@ -174,6 +174,7 @@ export function loadCourse(): Course {
         explanation: str(rq.explanation ?? rq.solution ?? rq.sol),
         source: str(rq.source),
         hint: parseHint(rq.hint),
+        shuffle: rq.shuffle !== false && c.shuffleChoices !== false,
       };
       qs.push(q);
       questions[q.key] = q;

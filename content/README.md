@@ -24,10 +24,11 @@ broken bit and keeps working**. Every problem is listed in **Settings → conten
 | `mascot` | Image file from `public/assets/` | `pig_face_3d.png` |
 | `lessonSize` | Questions per lesson | `5` |
 | `quickPracticeSize` | Questions in "Quick practice" / "Review mistakes" | `10` |
+| `shuffleChoices` | Shuffle answer order each time a question is shown | `true` |
 | `calculator` | `true` shows the financial calculator (chapters opt in too) | `false` |
 | `difficulties` | Levels as `{ "key": { "label", "xp", "color" } }` | easy / medium / hard |
 | `credits` | Shown in Settings | — |
-| `coach` | Optional pop-up character: `{ "name", "image", "lines": [...] }`. Appears after every 3 correct answers in a row and on good results | none |
+| `coach` | Optional pop-up character: `{ "name", "image", "lines": [...] }`. Appears after every 3 correct answers in a row and on good results. Add `"photo": true` to show `image` as a round photo (any .png/.jpg/.webp in `public/assets/`) instead of the drawn suit | none |
 
 ## A chapter file
 
@@ -79,7 +80,9 @@ The file name sets the order when chapters have no `number`. Only `questions` is
 - **`section`**: groups questions into a section. Sections listed in `sections` come first, in that order.
   Questions without a section are grouped by difficulty.
 - **`topic`**: used for lesson titles and to pick a hint. Defaults to the section name.
-- `id`, `explanation`, `source`, `hint` are optional.
+- `id`, `explanation`, `source`, `hint` are optional. Set `"shuffle": false` to keep a question's choice order.
+  Choices that mention other letters ("Statements a and c", "All of the above") and True/False are never shuffled.
+- **Tip:** keep the right answer about as long as the wrong ones; students learn to pick the longest choice.
 
 Lessons are built automatically: each section's questions are cut into lessons of `lessonSize`.
 Progress is stored per lesson, so re-ordering questions can reset a few lessons' stars. Nothing breaks.

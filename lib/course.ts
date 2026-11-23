@@ -6,7 +6,7 @@ import { createContext, useContext, useMemo } from 'react';
 export type Difficulty = { label: string; xp: number; color: string };
 export type Hint = { title: string; lines: string[]; topics: string[] };
 export type Pair = { left: string; right: string };
-export type Coach = { name: string; image: string; lines: string[] };
+export type Coach = { name: string; image: string; lines: string[]; photo: boolean }; // photo: show the image in a round frame instead of the drawn suit
 
 export type Question = {
   key: string; // globally unique: `${chapterId}/${id}`
@@ -21,6 +21,7 @@ export type Question = {
   explanation: string;
   source: string;
   hint: Hint | null;
+  shuffle: boolean; // shuffle choice order when shown (auto-skipped for "a and c"/"all of the above" style choices)
 };
 
 export type Lesson = {

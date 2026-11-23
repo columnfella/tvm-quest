@@ -3,7 +3,7 @@ import confetti from 'canvas-confetti';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BookOpen, Calculator, ChevronDown, Lightbulb, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useCourse, type Lesson as L } from '@/lib/course';
+import { shuffle, useCourse, type Lesson as L, type Question } from '@/lib/course';
 import { sfx } from '@/lib/sound';
 import { HINT_COST, type Game } from '@/lib/store';
 import Coach from './Coach';
@@ -21,8 +21,16 @@ function burst(el: HTMLElement | null, big = false) {
     const r = el?.getBoundingClientRect();
     const x = r ? (r.left + r.width / 2) / window.innerWidth : 0.5;
     const y = r ? (r.top + r.height / 2) / window.innerHeight : 0.7;
-    confetti({ particleCount: big ? 140 : 50, spread: big ? 100 : 65, startVelocity: big ? 45 : 32, origin: { x, y }, colors: ['#facc15', '#22c55e', '#16a34a', '#ffffff', '#38bdf8'], scalar: 0.9, disableForReducedMotion: true });
+    confetti({ particleCount: big ? 110 : 28, spread: big ? 100 : 60, startVelocity: big ? 45 : 30, ticks: big ? 200 : 120, origin: { x, y }, colors: ['#facc15', '#22c55e', '#16a34a', '#ffffff', '#38bdf8'], scalar: 0.9, disableForReducedMotion: true });
   } catch { /* noop */ }
+}
+
+/** Choices that reference other choices by letter ("Statements a and c", "All of the above") or True/False keep their order. */
+const FIXED_ORDER = /(statements?s+[a-e]|[a-e]s+ands+[a-e]|all of the|none of the|above|boths+[a-e])/i;
+function canShuffle(q: Question) {
+  if (q.shuffle === false) return false;
+  if (q.choices.length === 2 && q.choices.every((c) => /^(true|false)$/i.test(c))) return false;
+  return !q.choices.some((c) => FIXED_ORDER.test(c));
 }
 
 export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G; lesson: L; onExit: () => void; onFinish: (r: LessonResult) => void; openCalc: () => void }) {
@@ -45,6 +53,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
   const [quitAsk, setQuitAsk] = useState(false);
   const [coachTick, setCoachTick] = useState(0);
   const t0 = useRef(Date.now());
+  const acted = useRef(''); // guards against double-firing (Enter + click, fast double clicks)
   const checkRef = useRef<HTMLButtonElement>(null);
 
   const qid = queue[pos];
@@ -54,9 +63,15 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
   const isRetry = pos >= total; // re-queued after a miss
   const hint = useMemo(() => course.hintFor(q), [q, course]);
   const diff = course.diff(q.difficulty);
+  // display order of the choices (indices into q.choices), reshuffled each time a question is shown
+  const order = useMemo(() => {
+    const idx = q.choices.map((_, i) => i);
+    return canShuffle(q) ? shuffle(idx) : idx;
+  }, [q, pos]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const check = useCallback(() => {
-    if (sel === null || status !== 'idle') return;
+    if (sel === null || status !== 'idle' || acted.current === `c${pos}`) return;
+    acted.current = `c${pos}`;
     const ok = sel === q.answer;
     if (ok) {
       const c = combo + 1;
@@ -97,16 +112,17 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
         stats: { ...s.stats, answered: s.stats.answered + 1 },
       }));
     }
-  }, [sel, status, q, combo, isRetry, qid, g, diff.xp]);
+  }, [sel, status, q, combo, isRetry, qid, g, diff.xp, pos]);
 
   const next = useCallback(() => {
-    if (status === 'idle') return;
+    if (status === 'idle' || acted.current === `n${pos}`) return;
+    acted.current = `n${pos}`;
     if (pos + 1 >= queue.length) {
       const correctFirst = total - missed.size;
       onFinish({ xp, correctFirst, total, bestCombo, ms: Date.now() - t0.current, mistakes: queue.length - total, kind: 'quiz' });
       return;
     }
-    setPos((p) => p + 1);
+    setPos(pos + 1);
     setSel(null);
     setStatus('idle');
     setShowSol(false);
@@ -116,14 +132,19 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
   // keyboard: 1–5 choose, Enter check/continue
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((e.target as HTMLElement)?.tagName === 'INPUT') return;
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
       const n = parseInt(e.key, 10);
-      if (status === 'idle' && n >= 1 && n <= q.choices.length) { setSel(n - 1); sfx.tap(); }
-      if (e.key === 'Enter') { if (status === 'idle') check(); else next(); }
+      if (status === 'idle' && n >= 1 && n <= order.length) { setSel(order[n - 1]); sfx.tap(); }
+      if (e.key === 'Enter' && !e.repeat) {
+        if (tag === 'BUTTON') return; // the focused button's own click handles it
+        e.preventDefault();
+        if (status === 'idle') check(); else next();
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [status, check, next]);
+  }, [status, check, next, order]);
 
   const buyHint = () => {
     if (hinted.has(qid)) { setHintOpen((o) => !o); return; }
@@ -149,7 +170,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
         <span className="stat"><Asset name="high_voltage_3d.png" size={26} /><b>{xp}</b></span>
       </div>
 
-      <motion.div className="lesson-body" key={'shake' + pos + status} animate={status === 'wrong' ? { x: [0, -14, 12, -8, 6, 0] } : { x: 0 }} transition={{ duration: 0.45 }}>
+      <motion.div className="lesson-body" animate={status === 'wrong' ? { x: [0, -12, 10, -6, 4, 0] } : { x: 0 }} transition={{ duration: 0.35 }}>
         <div className="q-meta">
           <span className="pill" style={{ ['--c' as string]: diff.color }}>{diff.label}</span>
           <span className="pill ghost">{q.topic}</span>
@@ -157,8 +178,8 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
           {isRetry && <span className="pill retry">Second chance · half XP</span>}
         </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div key={qid + pos} initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -40 }} transition={{ duration: 0.22 }}>
+        <AnimatePresence initial={false}>
+          <motion.div key={qid + pos} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.16, ease: 'easeOut' }}>
             <div className="q-head">
               <Asset name={status === 'wrong' ? 'pensive_face_3d.png' : status === 'correct' ? 'star-struck_3d.png' : 'thinking_face_3d.png'} size={64} className="q-face" />
               <div className="q-stem">
@@ -167,7 +188,8 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
             </div>
 
             <div className="options">
-              {q.choices.map((o, i) => {
+              {order.map((i, d) => {
+                const o = q.choices[i];
                 const state = status === 'idle' ? (sel === i ? 'sel' : '') : i === q.answer ? 'right' : sel === i ? 'bad' : 'dim';
                 return (
                   <motion.button
@@ -178,7 +200,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
                     animate={state === 'bad' ? { x: [0, -10, 10, -6, 6, 0] } : state === 'right' && status === 'correct' ? { scale: [1, 1.04, 1] } : {}}
                     transition={{ duration: 0.4 }}
                   >
-                    <span className="opt-key">{LETTERS[i]}</span>
+                    <span className="opt-key">{LETTERS[d]}</span>
                     <span className="opt-text">{o}</span>
                   </motion.button>
                 );
@@ -244,7 +266,7 @@ export default function Lesson({ g, lesson, onExit, onFinish, openCalc }: { g: G
                     {status === 'correct' ? (
                       <p>+{gain} XP{combo >= 2 ? ` · ${combo}× combo` : ''}</p>
                     ) : (
-                      <p>Correct answer: <b>{LETTERS[q.answer]}. {q.choices[q.answer]}</b>. This one comes back at the end.</p>
+                      <p>Correct answer: <b>{LETTERS[order.indexOf(q.answer)]}. {q.choices[q.answer]}</b>. This one comes back at the end.</p>
                     )}
                   </div>
                 </div>

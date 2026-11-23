@@ -121,7 +121,6 @@ function ChapterCard({ ch, i, g, onOpen }: { ch: Chapter; i: number; g: Game; on
       whileTap={{ scale: 0.96 }}
     >
       <span className="ch-num">{ch.number ?? i + 1}</span>
-      <Sparkline seed={ch.id} progress={p.total ? p.done / p.total : 0} />
       <Asset name={ch.icon} size={72} className="ch-icon" />
       <span className="ch-body">
         <small>{ch.number !== null ? `Chapter ${ch.number}` : 'Chapter'}</small>
@@ -131,8 +130,9 @@ function ChapterCard({ ch, i, g, onOpen }: { ch: Chapter; i: number; g: Game; on
       <span className="ch-foot">
         <span className="ch-meta">
           <span>{ch.questionKeys.length} questions</span>
-          <span className="ch-stars"><Star size={14} fill="#ffd60a" stroke="#120a2a" strokeWidth={2.5} /> {p.stars}/{p.maxStars}</span>
+          <span className="ch-stars"><Star size={14} fill="#facc15" stroke="#0b1220" strokeWidth={2.5} /> {p.stars}/{p.maxStars}</span>
           {missed > 0 && <span className="ch-missed">{missed} to review</span>}
+          <Sparkline seed={ch.id} progress={p.total ? p.done / p.total : 0} />
         </span>
         <Bar value={p.total ? p.done / p.total : 0} height={12} color="linear-gradient(180deg, #fff27a, #ffc400)" />
       </span>

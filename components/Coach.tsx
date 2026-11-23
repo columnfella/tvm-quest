@@ -53,8 +53,14 @@ export default function Coach({ trigger, placement = 'lesson' }: { trigger: numb
           role="status"
         >
           <motion.div className="coach-figure" animate={{ rotate: [0, -6, 6, -3, 0], y: [0, -4, 0] }} transition={{ duration: 0.9, delay: 0.2 }}>
-            <Asset name={coach.image} size={78} alt={coach.name} className="coach-face" />
-            <Suit />
+            {coach.photo ? (
+              <Asset name={coach.image} size={96} alt={coach.name} className="coach-photo" />
+            ) : (
+              <>
+                <Asset name={coach.image} size={78} alt={coach.name} className="coach-face" />
+                <Suit />
+              </>
+            )}
             <span className="coach-tag">{coach.name}</span>
           </motion.div>
           <motion.div className="coach-bubble" initial={{ scale: 0, originX: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 420, damping: 16, delay: 0.15 }}>

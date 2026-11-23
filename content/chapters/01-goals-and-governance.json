@@ -5,30 +5,82 @@
   "icon": "bank_3d.png",
   "color": "#4f46e5",
   "sections": [
-    { "name": "Finance & Decisions", "blurb": "What finance is, real vs financial assets, investment vs financing decisions." },
-    { "name": "Business Forms", "blurb": "Sole proprietorships, partnerships and corporations." },
-    { "name": "Goals & Agency", "blurb": "Maximizing value, cost of capital, agency problems and governance." },
-    { "name": "Mock Midterm", "blurb": "Chapter 1 questions from the FIN 3301 mock midterm." }
+    {
+      "name": "Finance & Decisions",
+      "blurb": "What finance is, real vs financial assets, investment vs financing decisions."
+    },
+    {
+      "name": "Business Forms",
+      "blurb": "Sole proprietorships, partnerships and corporations."
+    },
+    {
+      "name": "Goals & Agency",
+      "blurb": "Maximizing value, cost of capital, agency problems and governance."
+    },
+    {
+      "name": "Mock Midterm",
+      "blurb": "Chapter 1 questions from the FIN 3301 mock midterm."
+    }
   ],
   "pairsTitle": "Term Match",
   "pairs": [
-    { "left": "Investment decision", "right": "Buying or selling real assets (CAPEX)" },
-    { "left": "Financing decision", "right": "Raising cash through debt or equity" },
-    { "left": "Real asset", "right": "Factory, patent, brand" },
-    { "left": "Financial asset", "right": "Bond, bank loan, share of stock" },
-    { "left": "Cost of capital", "right": "Minimum acceptable return (hurdle rate)" },
-    { "left": "Agency problem", "right": "Manager acts in own interest, not shareholders'" },
-    { "left": "General partner", "right": "Manages the firm, unlimited liability" },
-    { "left": "Limited partner", "right": "Investor with limited liability, no management role" },
-    { "left": "Closely held corporation", "right": "Shares owned by a small group, not publicly traded" },
-    { "left": "Audit committee", "right": "Ensures the financial statements are accurate" },
-    { "left": "Principal", "right": "Shareholder (owner)" },
-    { "left": "Agent", "right": "Manager" }
+    {
+      "left": "Investment decision",
+      "right": "Buying or selling real assets (CAPEX)"
+    },
+    {
+      "left": "Financing decision",
+      "right": "Raising cash through debt or equity"
+    },
+    {
+      "left": "Real asset",
+      "right": "Factory, patent, brand"
+    },
+    {
+      "left": "Financial asset",
+      "right": "Bond, bank loan, share of stock"
+    },
+    {
+      "left": "Cost of capital",
+      "right": "Minimum acceptable return (hurdle rate)"
+    },
+    {
+      "left": "Agency problem",
+      "right": "Manager acts in own interest, not shareholders'"
+    },
+    {
+      "left": "General partner",
+      "right": "Manages the firm, unlimited liability"
+    },
+    {
+      "left": "Limited partner",
+      "right": "Investor with limited liability, no management role"
+    },
+    {
+      "left": "Closely held corporation",
+      "right": "Shares owned by a small group, not publicly traded"
+    },
+    {
+      "left": "Audit committee",
+      "right": "Ensures the financial statements are accurate"
+    },
+    {
+      "left": "Principal",
+      "right": "Shareholder (owner)"
+    },
+    {
+      "left": "Agent",
+      "right": "Manager"
+    }
   ],
   "hints": [
     {
       "title": "Investment or financing?",
-      "topics": ["decision", "asset", "value"],
+      "topics": [
+        "decision",
+        "asset",
+        "value"
+      ],
       "lines": [
         "Investment = buy/sell/manage real assets (capital budgeting, CAPEX)",
         "Financing = how the cash is raised: debt vs equity, buybacks, dividends",
@@ -37,7 +89,14 @@
     },
     {
       "title": "Business forms",
-      "topics": ["form", "partner", "corporation", "proprietor", "liability", "held"],
+      "topics": [
+        "form",
+        "partner",
+        "corporation",
+        "proprietor",
+        "liability",
+        "held"
+      ],
       "lines": [
         "Sole proprietor and general partners: unlimited liability",
         "Shareholders and limited partners: limited liability",
@@ -46,7 +105,9 @@
     },
     {
       "title": "Agency & governance",
-      "topics": ["*"],
+      "topics": [
+        "*"
+      ],
       "lines": [
         "Principal = shareholder, agent = manager",
         "Agency costs come from separating ownership and control",
@@ -56,37 +117,519 @@
     }
   ],
   "questions": [
-    { "id": "1", "section": "Finance & Decisions", "difficulty": "easy", "topic": "What is finance", "question": "Which statement best describes the difference between finance and accounting?", "choices": ["Finance records past transactions; accounting plans for the future", "Finance is forward-looking; accounting is mainly historical", "Finance and accounting have the same focus", "Accounting decides which projects a firm should invest in", "Finance only deals with tax compliance"], "answer": "B", "explanation": "Accounting = past (recording and reporting). Finance = future (managing resources, investment, capital structure). Finance relies on accounting information." },
-    { "id": "2", "section": "Finance & Decisions", "difficulty": "easy", "topic": "Real assets", "question": "Which of the following is an INTANGIBLE real asset?", "choices": ["A factory", "Inventory", "A brand name", "A corporate bond", "A bank loan"], "answer": "C", "explanation": "Real assets are needed to run the business. Tangible: factories, machines, inventory. Intangible: patents, brands, copyrights, goodwill. Bonds and loans are financial assets." },
-    { "id": "3", "section": "Finance & Decisions", "difficulty": "easy", "topic": "Financial assets", "question": "A financial asset is best described as:", "choices": ["A machine used in production", "A financial claim that represents ownership or a claim on economic value", "Any asset with a physical form", "A patent owned by the firm", "Cash spent on research and development"], "answer": "B", "explanation": "Financial assets are contracts (bank loans, bonds, shares). Tradeable financial assets are called securities." },
-    { "id": "4", "section": "Finance & Decisions", "difficulty": "easy", "topic": "Investment decision", "question": "An investment decision is also called:", "choices": ["A capital structure decision", "A dividend decision", "A capital budgeting (CAPEX) decision", "A financing decision", "A refinancing decision"], "answer": "C", "explanation": "Investment decisions = purchase/sale of real assets = capital budgeting = capital expenditure (CAPEX)." },
-    { "id": "5", "section": "Finance & Decisions", "difficulty": "easy", "topic": "Financing decision", "question": "Which of the following is a FINANCING decision?", "choices": ["Redesigning product packaging", "Launching an employee mental-health program", "Issuing new corporate bonds", "Lending money to a supplier", "Buying new machinery"], "answer": "C", "explanation": "Issuing bonds raises capital, so it's financing. The others spend money on (real or business) assets, so they're investment decisions; lending to a supplier is classed as investing in the slides' quick test." },
-    { "id": "6", "section": "Finance & Decisions", "difficulty": "medium", "topic": "Investment decision", "question": "Which of the following is an INVESTMENT decision?", "choices": ["Accepting a venture-capital injection", "Taking out a bank loan", "Repurchasing the firm's own shares", "Selling an airplane the firm no longer needs", "Cutting the dividend to preserve cash"], "answer": "D", "explanation": "Selling a real asset is an investment decision (disposing of assets). VC injections, loans, buybacks and dividend policy are financing decisions." },
-    { "id": "7", "section": "Finance & Decisions", "difficulty": "medium", "topic": "Financing decision", "question": "Tesla builds a new Cybertruck plant and sells $2 billion of new shares to pay for it. How are these two decisions classified?", "choices": ["Both are investment decisions", "Both are financing decisions", "Plant = investment; share sale = financing", "Plant = financing; share sale = investment", "Neither is a corporate finance decision"], "answer": "C", "explanation": "Building a plant = buying a real asset (investment). Selling shares = raising equity (financing). This is one of the Table 1.1 examples." },
-    { "id": "8", "section": "Finance & Decisions", "difficulty": "medium", "topic": "Source of value", "question": "Which statement about financing decisions is most correct?", "choices": ["Good financing alone can make a company a success", "Financing decisions create most of a firm's value", "Financing can't make a company a success, but bad financing can make it fail", "Financing decisions don't affect the firm at all", "Only financing decisions appear on the balance sheet"], "answer": "C", "explanation": "Real value comes from investment decisions (what the firm does). Financing can't create success on its own, but poor financing can sink a firm." },
-    { "id": "9", "section": "Finance & Decisions", "difficulty": "medium", "topic": "Financial manager after the crisis", "question": "After the global financial crisis, which task became MORE important for financial managers because lending got tighter and capital scarcer?", "choices": ["Capital management: finding alternative funding and managing capital structure", "Recording historical transactions", "Preparing tax returns only", "Ignoring liquidity", "Eliminating all risk management"], "answer": "A", "explanation": "Crises mean scarce capital and tighter lending, so capital management (capital structure, allocating resources, alternative funding) gained importance, along with risk, cash flow and strategic planning." },
-    { "id": "10", "section": "Business Forms", "difficulty": "easy", "topic": "Sole proprietorship", "question": "Which business form has a single owner who is personally liable for all of the business's debts?", "choices": ["Corporation", "Limited partnership (limited partner)", "Sole proprietorship", "Public company", "Closely held corporation"], "answer": "C", "explanation": "A sole proprietorship isn't separate from its owner, so the owner has unlimited personal liability." },
-    { "id": "11", "section": "Business Forms", "difficulty": "easy", "topic": "Limited liability", "question": "What is the MOST a shareholder of a corporation can lose?", "choices": ["Their entire personal wealth", "The firm's total debt", "The amount they invested", "Nothing, shares are risk-free", "Twice the amount invested"], "answer": "C", "explanation": "Limited liability: shareholders can lose only what they invested. When Lehman Brothers failed in 2008, shareholders didn't have to cover its debts." },
-    { "id": "12", "section": "Business Forms", "difficulty": "medium", "topic": "Partnership taxation", "question": "How is a (general) partnership taxed?", "choices": ["The partnership pays corporate tax, then partners pay tax on dividends", "It isn't a taxable entity; partners pay personal tax on their share of profits", "It is completely tax-exempt", "Only the managing partner pays tax", "Tax is paid only when the partnership is sold"], "answer": "B", "explanation": "A partnership is a pass-through: it isn't taxed itself, and each partner pays personal income tax on their share of the profits." },
-    { "id": "13", "section": "Business Forms", "difficulty": "medium", "topic": "Corporation", "question": "A corporation is a separate legal entity. Which of the following can it NOT do on its own behalf?", "choices": ["Make contracts", "Borrow and lend money", "Sue and be sued", "Vote in national elections", "Issue shares"], "answer": "D", "explanation": "As a 'legal person' a corporation can make contracts, borrow, lend, sue, be sued and issue shares, but it can't vote in elections." },
-    { "id": "14", "section": "Business Forms", "difficulty": "medium", "topic": "Public company", "question": "Public (widely held) corporations are characterized by:", "choices": ["Shares owned only by the founders' families", "A separation of ownership and control through the board of directors", "Unlimited liability for shareholders", "No ability to issue new shares", "No board of directors"], "answer": "B", "explanation": "Public companies issue shares that trade on stock markets. Shareholders own the firm but control it only indirectly, through the board of directors." },
-    { "id": "15", "section": "Goals & Agency", "difficulty": "easy", "topic": "Financial goal", "question": "What is the financial goal of the corporation?", "choices": ["Maximize sales", "Maximize the number of employees", "Maximize shareholder wealth (firm value)", "Minimize taxes at any cost", "Maximize managers' salaries"], "answer": "C", "explanation": "Decision rule: take only actions expected to increase the share price and maximize shareholder wealth / firm value." },
-    { "id": "16", "section": "Goals & Agency", "difficulty": "easy", "topic": "Cost of capital", "question": "The cost of capital is also known as:", "choices": ["The coupon rate", "The hurdle rate (opportunity cost of capital)", "The dividend yield", "The tax rate", "The inflation rate"], "answer": "B", "explanation": "Cost of capital = opportunity cost of capital = hurdle rate = the return on an alternative investment of similar risk = the minimum acceptable return." },
-    { "id": "17", "section": "Goals & Agency", "difficulty": "medium", "topic": "Cost of capital", "question": "A project is as risky as the stock market, which offers a 10% expected return. The project's expected return is 5%. What should the firm do?", "choices": ["Accept it, since any positive return adds value", "Reject it and return the cash to shareholders", "Accept it only if financed with debt", "Accept it if the managers like it", "Delay the decision forever"], "answer": "B", "explanation": "Accept only if the project's return beats the cost of capital (10%). 5% < 10%, so reject and let shareholders invest the cash themselves." },
-    { "id": "18", "section": "Goals & Agency", "difficulty": "medium", "topic": "Fisher Separation", "question": "According to the Fisher Separation Theorem, the firm should:", "choices": ["Follow each shareholder's personal consumption preferences", "Maximize firm value regardless of shareholders' consumption preferences", "Let managers maximize their own utility", "Pay out all earnings as dividends", "Avoid all risky projects"], "answer": "B", "explanation": "Shareholders have different preferences and often lack the knowledge to run the business, so the firm's goal is simply to maximize its value." },
-    { "id": "19", "section": "Goals & Agency", "difficulty": "easy", "topic": "Agency problem", "question": "In the agency relationship, the principal and the agent are, respectively:", "choices": ["Manager and shareholder", "Shareholder and manager", "Bank and borrower", "Board and auditor", "Government and firm"], "answer": "B", "explanation": "Principal = shareholder/owner. Agent = manager entrusted to act for them." },
-    { "id": "20", "section": "Goals & Agency", "difficulty": "medium", "topic": "Agency problem", "question": "Which of the following is an example of 'empire building'?", "choices": ["Paying a higher dividend", "Acquiring companies mainly to grow the firm's size, power and the CEO's salary, even if it destroys value", "Buying back shares", "Hiring an external auditor", "Rejecting a project with a negative NPV"], "answer": "B", "explanation": "Empire building = growing the firm for size, power and pay rather than shareholder value. It's a classic agency cost." },
-    { "id": "21", "section": "Goals & Agency", "difficulty": "medium", "topic": "Agency case study", "question": "Volkswagen's 2015 emissions scandal is used as a lesson about:", "choices": ["Too much debt financing", "Short-term bonus incentives and weak board oversight (a governance failure)", "Excessive dividend payments", "Poor inventory management", "Currency risk"], "answer": "B", "explanation": "VW's software cheated emissions tests to hit sales/bonus targets. Weak board oversight, short-term incentives, a top-down culture and no whistleblower protection: a governance failure costing $30B+." },
-    { "id": "22", "section": "Goals & Agency", "difficulty": "medium", "topic": "Corporate governance", "question": "Which governance mechanism exists mainly to ensure the accuracy of financial statements and prevent misreporting (as in Enron)?", "choices": ["The marketing department", "The audit committee", "The sales team", "Bondholders", "The HR department"], "answer": "B", "explanation": "Audit committees ensure financial statements are accurate. Other mechanisms: an independent board, external auditors, internal controls." },
-    { "id": "23", "section": "Goals & Agency", "difficulty": "hard", "topic": "Mitigating agency problems", "question": "Which bonus design best aligns managers with long-term shareholder value?", "choices": ["Bonuses tied only to revenue growth", "Bonuses tied to firm size", "A fixed salary with no incentives", "Bonuses tied to financial targets like ROE plus stock ownership", "Bonuses paid for every acquisition"], "answer": "D", "explanation": "Tie pay to financial targets (ROE, EBITDA), not just revenue or size, and give stock ownership so managers benefit when the share price rises." },
-    { "id": "24", "section": "Goals & Agency", "difficulty": "medium", "topic": "Ethics", "question": "An employee buys shares after learning about an unannounced development that will raise the stock price. This is:", "choices": ["Smart investing", "Insider trading, which is unethical and illegal", "A financing decision", "An example of diversification", "Required by the board"], "answer": "B", "explanation": "Trading on material non-public information is insider trading." },
-    { "id": "m1", "section": "Mock Midterm", "difficulty": "easy", "topic": "Real assets", "source": "Mock Midterm Q1", "question": "Which of the following is an example of a real asset?", "choices": ["A corporate bond", "A bank loan", "A company's patent", "Shares of stock", "A Treasury bill"], "answer": "C", "explanation": "A patent is an intangible real asset. The others are financial assets." },
-    { "id": "m2", "section": "Mock Midterm", "difficulty": "easy", "topic": "Financing decision", "source": "Mock Midterm Q2", "question": "Which of the following is a financing decision?", "choices": ["Purchasing new machinery to expand production", "Acquiring a competitor to increase market share", "Selling an airplane the firm no longer needs", "Repurchasing the company's own shares from the stock market", "Lending to a supplier to help it develop a new technology"], "answer": "D", "explanation": "A share buyback changes the firm's capital structure, so it's financing. The rest are investment decisions." },
-    { "id": "m3", "section": "Mock Midterm", "difficulty": "easy", "topic": "Source of value", "source": "Mock Midterm Q3", "question": "According to the chapter, where does the real value of a firm mainly come from?", "choices": ["Its financing decisions", "Its capital structure", "Its dividend policy", "The amount of debt it carries", "Its investment decisions"], "answer": "E" },
-    { "id": "m4", "section": "Mock Midterm", "difficulty": "easy", "topic": "Limited partnership", "source": "Mock Midterm Q4", "question": "In a limited partnership, which partners manage the business and have unlimited personal liability?", "choices": ["Limited partners", "Shareholders", "General partners", "The board of directors", "Silent investors"], "answer": "C" },
-    { "id": "m5", "section": "Mock Midterm", "difficulty": "easy", "topic": "Corporation", "source": "Mock Midterm Q5", "question": "Which of the following is NOT an advantage of a corporation?", "choices": ["The ability to raise large amounts of money quickly", "Ease of transferring ownership", "Limited liability for shareholders", "The owners are personally liable for the firm's debts", "It is a separate legal entity from its owners"], "answer": "D" },
-    { "id": "m6", "section": "Mock Midterm", "difficulty": "easy", "topic": "Closely held", "source": "Mock Midterm Q6", "question": "A corporation whose shares are not publicly traded and are owned by a small group of investors, such as the company's managers and their families, is called:", "choices": ["A widely-held corporation", "A public company", "A limited partnership", "A closely-held corporation", "A sole proprietorship"], "answer": "D" },
-    { "id": "m7", "section": "Mock Midterm", "difficulty": "medium", "topic": "Agency problem", "source": "Mock Midterm Q7", "question": "A manager avoids a risky but high-return project to protect their job, even though shareholders would benefit from it. This is an example of:", "choices": ["A financing decision", "The Fisher Separation Theorem", "An agency problem", "Capital budgeting", "Diversification"], "answer": "C" },
-    { "id": "m8", "section": "Mock Midterm", "difficulty": "medium", "topic": "Mitigating agency problems", "source": "Mock Midterm Q8", "question": "Which of the following best helps reduce agency problems by making managers partial owners of the firm?", "choices": ["Higher fixed salaries", "Stock ownership plans", "Issuing more corporate bonds", "Bonuses tied only to revenue growth", "Reducing the size of the board"], "answer": "B" }
+    {
+      "id": "1",
+      "section": "Finance & Decisions",
+      "difficulty": "easy",
+      "topic": "What is finance",
+      "question": "Which statement best describes the difference between finance and accounting?",
+      "choices": [
+        "Finance records past transactions; accounting plans for the future",
+        "Finance is forward-looking; accounting is mainly historical",
+        "Finance and accounting have the same focus",
+        "Accounting decides which projects a firm should invest in",
+        "Finance only deals with tax compliance"
+      ],
+      "answer": "B",
+      "explanation": "Accounting = past (recording and reporting). Finance = future (managing resources, investment, capital structure). Finance relies on accounting information."
+    },
+    {
+      "id": "2",
+      "section": "Finance & Decisions",
+      "difficulty": "easy",
+      "topic": "Real assets",
+      "question": "Which of the following is an INTANGIBLE real asset?",
+      "choices": [
+        "A factory",
+        "Inventory",
+        "A brand name",
+        "A corporate bond",
+        "A bank loan"
+      ],
+      "answer": "C",
+      "explanation": "Real assets are needed to run the business. Tangible: factories, machines, inventory. Intangible: patents, brands, copyrights, goodwill. Bonds and loans are financial assets."
+    },
+    {
+      "id": "3",
+      "section": "Finance & Decisions",
+      "difficulty": "easy",
+      "topic": "Financial assets",
+      "question": "A financial asset is best described as:",
+      "choices": [
+        "A machine or building the firm uses in production",
+        "A contract that gives a claim on future cash or ownership",
+        "Any asset with a physical form that can be seen or touched",
+        "A patent or brand the firm has developed internally",
+        "Cash the firm has already spent on research"
+      ],
+      "answer": "B",
+      "explanation": "Financial assets are contracts (bank loans, bonds, shares). Tradeable financial assets are called securities."
+    },
+    {
+      "id": "4",
+      "section": "Finance & Decisions",
+      "difficulty": "easy",
+      "topic": "Investment decision",
+      "question": "An investment decision is also called:",
+      "choices": [
+        "A capital structure decision",
+        "A dividend policy decision",
+        "A capital budgeting decision",
+        "A working capital decision",
+        "A refinancing decision"
+      ],
+      "answer": "C",
+      "explanation": "Investment decisions = purchase/sale of real assets = capital budgeting = capital expenditure (CAPEX)."
+    },
+    {
+      "id": "5",
+      "section": "Finance & Decisions",
+      "difficulty": "easy",
+      "topic": "Financing decision",
+      "question": "Which of the following is a FINANCING decision?",
+      "choices": [
+        "Redesigning product packaging",
+        "Launching an employee mental-health program",
+        "Issuing new corporate bonds",
+        "Lending money to a supplier",
+        "Buying new machinery"
+      ],
+      "answer": "C",
+      "explanation": "Issuing bonds raises capital, so it's financing. The others spend money on (real or business) assets, so they're investment decisions; lending to a supplier is classed as investing in the slides' quick test."
+    },
+    {
+      "id": "6",
+      "section": "Finance & Decisions",
+      "difficulty": "medium",
+      "topic": "Investment decision",
+      "question": "Which of the following is an INVESTMENT decision?",
+      "choices": [
+        "Accepting a venture-capital injection",
+        "Taking out a five-year bank loan",
+        "Repurchasing the firm's own shares",
+        "Selling an airplane it no longer needs",
+        "Cutting the dividend to preserve cash"
+      ],
+      "answer": "D",
+      "explanation": "Selling a real asset is an investment decision (disposing of assets). VC injections, loans, buybacks and dividend policy are financing decisions."
+    },
+    {
+      "id": "7",
+      "section": "Finance & Decisions",
+      "difficulty": "medium",
+      "topic": "Financing decision",
+      "question": "Tesla builds a new Cybertruck plant and sells $2 billion of new shares to pay for it. How are these two decisions classified?",
+      "choices": [
+        "Both are investment decisions",
+        "Both are financing decisions",
+        "Plant = investment; share sale = financing",
+        "Plant = financing; share sale = investment",
+        "Neither is a corporate finance decision"
+      ],
+      "answer": "C",
+      "explanation": "Building a plant = buying a real asset (investment). Selling shares = raising equity (financing). This is one of the Table 1.1 examples."
+    },
+    {
+      "id": "8",
+      "section": "Finance & Decisions",
+      "difficulty": "medium",
+      "topic": "Source of value",
+      "question": "Which statement about financing decisions is most correct?",
+      "choices": [
+        "Good financing alone is always enough to make a company succeed",
+        "Financing choices create most of a firm's value",
+        "It can't make a firm succeed, but bad financing can sink it",
+        "Financing choices have no effect on the firm at all",
+        "Only financing choices show up on the balance sheet"
+      ],
+      "answer": "C",
+      "explanation": "Real value comes from investment decisions (what the firm does). Financing can't create success on its own, but poor financing can sink a firm."
+    },
+    {
+      "id": "9",
+      "section": "Finance & Decisions",
+      "difficulty": "medium",
+      "topic": "Financial manager after the crisis",
+      "question": "After the global financial crisis, which task became MORE important for financial managers because lending got tighter and capital scarcer?",
+      "choices": [
+        "Capital management and finding alternative funding",
+        "Recording historical transactions in more detail",
+        "Preparing tax returns as the main priority",
+        "Reducing attention to liquidity and cash flow",
+        "Cutting back on risk management activities"
+      ],
+      "answer": "A",
+      "explanation": "Crises mean scarce capital and tighter lending, so capital management (capital structure, allocating resources, alternative funding) gained importance, along with risk, cash flow and strategic planning."
+    },
+    {
+      "id": "10",
+      "section": "Business Forms",
+      "difficulty": "easy",
+      "topic": "Sole proprietorship",
+      "question": "Which business form has a single owner who is personally liable for all of the business's debts?",
+      "choices": [
+        "Corporation",
+        "Limited partnership (limited partner)",
+        "Sole proprietorship",
+        "Public company",
+        "Closely held corporation"
+      ],
+      "answer": "C",
+      "explanation": "A sole proprietorship isn't separate from its owner, so the owner has unlimited personal liability."
+    },
+    {
+      "id": "11",
+      "section": "Business Forms",
+      "difficulty": "easy",
+      "topic": "Limited liability",
+      "question": "What is the MOST a shareholder of a corporation can lose?",
+      "choices": [
+        "Their entire personal wealth",
+        "The firm's total debt",
+        "The amount they invested",
+        "Nothing, shares are risk-free",
+        "Twice the amount invested"
+      ],
+      "answer": "C",
+      "explanation": "Limited liability: shareholders can lose only what they invested. When Lehman Brothers failed in 2008, shareholders didn't have to cover its debts."
+    },
+    {
+      "id": "12",
+      "section": "Business Forms",
+      "difficulty": "medium",
+      "topic": "Partnership taxation",
+      "question": "How is a (general) partnership taxed?",
+      "choices": [
+        "It pays corporate tax, then partners pay tax again on payouts",
+        "It isn't taxed itself; partners pay personal tax on their share",
+        "It is fully tax-exempt as long as it stays small",
+        "Only the managing partner pays tax on all the profits",
+        "Tax is due only when the partnership is eventually sold"
+      ],
+      "answer": "B",
+      "explanation": "A partnership is a pass-through: it isn't taxed itself, and each partner pays personal income tax on their share of the profits."
+    },
+    {
+      "id": "13",
+      "section": "Business Forms",
+      "difficulty": "medium",
+      "topic": "Corporation",
+      "question": "A corporation is a separate legal entity. Which of the following can it NOT do on its own behalf?",
+      "choices": [
+        "Sign contracts in its own name",
+        "Borrow and lend money",
+        "Sue and be sued in court",
+        "Vote in national elections",
+        "Issue shares to investors"
+      ],
+      "answer": "D",
+      "explanation": "As a 'legal person' a corporation can make contracts, borrow, lend, sue, be sued and issue shares, but it can't vote in elections."
+    },
+    {
+      "id": "14",
+      "section": "Business Forms",
+      "difficulty": "medium",
+      "topic": "Public company",
+      "question": "Public (widely held) corporations are characterized by:",
+      "choices": [
+        "Shares owned only by the founders and their families",
+        "Ownership separated from control through a board",
+        "Unlimited personal liability for shareholders",
+        "No ability to issue new shares to the public",
+        "Managers who must own a majority of the shares"
+      ],
+      "answer": "B",
+      "explanation": "Public companies issue shares that trade on stock markets. Shareholders own the firm but control it only indirectly, through the board of directors."
+    },
+    {
+      "id": "15",
+      "section": "Goals & Agency",
+      "difficulty": "easy",
+      "topic": "Financial goal",
+      "question": "What is the financial goal of the corporation?",
+      "choices": [
+        "Maximize total sales revenue",
+        "Maximize the number of employees",
+        "Maximize shareholder wealth",
+        "Minimize taxes at any cost",
+        "Maximize managers' salaries"
+      ],
+      "answer": "C",
+      "explanation": "Decision rule: take only actions expected to increase the share price and maximize shareholder wealth / firm value."
+    },
+    {
+      "id": "16",
+      "section": "Goals & Agency",
+      "difficulty": "easy",
+      "topic": "Cost of capital",
+      "question": "The cost of capital is also known as:",
+      "choices": [
+        "The coupon rate",
+        "The hurdle rate",
+        "The dividend yield",
+        "The tax rate",
+        "The inflation rate"
+      ],
+      "answer": "B",
+      "explanation": "Cost of capital = opportunity cost of capital = hurdle rate = the return on an alternative investment of similar risk = the minimum acceptable return."
+    },
+    {
+      "id": "17",
+      "section": "Goals & Agency",
+      "difficulty": "medium",
+      "topic": "Cost of capital",
+      "question": "A project is as risky as the stock market, which offers a 10% expected return. The project's expected return is 5%. What should the firm do?",
+      "choices": [
+        "Accept it, since any positive return adds value",
+        "Reject it and return the cash to shareholders",
+        "Accept it only if financed with debt",
+        "Accept it if the managers like it",
+        "Delay the decision forever"
+      ],
+      "answer": "B",
+      "explanation": "Accept only if the project's return beats the cost of capital (10%). 5% < 10%, so reject and let shareholders invest the cash themselves."
+    },
+    {
+      "id": "18",
+      "section": "Goals & Agency",
+      "difficulty": "medium",
+      "topic": "Fisher Separation",
+      "question": "According to the Fisher Separation Theorem, the firm should:",
+      "choices": [
+        "Follow each shareholder's personal spending preferences",
+        "Maximize firm value whatever shareholders' preferences are",
+        "Let managers choose whatever maximizes their own utility",
+        "Pay out all earnings so shareholders can decide themselves",
+        "Avoid any project that some shareholders might dislike"
+      ],
+      "answer": "B",
+      "explanation": "Shareholders have different preferences and often lack the knowledge to run the business, so the firm's goal is simply to maximize its value."
+    },
+    {
+      "id": "19",
+      "section": "Goals & Agency",
+      "difficulty": "easy",
+      "topic": "Agency problem",
+      "question": "In the agency relationship, the principal and the agent are, respectively:",
+      "choices": [
+        "Manager and shareholder",
+        "Shareholder and manager",
+        "Bank and borrower",
+        "Board and auditor",
+        "Government and firm"
+      ],
+      "answer": "B",
+      "explanation": "Principal = shareholder/owner. Agent = manager entrusted to act for them."
+    },
+    {
+      "id": "20",
+      "section": "Goals & Agency",
+      "difficulty": "medium",
+      "topic": "Agency problem",
+      "question": "Which of the following is an example of 'empire building'?",
+      "choices": [
+        "Paying a higher dividend to keep shareholders happy",
+        "Buying firms mainly to grow size, power and the CEO's pay",
+        "Buying back shares whenever the stock price looks undervalued",
+        "Hiring an external auditor to review the accounts",
+        "Rejecting a project because its NPV is negative"
+      ],
+      "answer": "B",
+      "explanation": "Empire building = growing the firm for size, power and pay rather than shareholder value. It's a classic agency cost."
+    },
+    {
+      "id": "21",
+      "section": "Goals & Agency",
+      "difficulty": "medium",
+      "topic": "Agency case study",
+      "question": "Volkswagen's 2015 emissions scandal is used as a lesson about:",
+      "choices": [
+        "Taking on too much debt before the scandal broke",
+        "Short-term bonus pressure and weak board oversight",
+        "Paying excessive dividends instead of investing",
+        "Poor inventory management across its factories",
+        "Losses from currency moves in foreign markets"
+      ],
+      "answer": "B",
+      "explanation": "VW's software cheated emissions tests to hit sales/bonus targets. Weak board oversight, short-term incentives, a top-down culture and no whistleblower protection: a governance failure costing $30B+."
+    },
+    {
+      "id": "22",
+      "section": "Goals & Agency",
+      "difficulty": "medium",
+      "topic": "Corporate governance",
+      "question": "Which governance mechanism exists mainly to ensure the accuracy of financial statements and prevent misreporting (as in Enron)?",
+      "choices": [
+        "The marketing department",
+        "The audit committee",
+        "The sales team",
+        "Bondholders",
+        "The HR department"
+      ],
+      "answer": "B",
+      "explanation": "Audit committees ensure financial statements are accurate. Other mechanisms: an independent board, external auditors, internal controls."
+    },
+    {
+      "id": "23",
+      "section": "Goals & Agency",
+      "difficulty": "hard",
+      "topic": "Mitigating agency problems",
+      "question": "Which bonus design best aligns managers with long-term shareholder value?",
+      "choices": [
+        "Bonuses tied only to revenue growth each year",
+        "Bonuses tied to how large the firm becomes",
+        "A fixed salary with no incentive component",
+        "Bonuses tied to ROE plus stock ownership",
+        "Bonuses paid for every acquisition completed"
+      ],
+      "answer": "D",
+      "explanation": "Tie pay to financial targets (ROE, EBITDA), not just revenue or size, and give stock ownership so managers benefit when the share price rises."
+    },
+    {
+      "id": "24",
+      "section": "Goals & Agency",
+      "difficulty": "medium",
+      "topic": "Ethics",
+      "question": "An employee buys shares after learning about an unannounced development that will raise the stock price. This is:",
+      "choices": [
+        "Smart investing on good research",
+        "Insider trading, which is illegal",
+        "A normal financing decision",
+        "A sensible way to diversify",
+        "Allowed if the board approves"
+      ],
+      "answer": "B",
+      "explanation": "Trading on material non-public information is insider trading."
+    },
+    {
+      "id": "m1",
+      "section": "Mock Midterm",
+      "difficulty": "easy",
+      "topic": "Real assets",
+      "source": "Mock Midterm Q1",
+      "question": "Which of the following is an example of a real asset?",
+      "choices": [
+        "A corporate bond",
+        "A bank loan",
+        "A company's patent",
+        "Shares of stock",
+        "A Treasury bill"
+      ],
+      "answer": "C",
+      "explanation": "A patent is an intangible real asset. The others are financial assets."
+    },
+    {
+      "id": "m2",
+      "section": "Mock Midterm",
+      "difficulty": "easy",
+      "topic": "Financing decision",
+      "source": "Mock Midterm Q2",
+      "question": "Which of the following is a financing decision?",
+      "choices": [
+        "Purchasing new machinery to expand production",
+        "Acquiring a competitor to increase market share",
+        "Selling an airplane the firm no longer needs",
+        "Repurchasing the company's own shares from the stock market",
+        "Lending to a supplier to help it develop a new technology"
+      ],
+      "answer": "D",
+      "explanation": "A share buyback changes the firm's capital structure, so it's financing. The rest are investment decisions."
+    },
+    {
+      "id": "m3",
+      "section": "Mock Midterm",
+      "difficulty": "easy",
+      "topic": "Source of value",
+      "source": "Mock Midterm Q3",
+      "question": "According to the chapter, where does the real value of a firm mainly come from?",
+      "choices": [
+        "Its financing decisions",
+        "Its capital structure",
+        "Its dividend policy",
+        "The amount of debt it carries",
+        "Its investment decisions"
+      ],
+      "answer": "E"
+    },
+    {
+      "id": "m4",
+      "section": "Mock Midterm",
+      "difficulty": "easy",
+      "topic": "Limited partnership",
+      "source": "Mock Midterm Q4",
+      "question": "In a limited partnership, which partners manage the business and have unlimited personal liability?",
+      "choices": [
+        "Limited partners",
+        "Shareholders",
+        "General partners",
+        "The board of directors",
+        "Silent investors"
+      ],
+      "answer": "C"
+    },
+    {
+      "id": "m5",
+      "section": "Mock Midterm",
+      "difficulty": "easy",
+      "topic": "Corporation",
+      "source": "Mock Midterm Q5",
+      "question": "Which of the following is NOT an advantage of a corporation?",
+      "choices": [
+        "The ability to raise large amounts of money quickly",
+        "Ease of transferring ownership",
+        "Limited liability for shareholders",
+        "The owners are personally liable for the firm's debts",
+        "It is a separate legal entity from its owners"
+      ],
+      "answer": "D"
+    },
+    {
+      "id": "m6",
+      "section": "Mock Midterm",
+      "difficulty": "easy",
+      "topic": "Closely held",
+      "source": "Mock Midterm Q6",
+      "question": "A corporation whose shares are not publicly traded and are owned by a small group of investors, such as the company's managers and their families, is called:",
+      "choices": [
+        "A widely-held corporation",
+        "A public company",
+        "A limited partnership",
+        "A closely-held corporation",
+        "A sole proprietorship"
+      ],
+      "answer": "D"
+    },
+    {
+      "id": "m7",
+      "section": "Mock Midterm",
+      "difficulty": "medium",
+      "topic": "Agency problem",
+      "source": "Mock Midterm Q7",
+      "question": "A manager avoids a risky but high-return project to protect their job, even though shareholders would benefit from it. This is an example of:",
+      "choices": [
+        "A financing decision",
+        "The Fisher Separation Theorem",
+        "An agency problem",
+        "Capital budgeting",
+        "Diversification"
+      ],
+      "answer": "C"
+    },
+    {
+      "id": "m8",
+      "section": "Mock Midterm",
+      "difficulty": "medium",
+      "topic": "Mitigating agency problems",
+      "source": "Mock Midterm Q8",
+      "question": "Which of the following best helps reduce agency problems by making managers partial owners of the firm?",
+      "choices": [
+        "Higher fixed salaries",
+        "Stock ownership plans",
+        "Issuing more corporate bonds",
+        "Bonuses tied only to revenue growth",
+        "Reducing the size of the board"
+      ],
+      "answer": "B"
+    }
   ]
 }
