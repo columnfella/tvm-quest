@@ -73,9 +73,17 @@ export function Ticker({ g }: { g: Game }) {
       <b>{it.sym}</b> {it.val} <em className={it.up ? 'up' : 'flat'}>{it.up ? '▲' : '■'} {it.chg}</em>
     </span>
   ));
+  // Seamless loop: the track holds two identical halves and slides left by exactly one half (-50%),
+  // then restarts at a position that looks identical. Each half repeats the row 3× so it is always
+  // wider than the screen, and spacing lives on each item (not a flex gap) so both halves match exactly.
+  const half = (h: number) => (
+    <div className="ticker-half" aria-hidden={h === 1 || undefined}>
+      {[0, 1, 2].map((r) => <span key={r} className="ticker-row">{row}</span>)}
+    </div>
+  );
   return (
     <div className="ticker" aria-label="Your progress ticker">
-      <div className="ticker-track">{row}{row}</div>
+      <div className="ticker-track">{half(0)}{half(1)}</div>
     </div>
   );
 }

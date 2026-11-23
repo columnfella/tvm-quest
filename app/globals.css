@@ -452,7 +452,9 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 
 /* ---------- finance extras ---------- */
 .ticker { position: relative; overflow: hidden; white-space: nowrap; background: #050b16; border-bottom: 3px solid var(--k); font: 800 13px/1 'JetBrains Mono', ui-monospace, monospace; color: #e2e8f0; }
-.ticker-track { display: inline-flex; gap: 34px; padding: 8px 0; animation: ticker 38s linear infinite; will-change: transform; }
+.ticker-track { display: flex; width: max-content; padding: 8px 0; animation: ticker 114s linear infinite; will-change: transform; }
+.ticker-half, .ticker-row { display: flex; flex: none; }
+.tick { flex: none; padding-right: 34px; }
 .tick b { color: var(--yellow); font-weight: 800; }
 .tick em { font-style: normal; }
 .tick em.up { color: #4ade80; }
