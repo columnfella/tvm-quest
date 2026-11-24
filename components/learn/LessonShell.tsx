@@ -3,7 +3,7 @@
 // It owns navigation, progress, XP and the completion screen; the lesson file supplies every bit of content.
 import confetti from '@/lib/confetti';
 import { AnimatePresence, m } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check, RotateCcw, Star, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Calculator, Check, RotateCcw, Star, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Chapter } from '@/lib/course';
 import { learnReward, starsFor, type LearnLesson, type LessonContent } from '@/lib/learn';
@@ -21,7 +21,7 @@ const NEXT_LABEL: Partial<Record<StageId, string>> = { intro: 'Explore it', expl
 type Outcome = { xp: number; coins: number; repeat: boolean; stars: number; firstTry: number; total: number; levelUp: number | null };
 
 /** Loads a lesson's code on demand, then shows it in the template. */
-export default function LearnScreen(props: { g: Game; chapter: Chapter; lesson: LearnLesson; lessons: LearnLesson[]; onExit: () => void; onOpen: (l: LearnLesson) => void }) {
+export default function LearnScreen(props: { g: Game; chapter: Chapter; lesson: LearnLesson; lessons: LearnLesson[]; onExit: () => void; onOpen: (l: LearnLesson) => void; openCalc?: () => void }) {
   const [content, setContent] = useState<LessonContent | null>(null);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
@@ -48,8 +48,8 @@ export default function LearnScreen(props: { g: Game; chapter: Chapter; lesson: 
   );
 }
 
-export function LessonShell({ g, chapter, lesson, lessons, content, onExit, onOpen }: {
-  g: Game; chapter: Chapter; lesson: LearnLesson; lessons: LearnLesson[]; content: LessonContent; onExit: () => void; onOpen: (l: LearnLesson) => void;
+export function LessonShell({ g, chapter, lesson, lessons, content, onExit, onOpen, openCalc }: {
+  g: Game; chapter: Chapter; lesson: LearnLesson; lessons: LearnLesson[]; content: LessonContent; onExit: () => void; onOpen: (l: LearnLesson) => void; openCalc?: () => void;
 }) {
   const stages: StageId[] = ['intro', 'explore', 'formula', ...(content.checks.length ? (['practice'] as const) : []), 'done'];
   const [at, setAt] = useState(0);
@@ -165,6 +165,11 @@ export function LessonShell({ g, chapter, lesson, lessons, content, onExit, onOp
           <div className="learn-foot-in">
             <Btn variant="ghost" onClick={() => (at === 0 ? onExit() : goTo(at - 1))}><ArrowLeft size={18} /> {at === 0 ? 'Chapter' : 'Back'}</Btn>
             {stage === 'practice' && !allSolved && <span className="foot-note">{solved}/{content.checks.length} solved</span>}
+            {openCalc && (
+              <Btn variant="secondary" className="foot-calc" onClick={openCalc} title="Basic and financial calculator" aria-label="Calculator">
+                <Calculator size={18} /> <span>Calculator</span>
+              </Btn>
+            )}
             <Btn variant={stage === 'practice' ? 'gold' : 'primary'} onClick={forward} disabled={stage === 'practice' && !allSolved}>
               {stage === 'practice' || (stage === 'formula' && !content.checks.length) ? 'Finish lesson' : NEXT_LABEL[stage]} <ArrowRight size={18} />
             </Btn>

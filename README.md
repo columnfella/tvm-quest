@@ -47,7 +47,7 @@ Mistakes in the files are skipped and listed in **Settings → content warnings*
 - **Coach:** "The Wolf", a cartoon banker that pops in with clean Wall Street-style hype lines (edit them in `content/course.json`).
 - **Finance touches:** a scrolling progress ticker, chart-grid background, sparklines on chapter cards, coins.
 - **Rewards:** XP, combos, vaults (Silver → Gold) with an opening animation, levels, streaks, badges (one per chapter).
-- **Learning aids:** explanations after each answer, hints (cost coins), wrong answers come back at the end of the lesson, and an optional financial calculator.
+- **Learning aids:** explanations after each answer, hints (cost coins), wrong answers come back at the end of the lesson, and a built-in calculator (Basic expressions, BA II Plus–style TVM, and a cash-flow worksheet for NPV/IRR) that docks beside the question and can drop its result into a lesson's answer box.
 
 ## Project map
 
@@ -62,6 +62,7 @@ Mistakes in the files are skipped and listed in **Settings → content warnings*
 | `lib/username.ts` | Name rules and profanity filter |
 | `app/api/` | Register, me, sync, leaderboard routes |
 | `lib/tvm.ts` | TVM solver used by the calculator |
+| `lib/calc.ts`, `components/Calc.tsx` | Calculator dock: safe expression evaluator, NPV/IRR, and the Basic / TVM / Cash flows UI (checked by `npm run test:math`) |
 | `lib/sound.ts` | Web Audio sound effects (no audio files) |
 | `components/` | Chapter grid, chapter view, lesson, match game, results, crate, panels |
 

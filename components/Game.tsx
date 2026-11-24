@@ -1,7 +1,7 @@
 'use client';
 import { AnimatePresence, LazyMotion, MotionConfig, domAnimation, m } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { learnLessons } from '@/lessons';
 import type { LearnLesson } from '@/lib/learn';
 import { CourseProvider, shuffle, useChapterQuestions, useCourseIndex, type Course, type Lesson as L } from '@/lib/course';
@@ -13,7 +13,8 @@ import Lesson, { type LessonResult } from './Lesson';
 import Match from './Match';
 import Onboarding from './Onboarding';
 import Results from './Results';
-import { BadgeToast, CalculatorPanel, ProfilePanel, RenamePanel, SettingsPanel } from './Panels';
+import CalcDock from './Calc';
+import { BadgeToast, ProfilePanel, RenamePanel, SettingsPanel } from './Panels';
 import { cleanCode, formatCode } from './Link';
 import { LeaderboardPanel } from './Season';
 import { Asset, Btn, Modal } from './ui';
@@ -59,6 +60,8 @@ export default function Game({ course: raw }: { course: Course }) {
   const g = useGame(course);
   const [screen, setScreen] = useState<Screen>({ v: 'home' });
   const [panel, setPanel] = useState<null | PanelId>(null);
+  const toggleCalc = useCallback(() => setPanel((p) => (p === 'calc' ? null : 'calc')), []);
+  const closeCalc = useCallback(() => setPanel((p) => (p === 'calc' ? null : p)), []);
 
   // /?link=CODE comes from scanning another device's QR code
   const [linkCode, setLinkCode] = useState<string | null>(null);
@@ -159,7 +162,7 @@ export default function Game({ course: raw }: { course: Course }) {
                   {screen.lesson.kind === 'match' ? (
                     <Match g={g} lesson={screen.lesson} onExit={() => back(screen.lesson)} onFinish={(r) => go({ v: 'results', lesson: screen.lesson, r })} />
                   ) : (
-                    <LessonLoader g={g} lesson={screen.lesson} onExit={() => back(screen.lesson)} onFinish={(r) => go({ v: 'results', lesson: screen.lesson, r })} openCalc={() => setPanel('calc')} />
+                    <LessonLoader g={g} lesson={screen.lesson} onExit={() => back(screen.lesson)} onFinish={(r) => go({ v: 'results', lesson: screen.lesson, r })} openCalc={toggleCalc} />
                   )}
                 </m.div>
               )}
@@ -172,6 +175,7 @@ export default function Game({ course: raw }: { course: Course }) {
                     lessons={learnLessons(screen.lesson.chapterId)}
                     onExit={() => go({ v: 'chapter', id: screen.lesson.chapterId })}
                     onOpen={(lesson) => go({ v: 'learn', lesson })}
+                    openCalc={course.calculator ? toggleCalc : undefined}
                   />
                 </m.div>
               )}
@@ -193,7 +197,7 @@ export default function Game({ course: raw }: { course: Course }) {
             <ProfilePanel open={panel === 'profile'} onClose={() => setPanel(null)} g={g} onRename={() => setPanel('rename')} />
             <RenamePanel open={panel === 'rename'} onClose={() => setPanel(null)} g={g} required={g.mustRename} />
             <SettingsPanel open={panel === 'settings'} onClose={() => setPanel(null)} g={g} />
-            {course.calculator && <CalculatorPanel open={panel === 'calc'} onClose={() => setPanel(null)} />}
+            {course.calculator && <CalcDock open={panel === 'calc'} onClose={closeCalc} />}
             <LeaderboardPanel open={panel === 'board'} onClose={() => setPanel(null)} me={g.profile.name} />
             <BadgeToast badge={g.newBadges[0] ?? null} onDone={g.dismissBadge} />
             <Modal open={!!linkCode} onClose={() => { setLinkCode(null); setLinkErr(null); }} title="Switch account?">

@@ -3,7 +3,6 @@ import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useCourse } from '@/lib/course';
 import { levelInfo, type Achievement, type Game } from '@/lib/store';
-import { solve, type TvmKey } from '@/lib/tvm';
 import { sfx } from '@/lib/sound';
 import { AVATARS } from '@/lib/avatars';
 import { NAME_MAX, validateName } from '@/lib/username';
@@ -155,60 +154,6 @@ export function SettingsPanel({ open, onClose, g }: { open: boolean; onClose: ()
       <p className="small muted credits">
         {course.credits ? <>{course.credits} </> : null}3D icons: <a href="https://github.com/microsoft/fluentui-emoji" target="_blank" rel="noreferrer">Microsoft Fluent Emoji</a> (MIT). UI icons: <a href="https://lucide.dev" target="_blank" rel="noreferrer">Lucide</a> (ISC). Fonts: Lilita One &amp; Nunito (OFL).
       </p>
-    </Modal>
-  );
-}
-
-const KEYS: { k: TvmKey; label: string }[] = [
-  { k: 'N', label: 'N' },
-  { k: 'IY', label: 'I/Y %' },
-  { k: 'PV', label: 'PV' },
-  { k: 'PMT', label: 'PMT' },
-  { k: 'FV', label: 'FV' },
-];
-
-export function CalculatorPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [vals, setVals] = useState<Record<TvmKey, string>>({ N: '', IY: '', PV: '', PMT: '0', FV: '' });
-  const [begin, setBegin] = useState(false);
-  const [py, setPy] = useState('1');
-  const [msg, setMsg] = useState('');
-  const [last, setLast] = useState<TvmKey | null>(null);
-
-  const compute = (k: TvmKey) => {
-    const num = (x: string) => (x.trim() === '' ? undefined : Number(x.replace(/,/g, '')));
-    const input = { N: num(vals.N), IY: num(vals.IY), PV: num(vals.PV), PMT: num(vals.PMT), FV: num(vals.FV), begin, py: Number(py) || 1 };
-    const missing = KEYS.filter((x) => x.k !== k && x.k !== 'PMT' && input[x.k] === undefined).map((x) => x.label);
-    if (missing.length) { setMsg(`Enter ${missing.join(', ')} first.`); return; }
-    const r = solve(k, input);
-    if (r === null || !isFinite(r)) { setMsg('No solution. Check your signs: money in and money out need opposite signs.'); return; }
-    sfx.tap();
-    setVals((v) => ({ ...v, [k]: String(Math.round(r * 10000) / 10000) }));
-    setLast(k);
-    setMsg('');
-  };
-
-  return (
-    <Modal open={open} onClose={onClose} title="Calculator">
-      <p className="muted small">Works like a BA II Plus. Use opposite signs for money paid and money received. Type the known values, then tap CPT next to the one you want.</p>
-      <div className="calc">
-        {KEYS.map(({ k, label }) => (
-          <div key={k} className={`calc-row ${last === k ? 'hit' : ''}`}>
-            <label htmlFor={`tvm-${k}`}>{label}</label>
-            <input id={`tvm-${k}`} inputMode="decimal" value={vals[k]} onChange={(e) => { setVals((v) => ({ ...v, [k]: e.target.value })); setLast(null); }} placeholder="0" />
-            <button className="cpt" onClick={() => compute(k)}>CPT</button>
-          </div>
-        ))}
-        <div className="calc-opts">
-          <div className="seg">
-            <button className={!begin ? 'on' : ''} onClick={() => setBegin(false)}>END</button>
-            <button className={begin ? 'on' : ''} onClick={() => setBegin(true)}>BGN</button>
-          </div>
-          <label className="py">P/Y <input inputMode="numeric" value={py} onChange={(e) => setPy(e.target.value)} aria-label="Payments per year" /></label>
-          <button className="link-btn" onClick={() => { setVals({ N: '', IY: '', PV: '', PMT: '0', FV: '' }); setLast(null); setMsg(''); }}>Clear</button>
-        </div>
-        {msg && <p className="calc-msg">{msg}</p>}
-        <p className="small muted">With P/Y = 12, enter I/Y as the annual nominal rate and N in months.</p>
-      </div>
     </Modal>
   );
 }

@@ -397,7 +397,7 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 .cpt { min-height: 44px; padding: 0 14px; border: 3px solid var(--k); border-radius: 10px; background: linear-gradient(180deg, var(--yellow-hi), var(--yellow)); color: var(--k); font-family: var(--display); font-size: 16px; box-shadow: 0 3px 0 var(--k); transform: skewX(var(--skew)); }
 .cpt:active { transform: skewX(var(--skew)) translateY(3px); box-shadow: none; }
 .calc-opts { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
-.calc-opts .link-btn { color: var(--purple-dark); -webkit-text-stroke: 0; }
+.calc-opts .link-btn { color: light-dark(var(--purple-dark), var(--purple-hi)); -webkit-text-stroke: 0; }
 .py { display: inline-flex; align-items: center; gap: 6px; font-weight: 900; }
 .py input { width: 64px; }
 .calc-msg { color: var(--red-ink); font-size: 14px; }
@@ -749,3 +749,65 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 /* the corner number badges stick out 8px; .sec uses content-visibility (paint containment), which would clip them */
 .tile-grid, .learn-list { padding-right: 10px; padding-top: 10px; }
 .rename-link { font-size: 13px; padding: 2px 6px; color: var(--ink); text-shadow: none; vertical-align: middle; }
+
+/* ---------- Calculator dock (components/Calc.tsx) ---------- */
+.calc-dock {
+  position: fixed; z-index: 46; display: flex; flex-direction: column;
+  right: 16px; top: 16px; width: 356px; max-height: calc(100dvh - 128px);
+  background: var(--card); color: var(--ink); border: 4px solid var(--k); border-radius: 18px; box-shadow: 0 8px 0 var(--k), 0 18px 40px rgba(0,0,0,0.35);
+  overflow: hidden; visibility: hidden; opacity: 0; transform: translateX(30px); transition: opacity 0.18s, transform 0.18s, visibility 0s 0.18s;
+}
+.calc-dock.open { visibility: visible; opacity: 1; transform: none; transition: opacity 0.18s, transform 0.18s; }
+.calc-head { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 10px; background: repeating-linear-gradient(115deg, rgba(255,255,255,0.06) 0 16px, transparent 16px 32px), linear-gradient(180deg, var(--k2), var(--k)); }
+.calc-tabs { flex: 1; display: flex; gap: 4px; }
+.calc-tabs button { flex: 1; min-height: 38px; border: 2px solid transparent; border-radius: 10px; background: rgba(255,255,255,0.1); color: #fff; font-weight: 900; font-size: 14px; }
+.calc-tabs button.on { background: var(--yellow); color: var(--k); border-color: var(--k); }
+.calc-x { display: grid; place-items: center; width: 38px; height: 38px; flex: none; border: 3px solid var(--k); border-radius: 10px; background: linear-gradient(180deg, var(--red-hi), var(--red)); color: #fff; }
+.calc-body { flex: 1; overflow-y: auto; padding: 12px; -webkit-overflow-scrolling: touch; }
+.calc-body .calc { margin-top: 0; }
+.calc-out { position: relative; display: flex; align-items: center; gap: 8px; min-height: 58px; padding: 8px 12px; border-top: 3px solid var(--k); background: var(--card-2); }
+.calc-out-v { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.calc-out-v small { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.calc-out-v b { font: 700 19px var(--font-mono), ui-monospace, monospace; overflow-wrap: anywhere; }
+.calc-out .cpt { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; padding: 0 12px; }
+.calc-icon { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border: 3px solid var(--k); border-radius: 10px; background: var(--card); color: var(--ink); }
+.calc-toast { position: absolute; right: 12px; top: -34px; padding: 4px 10px; border-radius: 8px; background: var(--k); color: #fff; font-size: 13px; font-weight: 800; pointer-events: none; }
+
+.calc-hist { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-direction: column-reverse; }
+.calc-hist button { width: 100%; display: flex; justify-content: space-between; gap: 8px; padding: 3px 4px; border: 0; background: none; color: var(--muted); font: 500 13px var(--font-mono), ui-monospace, monospace; text-align: left; border-radius: 6px; }
+.calc-hist button:hover { background: var(--card-2); }
+.calc-hist span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.calc-hist b { color: var(--ink); flex: none; }
+.calc-screen { border: 3px solid var(--k); border-radius: 12px; background: var(--card-2); padding: 6px 10px; box-shadow: inset 0 3px 0 rgba(0,0,0,0.08); }
+.calc-screen.err { border-color: var(--red); }
+.calc-screen input { width: 100%; border: 0; background: none; color: var(--ink); font: 700 22px var(--font-mono), ui-monospace, monospace; text-align: right; padding: 4px 0; outline: none; }
+.calc-preview { text-align: right; font: 500 14px var(--font-mono), ui-monospace, monospace; color: var(--muted); min-height: 20px; }
+.calc-screen.err .calc-preview { color: var(--red-ink); font-family: var(--font-body), sans-serif; font-size: 13px; }
+.keypad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 10px; }
+.key { min-height: 48px; border: 3px solid var(--k); border-radius: 10px; background: var(--card); color: var(--ink); font: 900 19px var(--font-body), sans-serif; box-shadow: 0 3px 0 var(--k); display: grid; place-items: center; }
+.key:active { transform: translateY(3px); box-shadow: none; }
+.key.op { background: var(--card-2); color: light-dark(var(--purple-dark), var(--purple-hi)); }
+.key.fn { background: color-mix(in srgb, var(--red) 16%, var(--card)); font-size: 15px; }
+.key.eq { background: linear-gradient(180deg, var(--yellow-hi), var(--yellow)); color: var(--k); }
+
+.cf-row { display: grid; grid-template-columns: 64px 1fr auto 56px auto; gap: 6px; align-items: center; }
+.cf-row label { font-weight: 900; }
+.cf-row input { min-height: 44px; min-width: 0; border-radius: 10px; border: 3px solid var(--k); background: var(--card-2); color: var(--ink); padding: 8px 10px; font: 500 16px var(--font-mono), ui-monospace, monospace; width: 100%; }
+.cf-times { font-weight: 900; color: var(--muted); }
+.add-cf { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; color: light-dark(var(--purple-dark), var(--purple-hi)); -webkit-text-stroke: 0; }
+.cf-cpt { display: flex; align-items: center; gap: 10px; }
+.cf-cpt .link-btn { color: light-dark(var(--purple-dark), var(--purple-hi)); -webkit-text-stroke: 0; }
+.cf-res { display: flex; gap: 16px; flex-wrap: wrap; padding: 8px 10px; border-radius: 10px; background: var(--green-soft); font-weight: 800; }
+.cf-res b { font-family: var(--font-mono), ui-monospace, monospace; }
+
+@media (min-width: 1100px) { body.calc-open { padding-right: 380px; } }
+@media (max-width: 1099px) {
+  .calc-dock { left: 0; right: 0; top: auto; bottom: 0; width: auto; max-height: min(66dvh, 620px); border-radius: 18px 18px 0 0; border-bottom: 0; transform: translateY(40px); padding-bottom: env(safe-area-inset-bottom); }
+  body.calc-open { padding-bottom: min(66dvh, 620px); }
+}
+@media (max-width: 600px) {
+  .key { min-height: 42px; font-size: 17px; }
+  .calc-body { padding: 10px; }
+  .foot-calc span { display: none; }
+  .foot-calc { padding-inline: 12px; }
+}

@@ -43,7 +43,7 @@ export function TopBar({ g, openPanel, onHome }: { g: Game; openPanel: (p: Panel
           <b>{s.gems}</b>
         </span>
         {course.calculator && (
-          <button className="icon-btn" onClick={() => openPanel('calc')} aria-label="Financial calculator" title="Financial calculator">
+          <button className="icon-btn" onClick={() => openPanel('calc')} aria-label="Calculator" title="Calculator (basic, TVM, cash flows)">
             <Calculator size={20} />
           </button>
         )}

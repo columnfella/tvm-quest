@@ -35,7 +35,6 @@ function canShuffle(q: Question) {
 
 export default function Lesson({ g, lesson, questions, onExit, onFinish, openCalc }: { g: G; lesson: L; questions: Record<string, Question>; onExit: () => void; onFinish: (r: LessonResult) => void; openCalc: () => void }) {
   const course = useCourse();
-  const chapter = course.chapterMap[lesson.chapterId];
   const [queue, setQueue] = useState<string[]>(() => [...lesson.questionKeys]);
   const [pos, setPos] = useState(0);
   const [sel, setSel] = useState<number | null>(null);
@@ -248,8 +247,8 @@ export default function Lesson({ g, lesson, questions, onExit, onFinish, openCal
                   <Lightbulb size={18} /> {hinted.has(qid) ? 'Hint' : `Hint · ${HINT_COST}`}
                   {!hinted.has(qid) && <Asset name="coin_3d.png" size={16} />}
                 </Btn>}
-                {course.calculator && chapter?.calculator && (
-                  <Btn variant="secondary" onClick={openCalc} title="Open the financial calculator"><Calculator size={18} /> Calculator</Btn>
+                {course.calculator && (
+                  <Btn variant="secondary" onClick={openCalc} title="Basic and financial calculator"><Calculator size={18} /> Calculator</Btn>
                 )}
               </div>
               <Btn ref={checkRef} variant="primary" disabled={sel === null} onClick={check} className="check-btn">Check</Btn>
