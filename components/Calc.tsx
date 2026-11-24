@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 're
 import { createPortal } from 'react-dom';
 import { evaluate, irr, npv, show, tidy, type CashFlow } from '@/lib/calc';
 import { sfx } from '@/lib/sound';
+import { filtered, onlyArithmetic, onlyDigits, onlyExpression } from '@/lib/input';
 import { solve, type TvmKey } from '@/lib/tvm';
 
 type Tab = 'basic' | 'tvm' | 'cf';
@@ -183,7 +184,7 @@ function Basic({ onResult }: { onResult: (v: number, label: string) => void }) {
           spellCheck={false}
           aria-label="Expression"
           placeholder="e.g. 1.89 / (0.12 − 0.05)"
-          onChange={(e) => { setExpr(e.target.value); setErr(false); }}
+          onChange={filtered(onlyExpression, (v) => { setExpr(v); setErr(false); })}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); equals(); } }}
         />
         <div className="calc-preview" aria-live="polite">{err ? "Can't read that. Check the brackets and operators." : preview !== null ? `= ${show(preview)}` : ' '}</div>
@@ -238,7 +239,7 @@ function Tvm({ onResult }: { onResult: (v: number, label: string) => void }) {
       {TVM_KEYS.map(({ k, label }) => (
         <div key={k} className={`calc-row ${last === k ? 'hit' : ''}`}>
           <label htmlFor={`tvm-${k}`}>{label}</label>
-          <input id={`tvm-${k}`} inputMode="decimal" autoComplete="off" value={vals[k]} onChange={(e) => { setVals((v) => ({ ...v, [k]: e.target.value })); setLast(null); }} onKeyDown={(e) => e.key === 'Enter' && compute(k)} placeholder="0" />
+          <input id={`tvm-${k}`} inputMode="decimal" autoComplete="off" value={vals[k]} onChange={filtered(onlyArithmetic, (x) => { setVals((v) => ({ ...v, [k]: x })); setLast(null); })} onKeyDown={(e) => e.key === 'Enter' && compute(k)} placeholder="0" />
           <button className="cpt" onClick={() => compute(k)}>CPT</button>
         </div>
       ))}
@@ -247,7 +248,7 @@ function Tvm({ onResult }: { onResult: (v: number, label: string) => void }) {
           <button className={!begin ? 'on' : ''} onClick={() => setBegin(false)}>END</button>
           <button className={begin ? 'on' : ''} onClick={() => setBegin(true)}>BGN</button>
         </div>
-        <label className="py">P/Y <input inputMode="numeric" value={py} onChange={(e) => setPy(e.target.value)} aria-label="Payments per year" /></label>
+        <label className="py">P/Y <input inputMode="numeric" value={py} onChange={filtered(onlyDigits, setPy)} aria-label="Payments per year" /></label>
         <button className="link-btn" onClick={() => { setVals(EMPTY); setLast(null); setMsg(''); }}>Clear</button>
       </div>
       {msg && <p className="calc-msg">{msg}</p>}
@@ -311,22 +312,22 @@ function Flows({ onResult }: { onResult: (v: number, label: string) => void }) {
     <div className="calc">
       <div className="calc-row">
         <label htmlFor="cf0">CF0</label>
-        <input id="cf0" inputMode="decimal" autoComplete="off" value={cf0} onChange={(e) => { setCf0(e.target.value); setOut({}); }} placeholder="0 (today)" />
+        <input id="cf0" inputMode="decimal" autoComplete="off" value={cf0} onChange={filtered(onlyArithmetic, (v) => { setCf0(v); setOut({}); })} placeholder="0 (today)" />
         <span />
       </div>
       {rows.map((r, i) => (
         <div key={i} className="cf-row">
           <label htmlFor={`cf-${i}`}>CF{i + 1}</label>
-          <input id={`cf-${i}`} inputMode="decimal" autoComplete="off" value={r.amount} onChange={(e) => setRow(i, { amount: e.target.value })} placeholder="amount" />
+          <input id={`cf-${i}`} inputMode="decimal" autoComplete="off" value={r.amount} onChange={filtered(onlyArithmetic, (v) => setRow(i, { amount: v }))} placeholder="amount" />
           <span className="cf-times">×</span>
-          <input className="cf-n" inputMode="numeric" autoComplete="off" value={r.count} onChange={(e) => setRow(i, { count: e.target.value })} aria-label={`How many times CF${i + 1} repeats`} title="How many years in a row (Fj)" />
+          <input className="cf-n" inputMode="numeric" autoComplete="off" value={r.count} onChange={filtered(onlyDigits, (v) => setRow(i, { count: v }))} aria-label={`How many times CF${i + 1} repeats`} title="How many years in a row (Fj)" />
           <button className="calc-icon" onClick={() => { setRows((rs) => (rs.length > 1 ? rs.filter((_, j) => j !== i) : [{ amount: '', count: '1' }])); setOut({}); }} aria-label={`Remove CF${i + 1}`}><Trash2 size={16} /></button>
         </div>
       ))}
       <button className="link-btn add-cf" onClick={() => setRows((rs) => [...rs, { amount: '', count: '1' }])} disabled={rows.length >= 30}><Plus size={16} /> Add a cash flow</button>
       <div className="calc-row">
         <label htmlFor="cf-i">I %</label>
-        <input id="cf-i" inputMode="decimal" autoComplete="off" value={rate} onChange={(e) => { setRate(e.target.value); setOut((o) => ({ ...o, npv: undefined })); }} onKeyDown={(e) => e.key === 'Enter' && doNpv()} placeholder="e.g. 8" />
+        <input id="cf-i" inputMode="decimal" autoComplete="off" value={rate} onChange={filtered(onlyArithmetic, (v) => { setRate(v); setOut((o) => ({ ...o, npv: undefined })); })} onKeyDown={(e) => e.key === 'Enter' && doNpv()} placeholder="e.g. 8" />
         <span />
       </div>
       <div className="cf-cpt">

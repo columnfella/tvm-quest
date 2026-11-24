@@ -3,7 +3,7 @@
   // The root tsconfig excludes this folder; this one lets the editor and tsc check it correctly.
   "compilerOptions": {
     "target": "es2022",
-    "lib": ["es2023"],
+    "lib": ["es2023", "dom"],
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "allowImportingTsExtensions": true,

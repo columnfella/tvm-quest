@@ -2,6 +2,7 @@
 // Run: npm run test:math
 import assert from 'node:assert/strict';
 import { evaluate, irr, npv, show, tidy } from '../lib/calc.ts';
+import { onlyArithmetic, onlyDigits, onlyExpression, onlyNumber } from '../lib/input.ts';
 import { solve } from '../lib/tvm.ts';
 
 let n = 0;
@@ -63,5 +64,27 @@ near(irr(-100, [{ amount: 50, count: 1 }]), -50, 0.0001, 'negative IRR');
 n++; assert.equal(irr(100, [{ amount: 50, count: 2 }]), null, 'no sign change → no IRR');
 // Ch. 7 nonconstant growth as an NPV: D1 2.20, D2 2.42, P2 = 2.42×1.05/(0.12−0.05) at 12%
 near(npv(12, 0, [{ amount: 2.2, count: 1 }, { amount: 2.42 + (2.42 * 1.05) / 0.07, count: 1 }]), 32.83, 0.005, 'two-stage via NPV');
+
+// input filters: number fields never accept letters
+const is = (got: string, want: string, label: string) => { n++; assert.equal(got, want, label); };
+is(onlyNumber('41.07abc'), '41.07', 'answer: letters dropped');
+is(onlyNumber('$1,234.50'), '1,234.50', 'answer: $ dropped, commas kept');
+is(onlyNumber('−3.33'), '-3.33', 'answer: unicode minus');
+is(onlyNumber('3-3'), '33', 'answer: minus only at the start');
+is(onlyNumber('-4.8.7'), '-4.87', 'answer: one decimal point');
+is(onlyNumber('e10'), '10', 'answer: no exponent letters');
+is(onlyNumber('9.5%'), '9.5', 'answer: % dropped (shown beside the box)');
+is(onlyDigits('12a'), '12', 'P/Y digits only');
+is(onlyDigits('-3.5'), '35', 'count digits only');
+is(onlyArithmetic('4*12 years'), '4*12 ', 'TVM field: arithmetic kept, words dropped');
+is(onlyArithmetic('2.42×1.05÷(0.12−0.05)'), '2.42×1.05÷(0.12−0.05)', 'TVM field: calculator symbols kept');
+is(onlyExpression('ln(2)+ans*√9'), 'ln(2)+ans*√9', 'basic: keypad words kept');
+is(onlyExpression('12x+3'), '12+3', 'basic: stray letter dropped');
+is(onlyExpression('20/8+an'), '20/8+an', 'basic: a name being typed is kept');
+is(onlyExpression('ansx*2'), 'ans*2', 'basic: letter after a name dropped');
+is(onlyExpression('12q'), '12', 'basic: a letter that starts no name is dropped');
+is(onlyExpression('xyz'), '', 'basic: words that are not functions dropped');
+is(onlyExpression('SQRT(9)'), 'sqrt(9)', 'basic: names in capitals accepted');
+near(evaluate(onlyExpression('sqrt(16)+pi-π')), 4, 1e-12, 'basic: filtered text still evaluates');
 
 console.log(`calculator: ${n} checks passed`);

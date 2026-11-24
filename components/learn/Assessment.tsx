@@ -2,6 +2,7 @@
 import { AnimatePresence, m } from 'framer-motion';
 import { Check as CheckIcon, RotateCcw, X } from 'lucide-react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { filtered, onlyNumber } from '@/lib/input';
 import { numberMatches, parseNumber, type Check } from '@/lib/learn';
 import { sfx } from '@/lib/sound';
 import { Btn } from '../ui';
@@ -23,7 +24,7 @@ function NumberInput({ unit, value, onChange, onEnter, disabled }: { unit?: stri
         placeholder={unit === '%' ? 'e.g. 9.5' : 'e.g. 41.07'}
         value={value}
         disabled={disabled}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={filtered(onlyNumber, onChange)}
         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); onEnter(); } }}
       />
       {unit === '%' && <span className="num-unit">%</span>}
@@ -54,7 +55,7 @@ function OneCheck({ check, result, onResult }: { check: Check; result: CheckResu
       grade(pick === check.answer, pick === check.answer ? undefined : check.why?.[pick]);
     } else if (check.kind === 'number') {
       const x = parseNumber(text);
-      if (x === null) { setFb({ ok: false, msg: 'Type a number, e.g. 41.07 (no letters).' }); return; }
+      if (x === null) { setFb({ ok: false, msg: 'Type a number, e.g. 41.07.' }); return; }
       if (numberMatches(x, check)) return grade(true);
       const trap = check.traps?.find((t) => numberMatches(x, { answer: t.value, unit: check.unit }));
       grade(false, trap?.msg ?? 'Not quite. Check each input and the timing of the cash flows, then try again.');
