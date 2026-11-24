@@ -811,3 +811,19 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
   .foot-calc span { display: none; }
   .foot-calc { padding-inline: 12px; }
 }
+
+/* Coach as a transparent cut-out (course.json coach.cutout): rises from the bottom-left corner */
+.coach-cutout { left: max(8px, 2vw); gap: 0; align-items: flex-end; }
+.coach-cutout.coach-lesson { bottom: 50px; z-index: 14; } /* under .lesson-foot (15); bottom is set from the bar's height */
+.coach-cutout.coach-results { bottom: 0; }
+.coach-figure.cut { width: 180px; height: auto; display: block; }
+.coach-cut-wrap { position: relative; }
+.coach-cut { display: block; width: 180px; height: auto; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45)); }
+.coach-clink { position: absolute; left: 14%; top: 18%; pointer-events: none; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); }
+.coach-name { display: block; margin-bottom: 2px; font-family: var(--display); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: #b7791f; }
+.coach-cutout .coach-bubble { margin: 0 0 120px -18px; max-width: 260px; }
+.coach-cutout .coach-bubble::before { bottom: 14px; }
+@media (max-width: 600px) {
+  .coach-figure.cut, .coach-cut { width: 128px; }
+  .coach-cutout .coach-bubble { margin: 0 0 86px -12px; max-width: 200px; }
+}

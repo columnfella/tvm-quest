@@ -29,7 +29,7 @@ broken bit and keeps working**. Every problem is listed in **Settings → conten
 | `difficulties` | Levels as `{ "key": { "label", "xp", "color" } }` | easy / medium / hard |
 | `parts` | Tabs inside every chapter, e.g. Theory / Math: `[{ "id", "label", "tagline", "icon" }]`. Each section picks one with `"part"` | one tab |
 | `credits` | Shown in Settings | — |
-| `coach` | Optional pop-up character: `{ "name", "image", "lines": [...] }`. Appears after every 3 correct answers in a row and on good results. Add `"photo": true` to show `image` as a round photo (any .png/.jpg/.webp in `public/assets/`) instead of the drawn suit | none |
+| `coach` | Optional pop-up character: `{ "name", "image", "lines": [...] }`. Appears after every 3 correct answers in a row and on good results. Add `"photo": true` to show `image` as a round photo (any .png/.jpg/.webp in `public/assets/`) instead of the drawn suit, or `"cutout": true` for a transparent cut-out of a person (trimmed .webp/.png) that rises from the bottom corner | none |
 
 ## A chapter file
 

@@ -1,0 +1,16 @@
+{
+  // The maths checks run straight in Node (type stripping), so they import with .ts extensions.
+  // The root tsconfig excludes this folder; this one lets the editor and tsc check it correctly.
+  "compilerOptions": {
+    "target": "es2022",
+    "lib": ["es2023"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["./*.ts"]
+}

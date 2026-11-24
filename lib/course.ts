@@ -7,7 +7,8 @@ export type Difficulty = { label: string; xp: number; color: string };
 export type Hint = { title: string; lines: string[]; topics: string[] };
 export type Pair = { left: string; right: string };
 export type Part = { id: string; label: string; tagline: string; icon: string }; // e.g. Theory / Math
-export type Coach = { name: string; image: string; lines: string[]; photo: boolean }; // photo: show the image in a round frame instead of the drawn suit
+// photo: show the image in a round frame; cutout: a transparent PNG/WebP of a person that rises from the corner; neither: emoji + drawn suit
+export type Coach = { name: string; image: string; lines: string[]; photo: boolean; cutout: boolean };
 
 export type Question = {
   key: string; // globally unique: `${chapterId}/${id}`

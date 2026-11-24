@@ -27,7 +27,8 @@
   "credits": "Questions come from the FIN 3301 slides and cheat sheets, the Black Book (Ch. 5 and Ch. 7, plus Ch. 6 homework exercises), the mock midterm and the bond practice set.",
   "coach": {
     "name": "The Wolf",
-    "image": "wolf_3d.png",
+    "image": "leo_coach.webp",
+    "cutout": true,
     "lines": [
       "Sell me this pen? You just sold me on your answers.",
       "That's how you close a deal. Next!",
