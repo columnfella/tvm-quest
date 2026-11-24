@@ -2,57 +2,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CourseIndex } from './course';
 import { seasonId } from './season';
+import { apply, dayKey, diff, hydrate, initialState, isEmpty, merge, type GameState } from './state';
 
 export const HINT_COST = 5;
 
-export type LessonProgress = { done: boolean; stars: number; bestAcc: number; plays: number };
-export type Settings = { sound: boolean };
-export type GameState = {
-  xp: number;
-  gems: number;
-  streak: number;
-  lastDay: string | null;
-  todayXp: number;
-  today: string;
-  dailyGoal: number;
-  lessons: Record<string, LessonProgress>;
-  missed: string[]; // question keys answered wrong and not yet answered right since
-  stats: { correct: number; answered: number; bestCombo: number; perfect: number; matchBest: number | null };
-  achievements: string[];
-  settings: Settings;
-};
-
-export const dayKey = (d = new Date()) => `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-
-export const initialState = (): GameState => ({
-  xp: 0,
-  gems: 50,
-  streak: 0,
-  lastDay: null,
-  todayXp: 0,
-  today: dayKey(),
-  dailyGoal: 50,
-  lessons: {},
-  missed: [],
-  stats: { correct: 0, answered: 0, bestCombo: 0, perfect: 0, matchBest: null },
-  achievements: [],
-  settings: { sound: true },
-});
-
-/** Merge a saved (possibly older/partial) state over the defaults so new fields never break old saves. */
-function hydrate(parsed: Partial<GameState> | null | undefined): GameState {
-  const base = initialState();
-  if (!parsed || typeof parsed !== 'object') return base;
-  return {
-    ...base,
-    ...parsed,
-    lessons: parsed.lessons && typeof parsed.lessons === 'object' ? parsed.lessons : {},
-    missed: Array.isArray(parsed.missed) ? parsed.missed : [],
-    achievements: Array.isArray(parsed.achievements) ? parsed.achievements : [],
-    stats: { ...base.stats, ...parsed.stats },
-    settings: { ...base.settings, ...parsed.settings },
-  };
-}
+export type { GameState, LessonProgress, Settings } from './state';
+export { dayKey, initialState } from './state';
 
 function rollDay(s: GameState): GameState {
   const t = dayKey();
@@ -120,6 +75,7 @@ export type AuthStatus = 'loading' | 'guest' | 'wiped' | 'in';
 export function useGame(course: CourseIndex) {
   const KEY = `quest-${course.id}-state`;
   const PKEY = `quest-${course.id}-profile`;
+  const BKEY = `quest-${course.id}-base`; // last state agreed with the server (see lib/state.ts)
   const achievements = useMemo(() => buildAchievements(course), [course]);
 
   const [state, setState] = useState<GameState>(initialState);
@@ -129,7 +85,16 @@ export function useGame(course: CourseIndex) {
   const [auth, setAuth] = useState<AuthStatus>('loading');
   const [notice, setNotice] = useState<string | null>(null); // message from the site owner
   const [mustRename, setMustRename] = useState(false);
-  const skipSave = useRef(true);
+  // ---- cross-device sync (algorithm in lib/state.ts) ----
+  const stateRef = useRef<GameState>(state); // latest state, readable from async callbacks
+  stateRef.current = state;
+  const profileRef = useRef<Profile | null>(null);
+  profileRef.current = profile;
+  const baseRef = useRef<GameState | null>(null); // last state this device and the server agreed on
+  const inflight = useRef(false);
+  const dirty = useRef(false); // something changed while a request was running
+  const resetPending = useRef(false);
+  const avatarSent = useRef<string | null>(null);
   const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const store = useMemo(() => ({
@@ -143,21 +108,90 @@ export function useGame(course: CourseIndex) {
     saveProfile(p: Profile | null) {
       try {
         if (p) localStorage.setItem(PKEY, JSON.stringify(p));
-        else { localStorage.removeItem(PKEY); localStorage.removeItem(KEY); }
+        else { localStorage.removeItem(PKEY); localStorage.removeItem(KEY); localStorage.removeItem(BKEY); }
       } catch { /* storage unavailable */ }
     },
     loadState(): GameState {
       try { return hydrate(JSON.parse(localStorage.getItem(KEY) || 'null')); } catch { return initialState(); }
     },
     saveState(s: GameState) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch { /* noop */ } },
-  }), [KEY, PKEY]);
+    loadBase(): GameState | null {
+      try { const v = localStorage.getItem(BKEY); return v ? hydrate(JSON.parse(v)) : null; } catch { return null; }
+    },
+    saveBase(s: GameState | null) {
+      try { if (s) localStorage.setItem(BKEY, JSON.stringify(s)); else localStorage.removeItem(BKEY); } catch { /* noop */ }
+    },
+  }), [KEY, PKEY, BKEY]);
+
+  const setBase = useCallback((s: GameState | null) => { baseRef.current = s; store.saveBase(s); }, [store]);
 
   const wipe = useCallback((why: AuthStatus) => {
     store.saveProfile(null);
+    baseRef.current = null;
     setProfileState(null);
     setState(initialState());
     setAuth(why);
   }, [store]);
+
+  const schedulePush = useRef<(delay?: number) => void>(() => {});
+
+  /** Takes the server's copy, keeping whatever this device changed since the last agreement on top of it. */
+  const adopt = useCallback((remote: GameState) => {
+    const local = stateRef.current;
+    const next = rollDay(baseRef.current ? apply(remote, diff(baseRef.current, local)) : merge(remote, local));
+    setBase(remote);
+    if (JSON.stringify(next) !== JSON.stringify(local)) { stateRef.current = next; setState(next); }
+    if (!isEmpty(diff(remote, next))) schedulePush.current(300); // this device has progress the server lacks
+  }, [setBase]);
+
+  /** Fetches the server's copy and adopts it. Skipped while a save is running (its reply carries the same). */
+  const pull = useCallback(async () => {
+    const p = profileRef.current;
+    if (!p || inflight.current) return;
+    try {
+      const r = await post<MeReply>('/api/me', { name: apiName(p), token: p.token });
+      if (profileRef.current?.token !== p.token || apiName(profileRef.current) !== apiName(p) || inflight.current) return;
+      if (r.status === 404) return wipe('wiped');
+      if (!r.ok) return;
+      adopt(r.data.state ? hydrate(r.data.state) : { ...initialState(), today: stateRef.current.today });
+    } catch { /* offline */ }
+  }, [adopt, wipe]);
+
+  /** Sends what changed since the last agreement and adopts the merged reply. One request at a time. */
+  const push = useCallback(async () => {
+    const p = profileRef.current;
+    if (!p) return;
+    if (inflight.current) { dirty.current = true; return; }
+    if (!baseRef.current) return void pull(); // first sync on this device: pull (join), which then pushes
+    const sent = stateRef.current;
+    const delta = resetPending.current ? { reset: sent } : diff(baseRef.current, sent);
+    if (isEmpty(delta) && avatarSent.current === p.avatar) return;
+    inflight.current = true;
+    dirty.current = false;
+    const wasReset = resetPending.current;
+    try {
+      const r = await post<{ state?: unknown }>('/api/sync', { name: apiName(p), token: p.token, avatar: p.avatar, delta });
+      if (profileRef.current?.token !== p.token || apiName(profileRef.current) !== apiName(p)) return;
+      if (r.status === 404) return wipe('wiped');
+      if (!r.ok || !r.data.state) return; // server error: retried on the next change or tick
+      if (wasReset) resetPending.current = false;
+      avatarSent.current = p.avatar;
+      const merged = hydrate(r.data.state);
+      const now = stateRef.current;
+      const next = rollDay(apply(merged, diff(sent, now))); // re-apply what changed during the request
+      setBase(merged);
+      if (JSON.stringify(next) !== JSON.stringify(now)) { stateRef.current = next; setState(next); }
+      if (!isEmpty(diff(merged, next))) dirty.current = true;
+    } catch { /* offline: retried later */ } finally {
+      inflight.current = false;
+      if (dirty.current) schedulePush.current(400);
+    }
+  }, [pull, setBase, wipe]);
+
+  schedulePush.current = (delay = 1200) => {
+    if (syncTimer.current) clearTimeout(syncTimer.current);
+    syncTimer.current = setTimeout(() => { syncTimer.current = null; void push(); }, delay);
+  };
 
   useEffect(() => {
     const had = store.hasProfile();
@@ -168,15 +202,18 @@ export function useGame(course: CourseIndex) {
       return;
     }
     const local = rollDay(store.loadState());
+    baseRef.current = store.loadBase();
+    stateRef.current = local;
+    profileRef.current = p;
     setProfileState(p);
     setState(local);
     setReady(true);
-    // confirm the account still exists on the server and pick up progress from other tabs
+    // confirm the account still exists on the server and merge in progress from the player's other devices
     post<MeReply>('/api/me', { name: apiName(p), token: p.token })
       .then((r) => {
         if (r.status === 404) return wipe('wiped');
-        if (r.ok && r.data.state && (r.data.state.xp ?? 0) > local.xp) setState(rollDay(hydrate(r.data.state)));
         if (r.ok) {
+          adopt(r.data.state ? hydrate(r.data.state) : { ...initialState(), today: local.today });
           // the shown name was changed on the server (moderation): show it, keep using the stored key
           if (r.data.user && r.data.user.name !== p.name) {
             const np: Profile = { ...p, name: r.data.user.name, key: apiName(p) };
@@ -189,7 +226,7 @@ export function useGame(course: CourseIndex) {
         setAuth('in');
       })
       .catch(() => setAuth('in')); // offline: keep playing locally
-  }, [store, wipe]);
+  }, [store, wipe, adopt]);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -199,50 +236,53 @@ export function useGame(course: CourseIndex) {
     return () => clearInterval(id);
   }, [store, wipe]);
 
-  // a linked device may have played meanwhile: when this tab comes back into view, adopt newer server progress
+  // Pick up progress from the player's other devices: every 15 s while visible, and right away when the tab
+  // comes back into view, the window gets focus, or the connection returns (which also retries failed saves).
   useEffect(() => {
     if (!profile) return;
-    const onShow = () => {
+    const refresh = () => {
       if (document.visibilityState !== 'visible') return;
-      post<{ state?: Partial<GameState> }>('/api/me', { name: apiName(profile), token: profile.token })
-        .then((r) => {
-          if (r.status === 404) return wipe('wiped');
-          const remote = r.data.state;
-          if (r.ok && remote && (remote.xp ?? 0) > 0) setState((cur) => ((remote.xp ?? 0) > cur.xp ? rollDay(hydrate(remote)) : cur));
-        })
-        .catch(() => { /* offline */ });
+      if (baseRef.current && !isEmpty(diff(baseRef.current, stateRef.current))) void push(); // unsaved changes first
+      else void pull();
     };
-    document.addEventListener('visibilitychange', onShow);
-    return () => document.removeEventListener('visibilitychange', onShow);
-  }, [profile, wipe]);
+    const id = setInterval(refresh, 15_000);
+    document.addEventListener('visibilitychange', refresh);
+    window.addEventListener('focus', refresh);
+    window.addEventListener('online', refresh);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener('visibilitychange', refresh);
+      window.removeEventListener('focus', refresh);
+      window.removeEventListener('online', refresh);
+    };
+  }, [profile, pull, push]);
 
+  // every change is saved on the device at once and sent to the server shortly after (batched)
   useEffect(() => {
     if (!ready || !profile) return;
-    if (skipSave.current) { skipSave.current = false; return; }
     store.saveState(state);
-    if (syncTimer.current) clearTimeout(syncTimer.current);
-    syncTimer.current = setTimeout(() => {
-      post('/api/sync', { name: apiName(profile), token: profile.token, avatar: profile.avatar, xp: state.xp, level: levelInfo(state.xp).level, streak: state.streak, state })
-        .then((r) => { if (r.status === 404) wipe('wiped'); })
-        .catch(() => { /* offline: the next change retries */ });
-    }, 1200);
-  }, [state, ready, profile, wipe, store]);
+    if (!baseRef.current) return; // the first pull sets the base, then pushes
+    if (resetPending.current || !isEmpty(diff(baseRef.current, state)) || avatarSent.current !== profile.avatar) schedulePush.current();
+  }, [state, ready, profile, store]);
 
   const register = useCallback(async (name: string, avatar: string): Promise<string | null> => {
     try {
       const r = await post<{ token?: string; error?: string }>('/api/register', { name, avatar });
       if (!r.ok || !r.data.token) return r.data.error ?? 'Something went wrong';
       const p: Profile = { name: name.trim(), avatar, token: r.data.token, season: seasonId() };
+      const fresh = initialState();
       store.saveProfile(p);
-      skipSave.current = true;
-      setState(initialState());
+      setBase(fresh);
+      avatarSent.current = avatar;
+      stateRef.current = fresh;
+      setState(fresh);
       setProfileState(p);
       setAuth('in');
       return null;
     } catch {
       return 'Cannot reach the server';
     }
-  }, [store]);
+  }, [store, setBase]);
 
   /** Signs this device in to the account that created a link code (from another device). */
   const linkDevice = useCallback(async (code: string): Promise<string | null> => {
@@ -254,7 +294,9 @@ export function useGame(course: CourseIndex) {
       const st = rollDay(hydrate(r.data.state));
       store.saveProfile(p);
       store.saveState(st);
-      skipSave.current = true;
+      setBase(hydrate(r.data.state));
+      avatarSent.current = p.avatar;
+      stateRef.current = st;
       setState(st);
       setProfileState(p);
       setAuth('in');
@@ -262,7 +304,7 @@ export function useGame(course: CourseIndex) {
     } catch {
       return 'Cannot reach the server';
     }
-  }, [store]);
+  }, [store, setBase]);
 
   /** Creates a one-time code (valid 10 minutes) that lets another device sign in to this account. */
   const createLink = useCallback(async (): Promise<{ code: string; expiresAt: number } | { error: string }> => {
@@ -287,8 +329,10 @@ export function useGame(course: CourseIndex) {
       if (!r.ok || !r.data.user) return r.data.error ?? 'Something went wrong';
       const np: Profile = { name: r.data.user.name, avatar: profile.avatar, token: profile.token, season: profile.season };
       store.saveProfile(np);
+      profileRef.current = np;
       setProfileState(np);
       setMustRename(false);
+      schedulePush.current(300);
       return null;
     } catch {
       return 'Cannot reach the server';
@@ -322,7 +366,7 @@ export function useGame(course: CourseIndex) {
   }, [achievements]);
 
   const dismissBadge = useCallback(() => setNewBadges((b) => b.slice(1)), []);
-  const reset = useCallback(() => setState((s) => ({ ...initialState(), settings: s.settings })), []);
+  const reset = useCallback(() => { resetPending.current = true; setState((s) => ({ ...initialState(), settings: s.settings })); }, []);
 
   return { state, ready, update, newBadges, dismissBadge, reset, profile, auth, register, linkDevice, createLink, rename, notice, mustRename, ackNotice, setAvatar, achievements };
 }

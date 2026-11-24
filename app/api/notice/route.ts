@@ -1,5 +1,5 @@
 import { body, json } from '@/lib/api';
-import { db } from '@/lib/db';
+import { db, update } from '@/lib/db';
 import { nameKey } from '@/lib/username';
 
 export const dynamic = 'force-dynamic';
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     const k = nameKey(b.name);
     const u = await db.get(k);
     if (!u || u.token !== b.token) return json({ error: 'Not found' }, 404);
-    if (u.notice) await db.put(k, { ...u, notice: undefined });
+    if (u.notice) await update(k, (x) => (x.notice ? { ...x, notice: undefined } : null));
     return json({ ok: true });
   } catch (e) {
     console.error(e);

@@ -24,6 +24,7 @@ export type UserRecord = {
   updatedAt: number;
   notice?: string; // one-time message from the site owner, shown as a browser alert, cleared once seen
   mustRename?: boolean; // the site owner asked this player to pick a new name
+  rev?: number; // bumped on every update(); lets concurrent saves detect each other
 };
 
 interface Store {
@@ -34,6 +35,8 @@ interface Store {
   all(): Promise<UserRecord[]>;
   /** Moves a record to a new key if that key is free (renames). Returns false when taken. */
   move(from: string, to: string, rec: UserRecord): Promise<boolean>;
+  /** Writes `rec` only if the stored record's rev is still `rev` (compare-and-set). */
+  cas(name: string, rev: number, rec: UserRecord): Promise<boolean>;
 }
 
 const COURSE = courseId();
@@ -55,6 +58,16 @@ async function redis<T = unknown>(...cmd: (string | number)[]): Promise<T> {
   return json.result as T;
 }
 
+// Compare-and-set in one atomic step on the Redis server: write only if nobody saved since we read.
+const CAS_LUA = `local v = redis.call('HGET', KEYS[1], ARGV[1])
+if not v then return -1 end
+local ok, d = pcall(cjson.decode, v)
+local cur = 0
+if ok and type(d) == 'table' and type(d.rev) == 'number' then cur = d.rev end
+if cur ~= tonumber(ARGV[2]) then return 0 end
+redis.call('HSET', KEYS[1], ARGV[1], ARGV[3])
+return 1`;
+
 const redisStore: Store = {
   async get(name) {
     const v = await redis<string | null>('HGET', key(), name);
@@ -74,6 +87,9 @@ const redisStore: Store = {
     if ((await redis<number>('HSETNX', key(), to, JSON.stringify(rec))) !== 1) return false;
     await redis('HDEL', key(), from);
     return true;
+  },
+  async cas(name, rev, rec) {
+    return (await redis<number>('EVAL', CAS_LUA, 1, key(), name, rev, JSON.stringify(rec))) === 1;
   },
   async all() {
     const flat = await redis<string[]>('HGETALL', key());
@@ -129,6 +145,14 @@ const fileStore: Store = {
       await writeFile(db);
     }),
   all: async () => Object.values((await readFile()).users),
+  cas: (name, rev, rec) =>
+    locked(async () => {
+      const db = await readFile();
+      if (!db.users[name] || (db.users[name].rev ?? 0) !== rev) return false;
+      db.users[name] = rec;
+      await writeFile(db);
+      return true;
+    }),
   move: (from, to, rec) =>
     locked(async () => {
       const db = await readFile();
@@ -145,6 +169,24 @@ if (!(REDIS_URL && REDIS_TOKEN) && process.env.VERCEL) {
 }
 export const db: Store = REDIS_URL && REDIS_TOKEN ? redisStore : fileStore;
 export const dbKind = REDIS_URL && REDIS_TOKEN ? 'redis' : 'file';
+
+/**
+ * Read-modify-write that never loses a concurrent save: reads the record, lets `fn` build the new one,
+ * and writes it only if nothing changed in between; otherwise re-reads and tries again.
+ * `fn` returns null to leave the record as it is. Resolves to the saved record, or null if it doesn't exist.
+ */
+export async function update(name: string, fn: (u: UserRecord) => UserRecord | null): Promise<UserRecord | null> {
+  for (let attempt = 0; attempt < 8; attempt++) {
+    const u = await db.get(name);
+    if (!u) return null;
+    const next = fn(u);
+    if (!next) return u;
+    const rec = { ...next, rev: (u.rev ?? 0) + 1 };
+    if (await db.cas(name, u.rev ?? 0, rec)) return rec;
+    await new Promise((r) => setTimeout(r, 15 + Math.random() * 40 * (attempt + 1)));
+  }
+  throw new Error('update: too much contention on ' + name);
+}
 
 // ---------- device link codes (short-lived, single use) ----------
 // key <courseId>:link:<CODE> → lowercase username, expires after LINK_TTL seconds.

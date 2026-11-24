@@ -27,6 +27,7 @@ See **[DEPLOY.md](DEPLOY.md)** for the step-by-step guide. In short: import the 
 - **API** (`app/api/*`): `POST /register`, `POST /me`, `POST /sync`, `GET /leaderboard`, `POST /link`, `POST /link/claim`.
 - **Play on another device:** Profile → *Play on another device* shows a one-time code and a QR code (valid 10 minutes, single use).
   The other device scans the QR or picks *I have a code* on the start screen. Codes avoid look-alike characters, and wrong guesses are rate-limited per IP.
+- **Sync between devices** (`lib/state.ts`): each device remembers the last copy it agreed on with the server and sends only what changed since (XP and coins gained, lessons finished, badges, missed questions). The server applies that to its current copy in one atomic compare-and-set, so progress from two devices adds up instead of the last save winning. Devices pull every 15 s while open, and on focus or reconnect. Checked by `npm run test:math`.
 
 ## Content
 
@@ -56,7 +57,8 @@ Mistakes in the files are skipped and listed in **Settings → content warnings*
 | `content/` | Course + chapter JSON (see content/README.md) |
 | `lib/content.ts` | Loads and validates the content (server) |
 | `lib/course.ts` | Course types and client helpers |
-| `lib/store.ts` | Game state, levels, streak, missed questions, generated badges, server sync |
+| `lib/state.ts` | Game state shape and the cross-device sync algorithm (diff / apply / merge) |
+| `lib/store.ts` | Game hook: levels, streak, badges, saving and syncing with the server |
 | `lib/db.ts` | Storage: Upstash Redis REST, or a local JSON file |
 | `lib/season.ts` | Weekly season id and countdown |
 | `lib/username.ts` | Name rules and profanity filter |
