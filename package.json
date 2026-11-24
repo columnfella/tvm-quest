@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test:math": "node --no-warnings scripts/check-stock-math.ts && node --no-warnings scripts/check-calc.ts && node --no-warnings scripts/check-sync.ts"
+    "test:math": "node --no-warnings scripts/check-stock-math.ts && node --no-warnings scripts/check-calc.ts && node --no-warnings scripts/check-sync.ts",
+    "coach:image": "node scripts/coach-image.mjs"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
