@@ -94,6 +94,9 @@ export default function Game({ course: raw }: { course: Course }) {
   useEffect(() => { if (mustRename && !notice) setPanel((p) => p ?? 'rename'); }, [mustRename, notice]);
   useEffect(() => { if (!g.profile) setScreen({ v: 'home' }); }, [g.profile]);
 
+  // the calculator belongs to the screen it was opened on: leaving that screen (quitting or finishing a
+  // lesson, going home…) closes it. Its numbers are kept for next time.
+  useEffect(() => { closeCalc(); }, [screen, closeCalc]);
   const go = (s: Screen) => { setScreen(s); window.scrollTo({ top: 0 }); };
   const play = (lesson: L) => go({ v: 'play', lesson });
   const back = (lesson: L) => go({ v: 'chapter', id: lesson.chapterId });

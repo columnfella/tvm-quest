@@ -4,7 +4,7 @@
 // A second visual shows how violently the price reacts as r approaches g (the slides' Sweet Candy example).
 import { useState } from 'react';
 import type { LessonContent } from '@/lib/learn';
-import { Block, Callout, Formula, Frac, M, Presets, Seg, Slider, Stat, SvgBar, Vars, Viz, Worked, scale } from '@/components/learn/kit';
+import { Block, Callout, Formula, Frac, M, Presets, Seg, Slider, Stat, SvgBar, Vars, Viz, Worked, scale, SplitBar } from '@/components/learn/kit';
 import { gordon, money, pct, pv } from './math';
 
 type Inputs = { amount: number; timing: 'last' | 'next'; g: number; r: number };
@@ -70,7 +70,7 @@ function Sensitivity({ s, set }: { s: Inputs; set: (p: Partial<Inputs>) => void 
   const rMax = 0.2;
   const rLo = s.g + 0.01; // draw down to r − g = 1%
   const yMax = d1 / 0.01;
-  const x = scale(Math.max(0.0, s.g - 0.01), rMax, L, W - 8);
+  const x = scale(s.g - 0.01, rMax, L, W - 8); // starts just below g, so the r = g line is always on the chart (g can be negative)
   const y = scale(0, yMax, H - B, T);
   const n = 80;
   const pts = rLo < rMax
@@ -95,7 +95,8 @@ function Sensitivity({ s, set }: { s: Inputs; set: (p: Partial<Inputs>) => void 
         <line className="axis" x1={L} x2={W - 4} y1={H - B} y2={H - B} />
         <line className="axis" x1={L} x2={L} y1={T} y2={H - B} />
         <line x1={x(s.g)} x2={x(s.g)} y1={T} y2={H - B} stroke="var(--red)" strokeWidth={2} strokeDasharray="6 5" />
-        <text x={x(s.g) + 6} y={T + 12} style={{ fill: 'var(--red-ink)' }} className="lbl">r = g: model breaks</text>
+        {/* label to the right of the line, or to its left when the line is near the right edge */}
+        <text x={x(s.g) > W - 190 ? x(s.g) - 6 : x(s.g) + 6} y={T + 12} textAnchor={x(s.g) > W - 190 ? 'end' : 'start'} style={{ fill: 'var(--red-ink)' }} className="lbl">r = g: model breaks</text>
         {pts && <polyline points={pts} fill="none" stroke="var(--purple)" strokeWidth={3} strokeLinejoin="round" />}
         {p0 !== null && s.r <= rMax && p0 <= yMax && (
           <circle cx={x(s.r)} cy={y(p0)} r={8} fill="var(--yellow)" stroke="var(--k)" strokeWidth={2.5} style={{ transition: 'cx .2s, cy .2s' }} />
@@ -112,10 +113,10 @@ function Sensitivity({ s, set }: { s: Inputs; set: (p: Partial<Inputs>) => void 
         <Stat label="Capital gains yield = g" value={pct(s.g, 2)} tone="green" />
       </div>
       {p0 !== null && (
-        <div className="split-bar" aria-label="Required return split">
-          <div style={{ width: `${Math.max(0, dy / s.r) * 100}%`, background: 'var(--yellow)' }}>{dy / s.r > 0.2 ? `dividend yield ${pct(dy, 1)}` : ''}</div>
-          <div style={{ flex: 1, background: 'var(--green)' }}>{s.g / s.r > 0.2 ? `+ g ${pct(s.g, 1)} = r ${pct(s.r, 1)}` : ''}</div>
-        </div>
+        <SplitBar label="Required return split" segments={[
+          { value: dy, label: `dividend yield ${pct(dy, 1)}`, color: 'var(--yellow)' },
+          { value: s.g, label: `+ g ${pct(s.g, 1)} = r ${pct(s.r, 1)}`, color: 'var(--green)' },
+        ]} />
       )}
     </Viz>
   );

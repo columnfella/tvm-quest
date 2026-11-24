@@ -129,23 +129,30 @@ function Basic({ onResult }: { onResult: (v: number, label: string) => void }) {
 
   const preview = expr.trim() && !/^-?[\d.,]+$/.test(expr.trim()) ? evaluate(expr, ans) : null;
 
+  /** Shows `value` with the cursor at `caret` right away (not a frame later, when a fast keystroke could land first). */
+  const put = (value: string, caret: number, focus = false) => {
+    const el = input.current;
+    if (el) {
+      el.value = value; // React then finds the field already matching and leaves the cursor alone
+      if (focus && !touch) el.focus();
+      el.setSelectionRange(caret, caret);
+    }
+    setExpr(value);
+  };
   const insert = (text: string) => {
     const el = input.current;
     const a = el?.selectionStart ?? expr.length;
     const b = el?.selectionEnd ?? expr.length;
-    const next = expr.slice(0, a) + text + expr.slice(b);
-    setExpr(next);
     setErr(false);
-    requestAnimationFrame(() => { if (el) { el.setSelectionRange(a + text.length, a + text.length); if (!touch) el.focus(); } });
+    put(expr.slice(0, a) + text + expr.slice(b), a + text.length, true);
   };
   const del = () => {
     const el = input.current;
     const a = el?.selectionStart ?? expr.length;
     const b = el?.selectionEnd ?? expr.length;
-    if (a !== b) { setExpr(expr.slice(0, a) + expr.slice(b)); requestAnimationFrame(() => el?.setSelectionRange(a, a)); return; }
+    if (a !== b) return put(expr.slice(0, a) + expr.slice(b), a);
     if (a === 0) return;
-    setExpr(expr.slice(0, a - 1) + expr.slice(a));
-    requestAnimationFrame(() => el?.setSelectionRange(a - 1, a - 1));
+    put(expr.slice(0, a - 1) + expr.slice(a), a - 1);
   };
   const equals = () => {
     const v = evaluate(expr, ans);
@@ -153,11 +160,10 @@ function Basic({ onResult }: { onResult: (v: number, label: string) => void }) {
     const t = tidy(v);
     setHist((h) => [{ e: expr, v: t }, ...h].slice(0, 4));
     setAns(t);
-    setExpr(String(t));
+    put(String(t), String(t).length);
     setErr(false);
     onResult(t, expr.length > 28 ? 'Result' : `${expr} =`);
     sfx.tap();
-    requestAnimationFrame(() => input.current?.setSelectionRange(String(t).length, String(t).length));
   };
   const press = (k: string) => {
     if (k === 'AC') { setExpr(''); setErr(false); return; }

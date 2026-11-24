@@ -821,9 +821,18 @@ button.btn3d:disabled { --b: #9aa8bc; --bh: #c4cfdd; --bd: #6b7a90; cursor: not-
 .coach-cut { display: block; width: 180px; height: auto; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45)); }
 .coach-clink { position: absolute; left: 14%; top: 18%; pointer-events: none; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); }
 .coach-name { display: block; margin-bottom: 2px; font-family: var(--display); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: #b7791f; }
-.coach-cutout .coach-bubble { margin: 0 0 120px -18px; max-width: 260px; }
-.coach-cutout .coach-bubble::before { bottom: 14px; }
+/* bubble beside his face; its tail points at his mouth (about 60% up the picture) */
+.coach-cutout .coach-bubble { margin: 0 0 92px -6px; max-width: 260px; border-radius: 16px; }
+.coach-cutout .coach-bubble::before { content: none; }
+.coach-cutout .coach-bubble::after { content: ''; position: absolute; left: -10px; bottom: 16px; width: 16px; height: 16px; background: #fff; border-left: 3px solid var(--k); border-bottom: 3px solid var(--k); border-bottom-left-radius: 3px; transform: rotate(45deg) skew(14deg, 14deg); }
 @media (max-width: 600px) {
   .coach-figure.cut, .coach-cut { width: 128px; }
-  .coach-cutout .coach-bubble { margin: 0 0 86px -12px; max-width: 200px; }
+  .coach-cutout .coach-bubble { margin: 0 0 58px -4px; max-width: 196px; padding: 8px 12px; }
+  .coach-cutout .coach-bubble::after { bottom: 12px; width: 13px; height: 13px; left: -8px; }
 }
+
+/* SplitBar (components/learn/kit.tsx): labels shrink to fit; ones that can't fit move below the bar */
+.split { display: flex; flex-direction: column; gap: 4px; }
+.split-out { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px 12px; min-height: 18px; font-size: 12.5px; font-weight: 800; color: var(--ink); }
+.split-out span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.split-out i { width: 11px; height: 11px; border-radius: 3px; border: 2px solid var(--k); flex: none; }

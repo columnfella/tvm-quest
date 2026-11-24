@@ -4,7 +4,7 @@
 // It also shows how much of the price comes from the horizon value and what the classic timing mistake costs.
 import { useState } from 'react';
 import type { LessonContent } from '@/lib/learn';
-import { Block, Callout, Formula, Frac, M, Presets, Slider, Stat, SvgBar, Vars, Viz, Worked, scale } from '@/components/learn/kit';
+import { Block, Callout, Formula, Frac, M, Presets, Slider, Stat, SvgBar, Vars, Viz, Worked, scale, SplitBar } from '@/components/learn/kit';
 import { Btn } from '@/components/ui';
 import { money, pct, twoStage } from './math';
 
@@ -103,10 +103,10 @@ function Builder() {
       </div>
       {step === 3 && (
         <>
-          <div className="split-bar" aria-label="Where the value comes from">
-            <div style={{ width: `${(1 - shareH) * 100}%`, background: 'var(--yellow)' }}>{1 - shareH > 0.18 ? `dividends ${money(pvSum)}` : ''}</div>
-            <div style={{ width: `${shareH * 100}%`, background: 'var(--green)' }}>{shareH > 0.18 ? `horizon value ${money(v.pvHorizon)}` : ''}</div>
-          </div>
+          <SplitBar label="Where the value comes from" segments={[
+            { value: pvSum, label: `dividends ${money(pvSum)}`, color: 'var(--yellow)' },
+            { value: v.pvHorizon, label: `horizon value ${money(v.pvHorizon)}`, color: 'var(--green)' },
+          ]} />
           <div className="readouts">
             <Stat label="PV of D₁…D_N" value={money(pvSum)} tone="gold" />
             <Stat label={`PV of P${sub(s.n)}`} value={money(v.pvHorizon)} tone="green" sub={`${money(v.horizon)} / ${(1 + s.r).toFixed(2)}^${s.n}`} />

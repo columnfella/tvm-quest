@@ -3,7 +3,7 @@
 // period does not change that value because the sale price is itself the PV of the dividends after it.
 import { useState } from 'react';
 import type { LessonContent } from '@/lib/learn';
-import { Block, Callout, Formula, Frac, M, Slider, Stat, SvgBar, Vars, Viz, Worked, scale } from '@/components/learn/kit';
+import { Block, Callout, Formula, Frac, M, Slider, Stat, SvgBar, Vars, Viz, Worked, scale, SplitBar } from '@/components/learn/kit';
 import { holdingSplit, money, pct, pv } from './math';
 
 const D1 = 2;
@@ -16,7 +16,8 @@ function HoldingPeriod({ r, setR }: { r: number; setR: (v: number) => void }) {
   const W = 640, H = 210, L = 34, B = 26, T = 14;
   const lastPv = pv(D1 * (1 + G) ** (years - 1), r, years); // the year-N dividend; the sale bar stacks on it
   const top = s.pvSale + lastPv;
-  const maxY = top * 1.15;
+  // tallest bar: the stacked sale bar, or the year-1 dividend when the sale is far away and heavily discounted
+  const maxY = Math.max(top, pv(D1, r, 1)) * 1.15;
   const x = scale(0, years + 1, L, W - 8);
   const y = scale(0, maxY, H - B, T);
   const bw = Math.max(3, Math.min(34, ((W - L) / (years + 1)) * 0.7));
@@ -42,7 +43,7 @@ function HoldingPeriod({ r, setR }: { r: number; setR: (v: number) => void }) {
         {[0.5, 1].map((f) => (
           <g key={f}>
             <line className="grid" x1={L} x2={W - 4} y1={y(maxY * f)} y2={y(maxY * f)} />
-            <text x={L - 4} y={y(maxY * f) + 4} textAnchor="end">{money(maxY * f, 0)}</text>
+            <text x={L - 4} y={y(maxY * f) + 4} textAnchor="end">{money(maxY * f, maxY < 20 ? 2 : 0)}</text>
           </g>
         ))}
         {Array.from({ length: years }, (_, i) => {
@@ -55,10 +56,10 @@ function HoldingPeriod({ r, setR }: { r: number; setR: (v: number) => void }) {
         {[1, years].filter((t, i, a) => a.indexOf(t) === i).map((t) => <text key={t} x={x(t)} y={H - 8} textAnchor="middle">yr {t}</text>)}
       </svg>
       <div className="legend"><span><i style={{ background: 'var(--yellow)' }} />PV of each dividend</span><span><i style={{ background: 'var(--green)' }} />PV of the sale price P<sub>N</sub></span></div>
-      <div className="split-bar" aria-label="Value split">
-        <div style={{ width: `${divShare * 100}%`, background: 'var(--yellow)' }}>{divShare > 0.18 ? `Dividends ${money(s.pvDivs)}` : ''}</div>
-        <div style={{ width: `${(1 - divShare) * 100}%`, background: 'var(--green)' }}>{1 - divShare > 0.18 ? `Sale ${money(s.pvSale)}` : ''}</div>
-      </div>
+      <SplitBar label="Value split" segments={[
+        { value: s.pvDivs, label: `Dividends ${money(s.pvDivs)}`, color: 'var(--yellow)' },
+        { value: s.pvSale, label: `Sale ${money(s.pvSale)}`, color: 'var(--green)' },
+      ]} />
       <div className="readouts">
         <Stat label="PV of dividends" value={money(s.pvDivs)} tone="gold" />
         <Stat label={`PV of the sale (yr ${years})`} value={money(s.pvSale)} tone="green" sub={`sale price ${money(s.sale)}`} />

@@ -2,7 +2,7 @@
 // Building blocks for hand-written interactive lessons. All optional: a lesson can use any React it likes.
 import { m } from 'framer-motion';
 import { ChevronDown, Lightbulb, TriangleAlert, Sparkles } from 'lucide-react';
-import { useId, useState, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 
 /** Stacked fraction for formulas: <Frac n="D₁" d="r − g" />. */
 export function Frac({ n, d }: { n: ReactNode; d: ReactNode }) {
@@ -190,5 +190,75 @@ export function SvgBar({ x, width, base, top, fill, stroke = 'var(--k)', strokeW
     >
       {label && <title>{label}</title>}
     </m.rect>
+  );
+}
+
+// ---------- SplitBar ----------
+
+export type SplitSegment = {
+  value: number; // share of the bar (any unit; segments are scaled to their total)
+  label: string; // e.g. "Dividends $16.46"
+  color: string; // segment background
+  ink?: string; // text colour on that background (default: dark outline colour, readable on yellow/green)
+};
+
+const FONT_MAX = 13;
+const FONT_MIN = 10;
+const PAD = 12; // horizontal padding inside a segment
+let canvas: HTMLCanvasElement | null = null;
+function textWidth(text: string, px: number, family: string) {
+  canvas ??= document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return text.length * px * 0.6;
+  ctx.font = `900 ${px}px ${family}`;
+  return ctx.measureText(text).width;
+}
+
+/**
+ * A bar split into labelled parts. Each label shrinks (13 px down to 10 px) to fit its part; a label that
+ * still doesn't fit is shown under the bar next to a colour chip, so no number is ever hidden.
+ */
+export function SplitBar({ segments, label }: { segments: SplitSegment[]; label: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  const [family, setFamily] = useState('sans-serif');
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    setFamily(getComputedStyle(el).fontFamily || 'sans-serif');
+    const ro = new ResizeObserver(([e]) => setWidth(e.contentRect.width));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const total = segments.reduce((a, s) => a + Math.max(0, s.value), 0) || 1;
+  const parts = segments.map((s) => {
+    const share = Math.max(0, s.value) / total;
+    const room = share * width - PAD;
+    let size: number | null = null;
+    if (width > 0 && share > 0) {
+      for (let px = FONT_MAX; px >= FONT_MIN; px -= 0.5) {
+        if (textWidth(s.label, px, family) <= room) { size = px; break; }
+      }
+    }
+    return { ...s, share, size };
+  });
+  const outside = width > 0 ? parts.filter((p) => p.size === null) : [];
+
+  return (
+    <div className="split">
+      <div className="split-bar" ref={ref} role="img" aria-label={`${label}: ${segments.map((s) => s.label).join(', ')}`}>
+        {parts.map((p, i) => (
+          <div key={i} style={{ width: `${p.share * 100}%`, background: p.color, color: p.ink ?? 'var(--k)', fontSize: p.size ?? undefined }}>
+            {p.size !== null && p.label}
+          </div>
+        ))}
+      </div>
+      <div className="split-out" aria-hidden>
+        {outside.map((p, i) => (
+          <span key={i}><i style={{ background: p.color }} />{p.label}</span>
+        ))}
+      </div>
+    </div>
   );
 }

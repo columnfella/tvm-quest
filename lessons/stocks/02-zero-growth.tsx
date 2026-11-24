@@ -3,7 +3,7 @@
 // then uses the same formula both ways for preferred stock (value from r, and the yield implied by a price).
 import { useState } from 'react';
 import type { LessonContent } from '@/lib/learn';
-import { Block, Callout, Formula, Frac, M, Seg, Slider, Stat, SvgBar, Vars, Viz, Worked, scale } from '@/components/learn/kit';
+import { Block, Callout, Formula, Frac, M, Seg, Slider, Stat, SvgBar, Vars, Viz, Worked, scale, SplitBar } from '@/components/learn/kit';
 import { money, pct, perpetuity, pv } from './math';
 
 const SHOW = 50; // years drawn
@@ -51,10 +51,10 @@ function PerpetuityBuilder() {
         <text x={L - 4} y={y(d) + 4} textAnchor="end">{money(d, 2)}</text>
       </svg>
       <div className="legend"><span><i style={{ background: 'transparent', borderStyle: 'dashed' }} />Dividend received (always D)</span><span><i style={{ background: 'var(--yellow)' }} />Its value today, D / (1+r)<sup>t</sup></span></div>
-      <div className="split-bar" aria-label="Share of the value captured">
-        <div style={{ width: `${(partial / value) * 100}%`, background: 'var(--yellow)' }}>{partial / value > 0.25 ? `first ${n} yr: ${money(partial)}` : ''}</div>
-        <div style={{ flex: 1, background: 'var(--card-2)' }}>{partial / value < 0.8 ? `the rest: ${money(value - partial)}` : ''}</div>
-      </div>
+      <SplitBar label="Share of the value captured" segments={[
+        { value: partial, label: `first ${n} yr: ${money(partial)}`, color: 'var(--yellow)' },
+        { value: value - partial, label: `the rest: ${money(value - partial)}`, color: 'var(--card-2)', ink: 'var(--ink)' },
+      ]} />
       <div className="readouts">
         <Stat label={`Sum of first ${n} years`} value={money(partial)} tone="gold" />
         <Stat label="Value of all years: D / r" value={money(value)} tone="blue" />
